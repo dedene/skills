@@ -1,0 +1,13 @@
+{
+  "name": "dedene-skills",
+  "description": "Skills for designers, builders & engineers",
+  "version": "0.1.0",
+  "author": {
+    "name": "Peter Dedene",
+    "url": "https://github.com/dedene"
+  },
+  "homepage": "https://github.com/dedene/skills",
+  "repository": "https://github.com/dedene/skills",
+  "license": "MIT",
+  "keywords": ["design", "css", "shadows", "frontend"]
+}

@@ -1,0 +1,18 @@
+{
+  "version": "1",
+  "name": "dedene",
+  "owner": {
+    "name": "Peter Dedene",
+    "url": "https://github.com/dedene"
+  },
+  "metadata": {
+    "description": "Peter Dedene's skills for designers, builders & engineers"
+  },
+  "plugins": [
+    {
+      "name": "dedene-skills",
+      "description": "Skills for designers, builders & engineers",
+      "source": "."
+    }
+  ]
+}
