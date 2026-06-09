@@ -1,0 +1,4 @@
+interface:
+  display_name: "High-Stakes Grill"
+  short_description: "Auto-decide details, ask on stakes."
+  default_prompt: "Use $high-stakes-grill to stress-test this plan, auto-decide low-risk details, and ask me only for trajectory-setting choices."
