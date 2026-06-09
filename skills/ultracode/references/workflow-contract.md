@@ -4,6 +4,7 @@
 
 - Run directory
 - State file
+- Native workflow mirror
 - Plan template
 - Orchestration template
 - Check-in contract
@@ -51,6 +52,7 @@ Use a timestamped slug for `<run-id>`, for example `20260608-141530-fix-auth-rac
   "nextCheckInDueAt": "2026-06-08T14:25:30Z",
   "checkIns": [],
   "resources": [],
+  "nativeWorkflow": null,
   "packets": [
     {
       "id": "001",
@@ -71,6 +73,28 @@ Allowed `status`: `planning`, `delegating`, `integrating`, `verifying`, `complet
 Allowed packet `status`: `pending`, `running`, `complete`, `blocked`, `rejected`.
 
 Allowed resource `status`: `planned`, `active`, `idle`, `closed`, `released`, `stopped`, `removed`, `cleaned`, `leaked`, `handed-off`.
+
+## Native Workflow Mirror
+
+When the host provides a native workflow runner, keep using this portable run directory and record a pointer to the native run in `state.json`.
+
+```json
+{
+  "nativeWorkflow": {
+    "host": "claude-code",
+    "runId": "wf_abc123",
+    "workflowName": "migration-audit",
+    "scriptPath": "<native workflow script path>",
+    "snapshotPath": "<native wf_*.json path>",
+    "agentLogDir": "<native subagents/workflows/wf_* path>",
+    "totalTokens": 123456,
+    "totalToolCalls": 42,
+    "durationMs": 600000
+  }
+}
+```
+
+Native artifacts are evidence, not the portable contract. Summarize accepted outputs into `results/`, `integration.md`, and `final-report.md`.
 
 ## Plan Template
 

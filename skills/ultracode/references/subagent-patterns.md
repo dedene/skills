@@ -95,6 +95,8 @@ Record every resource you start, including type, purpose, identifier, and cleanu
 ### Claude Code
 
 - If native `/workflows` is available and the user explicitly wants that surface, use it for large runner-style tasks.
+- Native workflow scripts are JavaScript orchestration files. Reflect the same shape in Ultracode artifacts: named metadata, phases, logs, bounded agent calls, `parallel`/`pipeline` batches, structured outputs, and compact final returns.
+- Mirror native workflow run identifiers and artifact paths into the portable Ultracode `state.json` when available; accepted outputs still belong in `results/`, `integration.md`, and `final-report.md`.
 - If using Task/subagent tools, pass the packet file and run directory. Keep worker prompts short and bounded.
 - Do not depend on Claude-only artifacts when the user wants the workflow reusable in Codex or other agents.
 

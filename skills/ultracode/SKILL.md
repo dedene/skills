@@ -40,7 +40,7 @@ Default to subagents for workflow work: discovery, implementation slices, verifi
 2. **Create the workflow run**
    - Prefer the scaffolder:
      ```bash
-     python3 <skill-dir>/scripts/new-ultracode-run.py "short task title" --root .
+     node <skill-dir>/scripts/new-ultracode-run.mjs "short task title" --root .
      ```
    - The scaffolder adds `.workflow/` to local Git exclude when possible. If scripts are unavailable, ensure `.workflow/` is ignored before creating the same structure manually under `.workflow/ultracode/<timestamp>-<slug>/`.
    - See `references/workflow-contract.md` for the complete artifact schema.
@@ -75,7 +75,7 @@ Default to subagents for workflow work: discovery, implementation slices, verifi
    - Before final handoff, close or explicitly hand off every live browser, Docker container, dev server, background job, tmux pane, temp directory, and port recorded in `state.json`.
    - Run the artifact validator:
      ```bash
-     python3 <skill-dir>/scripts/verify-ultracode-run.py --strict .workflow/ultracode/<run-id>
+     node <skill-dir>/scripts/verify-ultracode-run.mjs --strict .workflow/ultracode/<run-id>
      ```
    - Write `final-report.md` with outcome, files changed, verification evidence, resource cleanup, unresolved risks, and next steps.
 
@@ -118,7 +118,7 @@ Default budgets:
 
 ## Scripts
 
-- `scripts/new-ultracode-run.py` - creates `.workflow/ultracode/<run-id>/` with required files.
-- `scripts/verify-ultracode-run.py` - validates that the run has the expected artifacts before handoff.
+- `scripts/new-ultracode-run.mjs` - creates `.workflow/ultracode/<run-id>/` with required files.
+- `scripts/verify-ultracode-run.mjs` - validates that the run has the expected artifacts before handoff.
 
 Do not use `git add .workflow`, `git add -f .workflow`, or include workflow artifacts in commits or PRs.
