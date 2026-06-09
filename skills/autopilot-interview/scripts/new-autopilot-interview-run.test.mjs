@@ -3,18 +3,18 @@ import { mkdir, mkdtemp, readFile, rm, stat, writeFile } from 'node:fs/promises'
 import os from 'node:os';
 import path from 'node:path';
 
-import { createHighStakesGrillRun, slugifyTitle } from './new-high-stakes-grill-run.mjs';
+import { createAutopilotInterviewRun, slugifyTitle } from './new-autopilot-interview-run.mjs';
 
 assert.equal(slugifyTitle('API shape: ask vs decide?'), 'api-shape-ask-vs-decide');
-assert.equal(slugifyTitle(''), 'grill');
+assert.equal(slugifyTitle(''), 'interview');
 
-const root = await mkdtemp(path.join(os.tmpdir(), 'high-stakes-grill-test-'));
+const root = await mkdtemp(path.join(os.tmpdir(), 'autopilot-interview-test-'));
 
 try {
   await mkdir(path.join(root, '.git', 'info'), { recursive: true });
   await writeFile(path.join(root, '.git', 'info', 'exclude'), '# local excludes\n');
 
-  const first = await createHighStakesGrillRun({
+  const first = await createAutopilotInterviewRun({
     root,
     title: 'Checkout retry plan',
     ensureGitExclude: true,
@@ -22,12 +22,12 @@ try {
   });
 
   assert.equal(first.runId, '20260609-123456-checkout-retry-plan');
-  assert.equal(first.relativeRunDir, '.workflow/high-stakes-grill/20260609-123456-checkout-retry-plan');
+  assert.equal(first.relativeRunDir, '.workflow/autopilot-interview/20260609-123456-checkout-retry-plan');
   assert.equal(first.exclude.status, 'added-local-exclude');
   assert.equal(first.exclude.pattern, '.workflow/');
 
   const log = await readFile(first.decisionLogPath, 'utf8');
-  assert.match(log, /^# High-Stakes Grill Decision Log/m);
+  assert.match(log, /^# Autopilot Interview Decision Log/m);
   assert.match(log, /Goal: Checkout retry plan/);
   assert.match(log, /## Context Capsule/);
   assert.match(log, /## Decision Ledger/);
@@ -35,7 +35,7 @@ try {
   const exclude = await readFile(path.join(root, '.git', 'info', 'exclude'), 'utf8');
   assert.match(exclude, /^\.workflow\/$/m);
 
-  await createHighStakesGrillRun({
+  await createAutopilotInterviewRun({
     root,
     title: 'Second pass',
     ensureGitExclude: true,
@@ -45,10 +45,10 @@ try {
   const excludeAfterSecondRun = await readFile(path.join(root, '.git', 'info', 'exclude'), 'utf8');
   assert.equal(excludeAfterSecondRun.match(/^\.workflow\/$/gm).length, 1);
 
-  await stat(path.join(root, '.workflow', 'high-stakes-grill', '20260609-123500-second-pass'));
+  await stat(path.join(root, '.workflow', 'autopilot-interview', '20260609-123500-second-pass'));
 
   await assert.rejects(
-    createHighStakesGrillRun({
+    createAutopilotInterviewRun({
       root,
       title: 'Second pass',
       ensureGitExclude: true,
@@ -70,7 +70,7 @@ try {
     'gitdir: ../git-data/worktrees/linked-worktree\n',
   );
 
-  const linked = await createHighStakesGrillRun({
+  const linked = await createAutopilotInterviewRun({
     root: linkedProjectRoot,
     title: 'Nested worktree plan',
     ensureGitExclude: true,

@@ -1,30 +1,30 @@
 ---
-name: high-stakes-grill
+name: autopilot-interview
 description: Use when stress-testing, speccing, or refining a plan; or when the user asks to be grilled or interviewed in detail about technical implementation, UI/UX, concerns, tradeoffs, scope, rollout, or risks.
 ---
 
-# High-Stakes Grill
+# Autopilot Interview
 
-Grill a plan by default through deep auto-interviewing with selective autonomy. Build a broad question map, resolve ordinary questions yourself, and stop for human judgment when an answer would materially change direction, risk, cost, UX, architecture, or the final spec/plan.
+Interview a plan by default through deep auto-interviewing with selective autonomy. Build a broad question map, resolve ordinary questions yourself, and stop for human judgment when an answer would materially change direction, risk, cost, UX, architecture, or the final spec/plan.
 
 When the user asks to be interviewed or grilled in detail, use the same default workflow at full intensity: surface non-obvious questions across product, technical implementation, UI/UX, concerns, tradeoffs, risks, rollout, and acceptance criteria until the requested spec, plan, or next artifact is complete enough to write.
 
 ## Start
 
-1. Find the plan in the conversation, repo, issue, PRD, or named file. If none is clear, ask what to grill.
+1. Find the plan in the conversation, repo, issue, PRD, or named file. If none is clear, ask what to interview.
 2. Capture the completion target if the user gave one: write a spec to a file, produce an implementation plan, proceed to implementation, or return a resolved plan in chat.
 3. When file writes are allowed, create a scratch decision log:
 
    ```bash
-   node <this-skill-dir>/scripts/new-high-stakes-grill-run.mjs "short plan title" --root .
+   node <this-skill-dir>/scripts/new-autopilot-interview-run.mjs "short plan title" --root .
    ```
 
-   If the script is unavailable, manually create `.workflow/high-stakes-grill/<timestamp>-<slug>/decision-log.md` and ensure `.workflow/` is locally ignored. If the active host mode forbids file writes, keep the same context capsule and decision ledger in chat until writes are allowed.
+   If the script is unavailable, manually create `.workflow/autopilot-interview/<timestamp>-<slug>/decision-log.md` and ensure `.workflow/` is locally ignored. If the active host mode forbids file writes, keep the same context capsule and decision ledger in chat until writes are allowed.
 4. Keep the log current after every decision. Update the context capsule near the top so the session can recover after compaction.
 
 ## Default Auto-Interview
 
-Use this for every grill, spec, plan refinement, or detailed interview. For quick stress-tests, still build the map internally but ask only the highest-stakes questions. For explicit interview requests, run the map at full intensity.
+Use this for every interview, spec, plan refinement, or stress-test. For quick stress-tests, still build the map internally but ask only the highest-stakes questions. For explicit interview requests, run the map at full intensity.
 
 Before asking questions, build a question map across all relevant domains:
 

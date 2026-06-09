@@ -16,7 +16,7 @@ export function slugifyTitle(title) {
     .slice(0, 48)
     .replace(/-+$/g, '');
 
-  return slug || 'grill';
+  return slug || 'interview';
 }
 
 function formatTimestamp(date) {
@@ -134,7 +134,7 @@ function workflowExcludePattern(root, worktreeRoot) {
 }
 
 function createDecisionLog({ title, runId, createdAt }) {
-  return `# High-Stakes Grill Decision Log
+  return `# Autopilot Interview Decision Log
 
 - Run: ${runId}
 - Goal: ${title}
@@ -173,15 +173,15 @@ Fill this when the interview closes:
 `;
 }
 
-export async function createHighStakesGrillRun({
+export async function createAutopilotInterviewRun({
   root = '.',
-  title = 'grill',
+  title = 'interview',
   ensureGitExclude = true,
   now = new Date(),
 } = {}) {
   const absoluteRoot = path.resolve(expandUser(root));
   const runId = `${formatTimestamp(now)}-${slugifyTitle(title)}`;
-  const relativeRunDir = toPosixPath(path.join('.workflow', 'high-stakes-grill', runId));
+  const relativeRunDir = toPosixPath(path.join('.workflow', 'autopilot-interview', runId));
   const runDir = path.join(absoluteRoot, relativeRunDir);
   const decisionLogPath = path.join(runDir, 'decision-log.md');
 
@@ -211,10 +211,10 @@ export async function createHighStakesGrillRun({
 }
 
 function usage() {
-  return `Create a High-Stakes Grill scratch run.
+  return `Create an Autopilot Interview scratch run.
 
 Usage:
-  node new-high-stakes-grill-run.mjs "plan title" [--root <path>] [--no-git-exclude]
+  node new-autopilot-interview-run.mjs "plan title" [--root <path>] [--no-git-exclude]
 
 Options:
   --root <path>        Project root where .workflow should be created (default: .)
@@ -261,7 +261,7 @@ function parseArgs(argv) {
   }
 
   return {
-    title: titleParts.join(' ') || 'grill',
+    title: titleParts.join(' ') || 'interview',
     root,
     ensureGitExclude,
   };
@@ -275,7 +275,7 @@ async function main() {
     return;
   }
 
-  const result = await createHighStakesGrillRun(options);
+  const result = await createAutopilotInterviewRun(options);
 
   if (result.exclude.available && result.exclude.changed) {
     process.stderr.write(`Added ${WORKFLOW_EXCLUDE} to ${result.exclude.path}\n`);

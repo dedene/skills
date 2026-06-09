@@ -1,0 +1,4 @@
+interface:
+  display_name: "Autopilot Interview"
+  short_description: "Auto-interview for specs and plans; escalates only the high-stakes calls."
+  default_prompt: "Use $autopilot-interview's default auto-interview to question me in detail about technical implementation, UI/UX, concerns, tradeoffs, scope, rollout, and risks. Ask non-obvious questions one at a time with your recommended answer first, then proceed to the spec or implementation plan."
