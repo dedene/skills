@@ -1,4 +1,4 @@
 interface:
   display_name: "Ultracode"
-  short_description: "Multi-agent workflows with check-ins and cleanup."
-  default_prompt: "Use ultracode to plan, delegate, check in, track resources, clean up, and verify this complex task."
+  short_description: "Multi-agent workflows with bookkeeper-owned artifacts, progress briefs, and cleanup."
+  default_prompt: "Use ultracode to plan, start a bookkeeper, delegate bounded work, report progress, track resources, clean up, and verify this complex task."

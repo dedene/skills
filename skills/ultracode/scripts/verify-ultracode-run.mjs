@@ -16,6 +16,8 @@ const REQUIRED_DIRS = ['packets', 'results'];
 const ALLOWED_STATUSES = new Set(['planning', 'delegating', 'integrating', 'verifying', 'complete', 'blocked', 'cancelled']);
 const TERMINAL_STATUSES = new Set(['complete', 'blocked', 'cancelled']);
 const CLOSED_RESOURCE_STATUSES = new Set(['closed', 'released', 'stopped', 'removed', 'cleaned', 'handed-off']);
+const ETA_CONFIDENCE_VALUES = new Set(['low', 'medium', 'high']);
+const PROGRESS_STATUSES = new Set(['green', 'yellow', 'red']);
 
 function usage() {
   return `Usage: verify-ultracode-run.mjs [options] <run-dir>
@@ -279,6 +281,29 @@ function validateNativeWorkflow(state, errors) {
   }
 }
 
+function validateProgress(state, strict, warnings, errors) {
+  const progress = state.progress;
+  if (!Object.prototype.hasOwnProperty.call(state, 'progress') || !isPlainObject(progress)) {
+    addProblem(strict, warnings, errors, 'state.json progress must be present as an object');
+    return;
+  }
+
+  const nonEmptyString = (value) => typeof value === 'string' && value.trim() !== '';
+  const checks = [
+    [typeof progress.percentComplete === 'number' && progress.percentComplete >= 0 && progress.percentComplete <= 100, 'state.json progress.percentComplete must be a number from 0 to 100'],
+    [nonEmptyString(progress.eta), 'state.json progress.eta must be a non-empty string'],
+    [ETA_CONFIDENCE_VALUES.has(progress.etaConfidence), 'state.json progress.etaConfidence must be low, medium, or high'],
+    [Array.isArray(progress.done), 'state.json progress.done must be a list'],
+    [Array.isArray(progress.remaining), 'state.json progress.remaining must be a list'],
+    [PROGRESS_STATUSES.has(progress.status), 'state.json progress.status must be green, yellow, or red'],
+    [nonEmptyString(progress.statusReason), 'state.json progress.statusReason must be a non-empty string'],
+  ];
+
+  for (const [valid, message] of checks) {
+    if (!valid) addProblem(strict, warnings, errors, message);
+  }
+}
+
 async function listMarkdownFiles(dirPath) {
   if ((await pathType(dirPath)) !== 'directory') return [];
   const entries = await readdir(dirPath, { withFileTypes: true });
@@ -372,6 +397,7 @@ async function main() {
       addProblem(args.strict, warnings, errors, 'state.json resources must be a list');
     }
     validateNativeWorkflow(state, errors);
+    validateProgress(state, args.strict, warnings, errors);
 
     const root = resolveStateRoot(runDir, state);
     const ignored = await workflowIsGitExcluded(root);
@@ -412,9 +438,11 @@ async function main() {
     if (!hasRequiredHeadings(orchestrationText, ['Mode', 'Host Capabilities', 'Work Packets'])) {
       errors.push('orchestration.md missing required sections');
     }
-    if (!hasRequiredHeadings(orchestrationText, ['Check-In Cadence', 'Resource Plan'])) {
-      addProblem(args.strict, warnings, errors, 'orchestration.md missing check-in or resource sections');
+    const hasProgressCadence = ['Progress Cadence', 'Check-In Cadence'].some((heading) => hasRequiredHeadings(orchestrationText, [heading]));
+    if (!hasProgressCadence || !hasRequiredHeadings(orchestrationText, ['Resource Plan'])) {
+      addProblem(args.strict, warnings, errors, 'orchestration.md missing progress cadence or resource sections');
     }
+    if (!hasRequiredHeadings(orchestrationText, ['Artifact Ownership'])) addProblem(args.strict, warnings, errors, 'orchestration.md missing Artifact Ownership section');
   }
 
   const packetFiles = await listMarkdownFiles(path.join(runDir, 'packets'));

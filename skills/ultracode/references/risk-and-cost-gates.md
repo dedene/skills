@@ -27,6 +27,8 @@ Use a short concrete question. State the exact action, risk, and limit.
 
 ## Worker Budget
 
+The bookkeeper is orchestration overhead, not an execution worker. Start at most one active bookkeeper per run.
+
 Default worker counts:
 
 | Task shape | Workers |
@@ -45,34 +47,35 @@ Default to:
 
 - Read-only scouts.
 - `.workflow/` artifacts as local scratch state only; keep them Git-ignored and out of commits.
-- Main thread as control plane only; delegate workflow execution to subagents when available.
+- Main thread as supervisor only; delegate workflow artifact maintenance to one bookkeeper and workflow execution to subagents when available.
+- Single-writer bookkeeping: after the bookkeeper starts, parent and workers do not edit `.workflow/ultracode/<run-id>/**`.
 - No network unless the packet needs current or external facts.
 - No secrets in prompts or result files.
 - No connector or credential use inside workers unless explicitly approved.
 - No broad write access.
 - No destructive commands.
-- Parent agent owns final decisions and final answer; delegate bulky integration and verification work when available, then verify the evidence before handoff.
+- Parent agent owns final decisions and final answer; the bookkeeper records decisions but does not make them. Delegate bulky integration and verification work when available, then verify the evidence before handoff.
 
 ## Resource Policy
 
 Before starting resource-heavy work:
 
-- Record the resource in `state.json` with owner, purpose, status, and cleanup action.
+- Send a resource event to the bookkeeper with owner, purpose, status, and cleanup action.
 - Prefer assigning the work to a subagent packet so the main thread stays clear for user interaction.
 - Check existing resources before starting another browser, container, dev server, watcher, or long-running job.
 - Reuse a running resource only when its owner and state are clear.
 
 During long workflows:
 
-- Include resource status in each 10-minute check-in.
+- Include resource status in each 10-minute progress brief.
 - Watch for stacking browsers, Docker containers, test watchers, ports, and background jobs.
 - Stop and clean up idle or stale resources before spawning more.
 
 Before final handoff:
 
 - Close, stop, or explicitly hand off every resource.
-- Record cleanup evidence in `final-report.md`.
-- Run the verifier in strict mode.
+- Ask the bookkeeper to record cleanup evidence in `final-report.md`.
+- Run the artifact verifier in strict mode when artifacts exist and the host can access them.
 
 For runner mode, write policy before execution:
 

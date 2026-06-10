@@ -283,6 +283,15 @@ async function main() {
     checkInIntervalMinutes: 10,
     lastCheckInAt: null,
     nextCheckInDueAt: isoZ(nextCheckIn),
+    progress: {
+      percentComplete: 5,
+      eta: 'unknown',
+      etaConfidence: 'low',
+      done: [],
+      remaining: ['Write packets', 'Run workers', 'Verify'],
+      status: 'green',
+      statusReason: 'Workflow initialized',
+    },
     checkIns: [],
     resources: [],
     nativeWorkflow: null,
@@ -336,16 +345,23 @@ ${args.mode}
 - Network:
 - Write access:
 
+## Artifact Ownership
+
+- Bookkeeper:
+- Run directory: ${runDir}
+- Parent responsibilities: user interaction, approvals, budget/resource decisions, worker lifecycle, progress reports, final synthesis
+- Worker artifact rule: workers return results; they do not edit \`.workflow/\`.
+
 ## Work Packets
 
 | Packet | Owner | Scope | Dependencies | Expected result |
 | --- | --- | --- | --- | --- |
 
-## Check-In Cadence
+## Progress Cadence
 
 - Interval: 10 minutes
-- Last check-in:
-- Next check-in: ${isoZ(nextCheckIn)}
+- Last progress report:
+- Next progress report: ${isoZ(nextCheckIn)}
 - Phase-change updates:
 
 ## Resource Plan
