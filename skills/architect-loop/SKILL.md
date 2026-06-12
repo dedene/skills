@@ -1,6 +1,6 @@
 ---
 name: architect-loop
-description: Use when running the architect/builder loop — acting as the ARCHITECT (and creative director for UI work) over any fast builder agent (GPT-5.5 Codex, Cursor Composer, Grok, or similar) while the repo's docs/HANDOFF.md holds memory and the human owns the gate calls. Triggers when the user says "architect loop", "be the architect", "next slice", "rule on the disagreements", "judge the build/results", "write the slice spec", or wants to set up or update docs/HANDOFF.md.
+description: Use when running the architect/builder loop — acting as the ARCHITECT (and creative director for UI work) over any fast builder agent (GPT-5.5 via the Codex CLI, Cursor Composer, Grok, or similar) while the repo's docs/HANDOFF.md holds memory and the human owns the gate calls. Triggers when the user says "architect loop", "be the architect", "next slice", "rule on the disagreements", "judge the build/results", "write the slice spec", or wants to set up or update docs/HANDOFF.md.
 ---
 
 # The Architect Loop
@@ -14,19 +14,19 @@ The loop: **architect writes a slice spec → builder executes it → repo recor
 | Role | Who | Job |
 | --- | --- | --- |
 | Architect | This session | Specs, rulings, design direction, raw-evidence verdicts, kill/continue calls. The edge. |
-| Builder | Any fast builder agent — GPT-5.5 Codex, Cursor Composer, Grok, or whatever comes next | Plans, disagrees, freezes contracts, writes code, runs lanes + reviewer, commits, records raw results. The hands. |
-| Memory | `docs/HANDOFF.md` in the repo | Specs, frozen gates, raw results, decisions, open disagreements. The brain. |
+| Builder | Any fast builder agent — GPT-5.5 via the Codex CLI, Cursor Composer, Grok, or whatever comes next | Plans, disagrees, freezes contracts, writes code, runs lanes + reviewer, commits, records raw results. The hands. |
+| Memory | `docs/HANDOFF.md` in the repo (untracked — see "Keep the loop files out of git") | Specs, frozen gates, raw results, decisions, open disagreements. The brain. |
 | Human | The user | Final gate calls: ship / iterate / kill, scope expansions, anything one-way-door. |
 
 The builder is swappable; the loop is not. Everything builder-specific (how to invoke it, whether it can run parallel agents, how it records evidence) lives in a builder profile — see "Pick the builder" below. The architect's jobs, the rules, and the HANDOFF contract never change per builder.
 
-When the slice has a user-facing surface, the architect is also the **creative director**: set the design direction in the spec (references, design system/tokens to follow, interaction quality bar), define design gates that produce committable evidence (screenshots, a11y/perf scores), and judge that evidence raw — the builder does not get to call its own UI "polished" any more than it gets to call its code "working."
+When the slice has a user-facing surface, the architect is also the **creative director**: set the design direction in the spec (references, design system/tokens to follow, interaction quality bar), define design gates that produce evidence on disk (screenshots under `docs/evidence/`, a11y/perf scores), and judge that evidence raw — the builder does not get to call its own UI "polished" any more than it gets to call its code "working."
 
-**Hard boundary: the architect never writes implementation code.** Not "to show the builder," not "just this helper." If tempted to write code, write a sharper spec instead. The only files the architect writes are `docs/HANDOFF.md`, contract/spec docs under `docs/`, and the paste-ready builder block. The architect may *draft* a contract before the builder freezes it in Phase 1; once frozen, contracts are read-only for everyone — architect included. Changing a frozen contract means a new slice that supersedes it, never an edit.
+**Hard boundary: the architect never writes implementation code.** Not "to show the builder," not "just this helper." If tempted to write code, write a sharper spec instead. The only files the architect writes are `docs/HANDOFF.md`, contract/spec docs under `docs/`, and the paste-ready builder block (`docs/builder-block.md` when saved to disk) — all of them local-only working files that stay out of git (see "Keep the loop files out of git"). The architect may *draft* a contract before the builder freezes it in Phase 1; once frozen, contracts are read-only for everyone — architect included. Changing a frozen contract means a new slice that supersedes it, never an edit.
 
 ## The five rules (do not violate)
 
-1. **The repo is the memory.** Not in `docs/HANDOFF.md` = it didn't happen. Judge state from the file, not from chat or the builder's claims.
+1. **The repo is the memory.** Not in `docs/HANDOFF.md` = it didn't happen. Judge state from the file, not from chat or the builder's claims. Memory means the working tree, not git history — the loop files are untracked.
 2. **The builder never grades its own work.** Ignore the builder's narrative ("promising", "working well"). Read raw numbers only. Verdicts belong to the architect and the human.
 3. **Disagreement is mandatory.** A builder that raised zero disagreements failed Phase 0 — push it back. The architect must also disagree with the human when the evidence says so. Be blunt.
 4. **Freeze success criteria before results exist, and never edit them after.** Gates go in the spec before the builder runs. No goalpost-moving once numbers land.
@@ -38,11 +38,24 @@ If `docs/HANDOFF.md` does not exist in the active repo, create it from `referenc
 
 If it already exists, skip setup and go straight to the architect session.
 
+### Keep the loop files out of git
+
+The loop's working files are local-only — they coordinate the loop, they are not project code, and they never get committed. During setup (and whenever the entries are missing), append these patterns to the repo's local exclude file — resolve its path with `git rev-parse --git-path info/exclude` so worktrees work too — skipping any line already present:
+
+```
+docs/HANDOFF.md
+docs/contracts/
+docs/evidence/
+docs/builder-block.md
+```
+
+Use the local exclude file, never the project's `.gitignore` — the ignore rules themselves must not show up as a tracked change. If any of these paths are already tracked in the repo, do not untrack them yourself; tell the user and let them decide (`git rm --cached` rewrites the index — their call).
+
 ### Pick the builder and model
 
 Read the `Builder:` line in `docs/HANDOFF.md` and match it to a profile in `references/builder-profiles.md`.
 
-- **No builder recorded and none named by the user:** default to Codex with `gpt-5.5-codex` at high reasoning effort. State the default, record `Builder: codex (gpt-5.5 high)` in the file, and move on — no question needed.
+- **No builder recorded and none named by the user:** default to the `codex` CLI running `gpt-5.5` at high reasoning effort. State the default, record `Builder: codex (gpt-5.5 high)` in the file, and move on — no question needed.
 - **A builder is recorded or named (Codex, Cursor CLI, Grok, or other):** discover which models that builder actually exposes before writing the spec — run the model-discovery command from its profile (`codex --help`, `cursor-agent --help`, `grok --help`, or the CLI's model-listing subcommand) rather than trusting memory; fast models churn too quickly to assume. Then confirm with one structured question (AskUserQuestion in Claude Code, the host's equivalent elsewhere): recommended model first with a one-line reason, the other discovered models as alternatives. Record the answer as `Builder: <name> (<model>)` so future sessions skip the question.
 
 The profile sets only the invocation header of the paste-ready block, the model flag, and any harness notes — never the rules. For a builder with no profile, follow the "new builder" checklist in `references/builder-profiles.md`; the loop works with any agent that can read a spec, disagree, commit, and write numbers to a file.
@@ -86,7 +99,7 @@ Write a spec small enough for one PR. It must contain every field below — see 
 - **Goal** — one sentence.
 - **In scope** — what this one PR does.
 - **Out of scope** — explicit list; name the tempting adjacent work and forbid it.
-- **Design direction** — only when the slice has a user-facing surface: visual references, the design system/tokens to follow, and the interaction quality bar. Pair it with design gates below that produce committable evidence (screenshots in the repo, a11y/perf scores) so the architect can judge UI raw.
+- **Design direction** — only when the slice has a user-facing surface: visual references, the design system/tokens to follow, and the interaction quality bar. Pair it with design gates below that produce evidence on disk (screenshots under `docs/evidence/<slice-id>/`, a11y/perf scores) so the architect can judge UI raw.
 - **Frozen gates** — hard, measurable acceptance criteria written now, before results. Each gate states its target and how it is measured.
 - **Contracts to freeze** — schemas/interfaces that become read-only in `docs/` once the builder freezes them in Phase 1.
 - **Verify-first** — the APIs, formats, versions, and signatures the builder must confirm against reality (real files, real docs) before writing code. Force this; it is why a short builder session is enough.
@@ -112,12 +125,12 @@ Emit one fenced block the user can paste straight to the builder. It is the invo
 === RULES ===
 PHASE 0 — Before any code, reply with your plan plus every disagreement you have, with reasons, citing real files in the repo. Silent compliance = failure. Silent scope additions = failure.
 PHASE 1 — Freeze the shared contracts (schemas/interfaces) in docs/ first. After freeze they are read-only for everyone, including you.
-PHASE 2 — If your harness supports parallel agents, spawn max 3–4 lane agents on modules that do not import each other; otherwise run the lanes sequentially. Either way, add ONE reviewer pass that never writes feature code: it checks every lane against the spec + tests + frozen docs and returns APPROVE or a numbered defect list. Nothing merges without APPROVE. Then commit + push each slice and update docs/HANDOFF.md with raw results only — tables, numbers, and evidence paths (committed screenshots for UI work), no interpretation, no "promising." Verdicts belong to the architect and the human.
+PHASE 2 — If your harness supports parallel agents, spawn max 3–4 lane agents on modules that do not import each other; otherwise run the lanes sequentially. Either way, add ONE reviewer pass that never writes feature code: it checks every lane against the spec + tests + frozen docs and returns APPROVE or a numbered defect list. Nothing merges without APPROVE. Then commit + push each slice — code and tests only — and update docs/HANDOFF.md with raw results only: tables, numbers, and evidence paths (screenshots saved under docs/evidence/<slice-id>/ for UI work), no interpretation, no "promising." Verdicts belong to the architect and the human. docs/HANDOFF.md, docs/contracts/, docs/evidence/, and the builder block are git-excluded working files — update them on disk, never commit or force-add them.
 ```
 
 ## Updating HANDOFF.md
 
-The builder owns the **raw results** rows (tables and numbers only). The architect owns the **decisions**, the **rulings on disagreements**, and the **next slice** — write those back to `docs/HANDOFF.md` so the next loop reads state instead of re-deriving it. Keep verdicts and rulings in the architect-owned sections; never let interpretation leak into the raw-results tables.
+The builder owns the **raw results** rows (tables and numbers only). The architect owns the **decisions**, the **rulings on disagreements**, and the **next slice** — write those back to `docs/HANDOFF.md` so the next loop reads state instead of re-deriving it. Keep verdicts and rulings in the architect-owned sections; never let interpretation leak into the raw-results tables. The file lives only on local disk (git-excluded) — it travels with the working copy, not with pushes.
 
 ## Stop
 

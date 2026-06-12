@@ -7,7 +7,7 @@ A slice spec is the architect's single deliverable to the builder each loop. It 
 - **Goal** — one sentence. If it needs "and", it is probably two slices.
 - **In scope** — the concrete change this one PR makes. Bullet list, not prose.
 - **Out of scope** — explicit. Name the adjacent work the builder will be tempted to pull in, and forbid it. This is the primary defense against scope creep.
-- **Design direction** *(required only when the slice has a user-facing surface)* — the architect's creative-director call: visual references, the design system/tokens to follow, and the interaction quality bar (motion, states, empty/loading/error). Vague taste words ("clean", "modern") are not direction — point at something concrete. Every design intent must be backed by a frozen gate that produces committable evidence: screenshots saved to a repo path (e.g. `docs/evidence/<slice-id>/`), an a11y score, a Lighthouse number. The builder commits the evidence; the architect and human judge it.
+- **Design direction** *(required only when the slice has a user-facing surface)* — the architect's creative-director call: visual references, the design system/tokens to follow, and the interaction quality bar (motion, states, empty/loading/error). Vague taste words ("clean", "modern") are not direction — point at something concrete. Every design intent must be backed by a frozen gate that produces evidence on disk: screenshots saved to a repo path (e.g. `docs/evidence/<slice-id>/` — git-excluded, like all loop files), an a11y score, a Lighthouse number. The builder saves the evidence; the architect and human judge it.
 - **Frozen gates** — the hard acceptance criteria, written now, before any result exists. Each gate is measurable and states how it is measured (a command, a metric, a check). Never edited once results land.
 - **Contracts to freeze** — the schemas/interfaces the builder freezes in Phase 1. After freeze they are read-only in `docs/` for everyone, including the builder and the architect.
 - **Verify-first** — the APIs, formats, versions, signatures, and assumptions the builder must confirm against reality (real files, real docs, real responses) before writing code. This is what lets a short builder session replace hours of back-and-forth: the builder reads truth instead of asking.
@@ -17,7 +17,7 @@ A slice spec is the architect's single deliverable to the builder each loop. It 
 - A gate that cannot be measured is not a gate — make it measurable or cut it.
 - "Refactor X while you're there" is scope creep — put it in Out of scope or its own slice.
 - If the spec does not force verification of anything, the builder will guess. Always include at least one verify-first item.
-- For UI slices, "looks good" is the builder grading its own work. The gate is the committed screenshot or score; the verdict comes later, from the architect and the human.
+- For UI slices, "looks good" is the builder grading its own work. The gate is the saved screenshot or score; the verdict comes later, from the architect and the human.
 
 ## Example
 

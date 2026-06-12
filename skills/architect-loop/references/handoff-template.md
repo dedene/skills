@@ -3,6 +3,7 @@
 > The repo is the brain. If it isn't in this file, it didn't happen.
 > Builder writes **raw results only** — tables and numbers, no interpretation, no "promising."
 > Verdicts and rulings belong to the architect and the human.
+> Local-only: this file, `docs/contracts/`, `docs/evidence/`, and `docs/builder-block.md` are git-excluded — never commit them (see the skill's "Keep the loop files out of git").
 
 <!-- All <angle-bracket> rows below are placeholders — replace or delete them on first real use; do not leave them behind. -->
 
@@ -36,7 +37,7 @@ Schemas and interfaces frozen in Phase 1. Do not edit after the freeze date — 
 
 - Commit / PR: <link or sha>
 - Reviewer agent: APPROVE / defect list ref
-- Evidence: <committed paths — screenshots, logs, score reports — or "—">
+- Evidence: <paths under docs/evidence/<slice-id>/ — screenshots, logs, score reports — or "—">
 
 ## Decisions (what + why) — architect-owned
 
