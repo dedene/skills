@@ -1,0 +1,13 @@
+{
+  "name": "ultracode",
+  "description": "Portable dynamic-workflow pattern: plan, fan out to subagents, preserve artifacts, verify before handoff. Opt-in — Claude Code has native ultracode workflows; install this only for hosts that don't.",
+  "version": "0.1.0",
+  "author": {
+    "name": "Peter Dedene",
+    "url": "https://github.com/dedene"
+  },
+  "homepage": "https://github.com/dedene/skills",
+  "repository": "https://github.com/dedene/skills",
+  "license": "MIT",
+  "keywords": ["workflows", "subagents", "orchestration"]
+}

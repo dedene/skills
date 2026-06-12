@@ -13,6 +13,11 @@
       "name": "dedene-skills",
       "description": "Skills for designers, builders & engineers",
       "source": "."
+    },
+    {
+      "name": "ultracode",
+      "description": "Portable dynamic-workflow pattern for hosts without native ultracode workflows. Opt-in.",
+      "source": "./extras"
     }
   ]
 }
