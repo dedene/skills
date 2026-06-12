@@ -1,6 +1,6 @@
 # Builder /goal block — why each phase exists
 
-The canonical Phase 0–2 block lives in SKILL.md ("Output: the paste-ready builder block") — that is the only copy to reproduce. This file explains the intent behind each phase, for when a builder pushes back on the rules or the architect needs to defend them.
+The canonical Phase 0–2 block lives in SKILL.md (job 6, "Dispatch the builder") — that is the only copy to reproduce. This file explains the intent behind each phase, for when a builder pushes back on the rules or the architect needs to defend them.
 
 - **Phase 0 forces disagreement.** A builder that silently complies hides its judgment; the architect needs the builder's objections surfaced with reasons and real file citations before committing to a plan. Silent scope additions are how a one-PR slice becomes a three-day detour.
 - **Phase 1 freezes contracts first.** Lanes can only run in parallel safely if the shared schemas/interfaces are locked. Freeze them in `docs/`, then no lane can drift the contract under another.
