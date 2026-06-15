@@ -54,7 +54,7 @@ Repeat until no meaningful open questions remain:
    - `skip`: cosmetic, premature, or unlikely to change the plan.
 4. For `auto`, choose the recommendation yourself and record it.
 5. For `human`, ask exactly one question with 2-3 concrete options, put the recommended option first, and wait. Use the host's structured ask-user mechanism when available.
-6. Record the answer before moving on.
+6. Record the exact decision question, options, and answer before moving on.
 
 Do not stop just because the current plan has no obvious holes. Re-scan the auto-interview map for hidden forks, edge states, and downstream tradeoffs before ending.
 
@@ -91,15 +91,19 @@ C. <real alternative, if useful> - <tradeoff>
 
 Do not ask bundled questions. If two choices are dependent, ask the upstream one first.
 
+When recording a human decision, copy the `Question:` line and the option labels exactly as shown to the user.
+
 ## Log Format
 
 Append after every decision:
 
 ```markdown
-### Decision N: <question>
+### Decision N: <short decision topic>
 
 - Mode: auto | human
-- Chosen answer: <A/B/C or short answer>
+- Question asked: <exact human prompt or internal decision question>
+- Options presented: <A/B/C options shown, or "not presented; auto-decided">
+- Chosen answer: <A/B/C plus option label, or short answer>
 - Reason: <one-line rationale>
 - Evidence: <repo path, command, source, or "user answer">
 - Downstream implications: <what this unlocks or changes>

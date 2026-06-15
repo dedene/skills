@@ -153,10 +153,12 @@ function createDecisionLog({ title, runId, createdAt }) {
 Append one entry after every question:
 
 \`\`\`markdown
-### Decision N: <question>
+### Decision N: <short decision topic>
 
 - Mode: auto | human
-- Chosen answer: <A/B/C or short answer>
+- Question asked: <exact human prompt or internal decision question>
+- Options presented: <A/B/C options shown, or "not presented; auto-decided">
+- Chosen answer: <A/B/C plus option label, or short answer>
 - Reason: <one-line rationale>
 - Evidence: <repo path, command, source, or "user answer">
 - Downstream implications: <what this unlocks or changes>

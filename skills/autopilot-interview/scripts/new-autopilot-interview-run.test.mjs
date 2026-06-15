@@ -2,6 +2,7 @@ import assert from 'node:assert/strict';
 import { mkdir, mkdtemp, readFile, rm, stat, writeFile } from 'node:fs/promises';
 import os from 'node:os';
 import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 
 import { createAutopilotInterviewRun, slugifyTitle } from './new-autopilot-interview-run.mjs';
 
@@ -31,6 +32,13 @@ try {
   assert.match(log, /Goal: Checkout retry plan/);
   assert.match(log, /## Context Capsule/);
   assert.match(log, /## Decision Ledger/);
+  assert.match(log, /- Question asked: <exact human prompt or internal decision question>/);
+  assert.match(log, /- Options presented: <A\/B\/C options shown, or "not presented; auto-decided">/);
+
+  const skillPath = fileURLToPath(new URL('../SKILL.md', import.meta.url));
+  const skill = await readFile(skillPath, 'utf8');
+  assert.match(skill, /- Question asked: <exact human prompt or internal decision question>/);
+  assert.match(skill, /- Options presented: <A\/B\/C options shown, or "not presented; auto-decided">/);
 
   const exclude = await readFile(path.join(root, '.git', 'info', 'exclude'), 'utf8');
   assert.match(exclude, /^\.workflow\/$/m);
