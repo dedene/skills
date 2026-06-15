@@ -1,4 +1,4 @@
 interface:
   display_name: "Ultracode"
-  short_description: "Multi-agent workflows with bookkeeper-owned artifacts, progress briefs, and cleanup."
-  default_prompt: "Use ultracode to plan, start a bookkeeper, delegate bounded work, report progress, track resources, clean up, and verify this complex task."
+  short_description: "Codex dynamic workflows with phase dashboards, bounded subagents, durable ledgers, and verification."
+  default_prompt: "Use ultracode for this complex task: first choose Direct, Thin, Durable, or Runner mode; if a dynamic run is warranted, present a phase plan and approval card, run bounded subagents where useful, show progress in the main thread, reduce and verify results, clean up resources, and write durable artifacts only when they preserve useful workflow state."

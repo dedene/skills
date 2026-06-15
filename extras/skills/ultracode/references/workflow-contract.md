@@ -1,29 +1,16 @@
 # Ultracode Workflow Contract
 
-## Table Of Contents
-
-- Run directory
-- Ownership model
-- State file
-- Native workflow mirror
-- Plan template
-- Orchestration template
-- Supervisor brief contract
-- Resource ledger
-- Packet template
-- Result template
-- Integration template
-- Final report template
+This contract describes the Durable Workflow ledger. Direct and Thin modes do not need these files.
 
 ## Run Directory
 
-The bookkeeper creates and maintains one run directory per user task:
+The ledger lives under the project root:
 
 ```text
 .workflow/ultracode/<run-id>/
-  plan.md
-  orchestration.md
+  workflow.md
   state.json
+  journal.md
   packets/
     001-name.md
   results/
@@ -32,85 +19,316 @@ The bookkeeper creates and maintains one run directory per user task:
   final-report.md
 ```
 
-Use a timestamped slug for `<run-id>`, for example `20260608-141530-fix-auth-race`.
+Use a timestamped slug for `<run-id>`, for example `20260615-113000-react-to-solid-migration`.
 
-`.workflow/` is local scratch state. It must be ignored by Git and never committed. Prefer adding `.workflow/` to `.git/info/exclude` so the workflow does not create a tracked `.gitignore` change. Only edit `.gitignore` if the user explicitly wants the ignore rule committed.
+`.workflow/` is local scratch state. It must be ignored by Git and never committed. Prefer adding `.workflow/` to `.git/info/exclude` so the workflow does not create a tracked `.gitignore` change. Only edit `.gitignore` when the user explicitly wants the ignore rule committed.
 
 ## Ownership Model
 
-Use a single writer for workflow artifacts.
+The parent thread owns user interaction, approvals, budget/resource decisions, final decisions, and the final answer.
 
-- The `bookkeeper` subagent owns every file under `.workflow/ultracode/<run-id>/**`.
-- The main thread owns user interaction, approvals, budget/resource decisions, worker lifecycle, progress reports, and final synthesis.
-- Workers return results to the main thread. They do not edit `.workflow/`.
-- The main thread forwards accepted events, decisions, worker outputs, verification results, and resource changes to the bookkeeper.
-- The bookkeeper records facts and returns supervisor briefs. It does not make product, safety, or completion decisions.
+Artifact ownership depends on the run:
 
-If the host cannot keep one persistent bookkeeper alive, spawn a fresh bookkeeper with the run path and latest lifecycle event. Preserve single-writer ownership: do not let the parent, workers, and bookkeeper edit the same artifact set.
+- With a real bookkeeper worker: the bookkeeper is the single writer for `.workflow/ultracode/<run-id>/**`.
+- Without a real bookkeeper worker: the parent updates artifacts only at phase boundaries, integration decisions, verification results, and resource lifecycle events.
+- Packet workers return results to the parent. They do not edit `.workflow/` unless their assigned role is `bookkeeper`.
+
+Do not spawn fresh bookkeepers for routine lifecycle events in Codex. That costs more than it preserves.
 
 ## State File
 
-`state.json` is the machine-readable index. The bookkeeper keeps it small and current.
+`state.json` is the machine-readable index. Keep it small, current, and honest.
 
 ```json
 {
-  "title": "Fix auth race",
-  "runId": "20260608-141530-fix-auth-race",
-  "createdAt": "2026-06-08T14:15:30Z",
-  "status": "planning",
-  "mode": "delegated",
+  "title": "React to Solid migration",
+  "runId": "20260615-113000-react-to-solid-migration",
+  "createdAt": "2026-06-15T11:30:00Z",
+  "updatedAt": "2026-06-15T11:35:00Z",
+  "status": "running",
+  "mode": "durable",
   "root": ".",
-  "checkInIntervalMinutes": 10,
-  "lastCheckInAt": null,
-  "nextCheckInDueAt": "2026-06-08T14:25:30Z",
-  "progress": {
-    "percentComplete": 5,
-    "eta": "unknown",
-    "etaConfidence": "low",
-    "done": [],
-    "remaining": ["Write packets", "Run workers", "Verify"],
-    "status": "green",
-    "statusReason": "Workflow initialized"
+  "budget": {
+    "maxConcurrentAgents": 4,
+    "maxTotalAgents": 16,
+    "timeLimitMinutes": 45,
+    "network": false,
+    "credentialedTools": false
   },
-  "checkIns": [],
-  "resources": [],
-  "nativeWorkflow": null,
-  "packets": [
+  "approval": {
+    "status": "approved",
+    "approvedAt": "2026-06-15T11:31:00Z",
+    "writes": ["solid-migration/**"],
+    "verification": ["typecheck", "tests", "migration report"]
+  },
+  "progress": {
+    "percentComplete": 35,
+    "eta": "20-40 min",
+    "etaConfidence": "medium",
+    "status": "yellow",
+    "statusReason": "Infrastructure phase has one blocked test setup packet",
+    "done": ["Inventory", "Pattern Analysis"],
+    "remaining": ["Infrastructure", "Core Port", "App Port", "Verify"]
+  },
+  "phases": [
     {
-      "id": "001",
-      "name": "trace-auth-flow",
-      "status": "pending",
-      "owner": "subagent",
-      "packet": "packets/001-trace-auth-flow.md",
-      "result": "results/001-trace-auth-flow.md"
+      "id": "03",
+      "name": "Infrastructure",
+      "status": "running",
+      "agentCount": 10,
+      "completeAgents": 3,
+      "startedAt": "2026-06-15T11:33:00Z",
+      "completedAt": null,
+      "elapsedMs": 120000,
+      "summary": "Tooling and app shell in progress"
     }
   ],
-  "approvals": [],
-  "verification": []
+  "agents": [
+    {
+      "id": "infra-package-json",
+      "nickname": "infra:package.json",
+      "phaseId": "03",
+      "packet": "packets/003-infra-package-json.md",
+      "result": "results/003-infra-package-json.md",
+      "status": "complete",
+      "tools": 9,
+      "tokens": null,
+      "startedAt": "2026-06-15T11:33:10Z",
+      "completedAt": "2026-06-15T11:33:38Z",
+      "summary": "Scripts and dependencies updated"
+    }
+  ],
+  "resources": [],
+  "verification": [],
+  "nativeWorkflow": null
 }
 ```
 
-Allowed `status`: `planning`, `delegating`, `integrating`, `verifying`, `complete`, `blocked`, `cancelled`.
+Allowed run `status`: `planning`, `approved`, `running`, `paused`, `integrating`, `verifying`, `complete`, `blocked`, `cancelled`.
 
-Allowed packet `status`: `pending`, `running`, `complete`, `blocked`, `rejected`.
+Allowed phase and agent `status`: `pending`, `running`, `complete`, `blocked`, `failed`, `cancelled`, `closed`.
 
-Allowed resource `status`: `planned`, `active`, `idle`, `closed`, `released`, `stopped`, `removed`, `cleaned`, `leaked`, `handed-off`.
+Allowed resource `status`: `planned`, `active`, `idle`, `closed`, `released`, `stopped`, `removed`, `cleaned`, `leaked`, `handed-off`, `unknown`.
 
-`progress.percentComplete` is a coarse estimate, not fake precision. Use task maturity and accepted evidence, not packet count alone. Default phase weights:
+Allowed `etaConfidence`: `low`, `medium`, `high`.
 
-| Phase | Weight |
-| --- | ---: |
-| Planning and packetization | 5% |
-| Scouts and design discovery | 15% |
-| Implementation | 40% |
-| Review and fixes | 25% |
-| Final verification and handoff | 15% |
+Allowed progress `status`: `green`, `yellow`, `red`.
 
-Use `etaConfidence` values `low`, `medium`, or `high`. Use `status` values `green`, `yellow`, or `red`.
+Use `null` for token or tool counts that the host does not report. Do not invent cost data.
+
+## Workflow File
+
+`workflow.md` is the readable orchestration script. It is not executable unless a real runner consumes it, but it should be structured enough to rerun manually.
+
+```markdown
+# Workflow
+
+## Goal
+
+## Args
+
+## Approval Envelope
+
+- Mode:
+- Max concurrent agents:
+- Max total agents:
+- Time limit:
+- Write scopes:
+- Network:
+- Credentialed tools:
+- Verification gates:
+
+## Phase Graph
+
+| Phase | Depends On | Max Agents | Read Scope | Write Scope | Output |
+| --- | --- | ---: | --- | --- | --- |
+
+## Execution Rules
+
+- Parent critical path:
+- Worker packet rule:
+- Reducer rule:
+- Reviewer rule:
+- Stop conditions:
+```
+
+## Journal
+
+`journal.md` is the concise event stream. Write only meaningful lifecycle events.
+
+```markdown
+# Journal
+
+## 2026-06-15T11:31:00Z
+
+- Approved Durable Workflow. Budget: 4 concurrent agents, 16 total agents.
+
+## 2026-06-15T11:33:00Z
+
+- Phase 03 Infrastructure started. Spawned 3 of 10 planned agents.
+```
+
+Do not journal every command, tool call, thought, or file read.
+
+## Progress Dashboard
+
+The dashboard appears in the main thread and can also be copied into `journal.md` at check-ins.
+
+```text
+Ultracode: <run-id>
+<complete>/<total> agents complete | elapsed <duration> | status <green|yellow|red>: <reason>
+
+| Phase | State | Agents | Elapsed | Evidence | Next |
+| --- | --- | ---: | ---: | --- | --- |
+| 01 Inventory | done | 4/4 | 1m20s | results/001-* | accepted |
+| 02 Patterns | done | 4/4 | 2m45s | results/002-* | accepted |
+| 03 Infrastructure | running | 2/3 | 5m30s | 2 files changed | finish tooling |
+```
+
+Agent drill-down:
+
+```text
+| Agent | Phase | State | Scope | Tools | Result |
+| --- | --- | --- | --- | ---: | --- |
+| infra:package.json | Infrastructure | done | package.json | 9 | scripts updated |
+| infra:vite.config.ts | Infrastructure | running | vite.config.ts | 8 | checking aliases |
+```
+
+## Packet Template
+
+```markdown
+# Packet 001: Short Name
+
+## Phase
+
+## Objective
+
+## Context
+
+Only include the minimum source paths, facts, screenshots, links, or logs needed.
+
+## Allowed Scope
+
+- Read:
+- Write:
+- Tools:
+- Network:
+- Resources:
+- Cleanup:
+
+## Non-Goals
+
+-
+
+## Required Output
+
+- Findings:
+- Evidence:
+- Changed files, if any:
+- Verification run, if any:
+- Resource cleanup:
+
+## Risk Notes
+
+-
+```
+
+## Result Template
+
+```markdown
+# Result 001: Short Name
+
+## Status
+
+complete | blocked | partial | failed
+
+## Summary
+
+## Evidence
+
+-
+
+## Changes
+
+-
+
+## Verification
+
+- Command:
+- Result:
+
+## Resources
+
+- Started:
+- Closed:
+- Handed off:
+
+## Open Questions
+
+-
+```
+
+## Integration Template
+
+```markdown
+# Integration
+
+## Results Reviewed
+
+-
+
+## Accepted
+
+-
+
+## Rejected
+
+-
+
+## Conflicts Resolved
+
+-
+
+## Integrated Changes
+
+-
+
+## Deferred
+
+-
+```
+
+## Final Report Template
+
+```markdown
+# Final Report
+
+## Outcome
+
+## Files Changed
+
+-
+
+## Verification Evidence
+
+-
+
+## Resource Cleanup
+
+-
+
+## Remaining Risks
+
+-
+
+## Follow-Ups
+
+-
+```
 
 ## Native Workflow Mirror
 
-When the host provides a native workflow runner, keep using this portable run directory and record a pointer to the native run in `state.json`.
+When a host provides a real native workflow runner, keep the durable ledger and record a pointer to the native run:
 
 ```json
 {
@@ -129,248 +347,3 @@ When the host provides a native workflow runner, keep using this portable run di
 ```
 
 Native artifacts are evidence, not the portable contract. Summarize accepted outputs into `results/`, `integration.md`, and `final-report.md`.
-
-## Plan Template
-
-```markdown
-# Plan
-
-## Goal
-
-## Success Criteria
-
-- [ ]
-
-## Non-Goals
-
-- 
-
-## Constraints
-
-- 
-
-## Risks
-
-- 
-
-## Verification Gates
-
-- [ ] 
-```
-
-## Orchestration Template
-
-```markdown
-# Orchestration
-
-## Mode
-
-Direct | Workflow | Delegated | Runner
-
-## Host Capabilities
-
-- Native subagents:
-- Runner:
-- Network:
-- Write access:
-
-## Artifact Ownership
-
-- Bookkeeper:
-- Run directory:
-- Parent responsibilities:
-- Worker artifact rule: workers return results; they do not edit `.workflow/`.
-
-## Work Packets
-
-| Packet | Owner | Scope | Dependencies | Expected result |
-| --- | --- | --- | --- | --- |
-
-## Progress Cadence
-
-- Interval: 10 minutes
-- Last progress report:
-- Next progress report:
-- Phase-change updates:
-
-## Resource Plan
-
-| Resource | Owner | Purpose | Cleanup |
-| --- | --- | --- | --- |
-
-## Stop Conditions
-
-- 
-
-## Budget
-
-- Workers:
-- Time:
-- Token/cost limit:
-```
-
-## Supervisor Brief Contract
-
-The bookkeeper owns check-in records and returns a supervisor brief. The main thread posts the brief to the user every 10 minutes for long-running workflows and at major phase changes.
-
-```json
-{
-  "at": "2026-06-08T14:25:30Z",
-  "phase": "delegating",
-  "percentComplete": 35,
-  "eta": "20-40 min",
-  "etaConfidence": "medium",
-  "done": ["Plan recorded", "Two scouts running"],
-  "remaining": ["Integrate scout results", "Run verifier", "Apply fix"],
-  "status": "yellow",
-  "statusReason": "Waiting on one critical scout result",
-  "activePackets": ["001-trace-auth-flow", "002-repro-race"],
-  "resources": ["browser:playwright-auth-repro"],
-  "next": "Integrate findings after scout results return.",
-  "artifactStatus": "current",
-  "missing": []
-}
-```
-
-User-facing form:
-
-```text
-35% complete, ETA 20-40 min. Done: plan recorded, two scouts running. Remaining: integrate scout results, run verifier, apply fix. Status: yellow, waiting on one critical scout result.
-```
-
-## Resource Ledger
-
-The bookkeeper tracks resource-heavy work in `state.json` as soon as the main thread reports that it is planned or created. The main thread still owns the decision to start, close, release, or hand off resources.
-
-```json
-{
-  "id": "browser:auth-repro",
-  "type": "browser",
-  "owner": "packet-002",
-  "purpose": "Reproduce auth redirect race",
-  "status": "active",
-  "createdAt": "2026-06-08T14:18:00Z",
-  "cleanup": "close Playwright browser/context",
-  "notes": "Headless Chromium"
-}
-```
-
-Track at least: browsers, Docker containers, dev servers, background processes, tmux panes, temp directories, open ports, simulators, and long-running test watchers.
-
-## Packet Template
-
-```markdown
-# Packet 001: Short Name
-
-## Objective
-
-## Context
-
-Only include the minimum source paths, facts, screenshots, links, or logs needed.
-
-## Allowed Scope
-
-- Read:
-- Write:
-- Tools:
-- Resources:
-- Cleanup:
-
-## Non-Goals
-
-- 
-
-## Required Output
-
-- Findings:
-- Evidence:
-- Changed files, if any:
-- Verification run, if any:
-
-## Risk Notes
-
-- 
-```
-
-## Result Template
-
-```markdown
-# Result 001: Short Name
-
-## Status
-
-complete | blocked | partial
-
-## Summary
-
-## Evidence
-
-- 
-
-## Changes
-
-- 
-
-## Verification
-
-- Command:
-- Result:
-
-## Open Questions
-
-- 
-```
-
-## Integration Template
-
-```markdown
-# Integration
-
-## Results Reviewed
-
-- 
-
-## Accepted
-
-- 
-
-## Rejected
-
-- 
-
-## Conflicts Resolved
-
-- 
-
-## Integrated Changes
-
-- 
-```
-
-## Final Report Template
-
-```markdown
-# Final Report
-
-## Outcome
-
-## Files Changed
-
-- 
-
-## Verification Evidence
-
-- 
-
-## Resource Cleanup
-
-- 
-
-## Remaining Risks
-
-- 
-
-## Follow-Ups
-
-- 
-```

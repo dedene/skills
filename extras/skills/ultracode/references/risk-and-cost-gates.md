@@ -1,123 +1,135 @@
 # Ultracode Risk And Cost Gates
 
-## Table Of Contents
-
-- Approval gates
-- Worker budget
-- Safety policy
-- Resource policy
-- Evidence standards
-- Stop conditions
+Use these gates for Durable and Runner workflows. Direct and Thin modes still follow normal repo and user instructions.
 
 ## Approval Gates
 
-Ask the user before:
+Ask before starting a workflow when it involves:
 
-- Destructive file or git operations.
-- Staging, committing, force-adding, copying, or publishing `.workflow/` artifacts.
-- Production, customer, billing, security, or credentialed changes.
-- External API writes, purchases, messages, deploys, or data exports.
-- Adding new dependencies or running unfamiliar install scripts.
-- More than 4 concurrent workers.
-- Network-heavy research or long-running runner workflows.
-- Starting resource-heavy work that may linger: browsers, Docker containers, dev servers, background jobs, tmux panes, simulators, file watchers, or open ports.
-- Passing sensitive files, secrets, private logs, or customer data to subagents.
+- destructive file or git operations
+- staging, committing, force-adding, copying, publishing, or sharing `.workflow/` artifacts
+- production, customer, billing, security, or credentialed changes
+- external API writes, purchases, messages, deploys, or data exports
+- new dependencies or unfamiliar install scripts
+- more than 4 concurrent agents
+- more than 16 total Codex agents
+- more than 15 minutes unattended
+- network-heavy research not directly required by the task
+- credentialed connectors or private customer data in worker prompts
+- writes outside the repo or outside the stated write scope
+- starting a browser, Docker container, dev server, simulator, watcher, tmux pane, background job, or open port
+- starting a second live resource of the same type
 
-Use a short concrete question. State the exact action, risk, and limit.
+Ask with one concrete sentence. State the exact action, risk, and limit.
 
-## Worker Budget
+Example:
 
-The bookkeeper is orchestration overhead, not an execution worker. Start at most one active bookkeeper per run.
+```text
+This workflow would run 6 concurrent agents across the migration tree for up to 45 minutes and write only under solid-migration/**. Approve that budget?
+```
 
-Default worker counts:
+Approval covers routine worker lifecycle events inside the stated envelope. Ask again only when the envelope changes.
 
-| Task shape | Workers |
-| --- | --- |
-| Focused investigation | 1-2 |
-| Multi-slice implementation | 2-3 |
-| Broad code review or research | 3-4 |
-| Migration across many modules | Ask before 5+ |
-| Adversarial verification | 1-2 reviewers after integration |
+## Default Budgets
 
-Each worker should have a clear expected value. If two workers would read the same files for the same question, merge the packet.
+| Task shape | Concurrent agents | Total agents | Notes |
+| --- | ---: | ---: | --- |
+| Focused investigation | 1-2 | 2-4 | Usually Thin mode |
+| Normal Durable Workflow phase | 2-4 | 4-16 | Ask before exceeding |
+| Broad audit or migration | 4 | 16 | Use phases and reducers |
+| Adversarial verification | 1-2 | 2-4 | After integration |
+| Runner workflow | explicit approval | explicit approval | Must name runner and timeout |
+
+The bookkeeper does not count as an execution worker, but it still consumes resources. Use at most one active bookkeeper per run.
 
 ## Safety Policy
 
 Default to:
 
-- Read-only scouts.
-- `.workflow/` artifacts as local scratch state only; keep them Git-ignored and out of commits.
-- Main thread as supervisor only; delegate workflow artifact maintenance to one bookkeeper and workflow execution to subagents when available.
-- Single-writer bookkeeping: after the bookkeeper starts, parent and workers do not edit `.workflow/ultracode/<run-id>/**`.
-- No network unless the packet needs current or external facts.
-- No secrets in prompts or result files.
-- No connector or credential use inside workers unless explicitly approved.
-- No broad write access.
-- No destructive commands.
-- Parent agent owns final decisions and final answer; the bookkeeper records decisions but does not make them. Delegate bulky integration and verification work when available, then verify the evidence before handoff.
+- read-only scouts before write workers
+- disjoint write scopes for implementation workers
+- `.workflow/` as local scratch only
+- no secrets in prompts, packets, results, or artifacts
+- no connector or credential use inside workers unless explicitly approved
+- no broad write access
+- no destructive commands
+- no network unless needed for current facts or explicitly approved
+- parent-owned final decisions and final answer
+
+If a worker needs sensitive context, pass only the minimum metadata required. Do not put secrets, tokens, private logs, or customer data into packet files.
 
 ## Resource Policy
 
-Before starting resource-heavy work:
+Before starting a resource-heavy action:
 
-- Send a resource event to the bookkeeper with owner, purpose, status, and cleanup action.
-- Prefer assigning the work to a subagent packet so the main thread stays clear for user interaction.
-- Check existing resources before starting another browser, container, dev server, watcher, or long-running job.
-- Reuse a running resource only when its owner and state are clear.
+- record owner, purpose, identifier when known, expected cleanup, and approval basis
+- prefer assigning resource-heavy work to a bounded packet
+- check whether an existing resource can be reused safely
+- avoid stacking browsers, containers, dev servers, watchers, and ports
 
-During long workflows:
+During the run:
 
-- Include resource status in each 10-minute progress brief.
-- Watch for stacking browsers, Docker containers, test watchers, ports, and background jobs.
-- Stop and clean up idle or stale resources before spawning more.
+- include active resources in progress updates
+- close idle resources before spawning more
+- mark unknown or stale resources during resume
 
-Before final handoff:
+Before handoff:
 
-- Close, stop, or explicitly hand off every resource.
-- Ask the bookkeeper to record cleanup evidence in `final-report.md`.
-- Run the artifact verifier in strict mode when artifacts exist and the host can access them.
+- close, stop, remove, release, or explicitly hand off every resource
+- record cleanup evidence in `final-report.md`
+- run the artifact validator when a Durable ledger exists and the environment can access it
 
-For runner mode, write policy before execution:
+Resource statuses: `planned`, `active`, `idle`, `closed`, `released`, `stopped`, `removed`, `cleaned`, `leaked`, `handed-off`, `unknown`.
+
+## Runner Policy
+
+Runner mode needs explicit policy before execution:
 
 ```json
 {
-  "maxWorkers": 4,
-  "maxTokens": "bounded by host",
+  "runner": "name-or-command",
+  "maxConcurrentAgents": 4,
+  "maxTotalAgents": 16,
+  "timeLimitMinutes": 45,
   "network": false,
   "write": ["specific/path/or/prefix"],
   "secrets": "metadata-only",
-  "timeoutMinutes": 30
+  "resume": "documented behavior",
+  "stop": "documented command"
 }
 ```
 
+Do not use Runner mode until a named executable or native workflow tool is detected and trusted.
+
 ## Evidence Standards
 
-Every result should include at least one of:
+Every accepted result should include at least one of:
 
-- File paths and line references.
-- Command and output summary.
-- Test failure or pass evidence.
-- Source URL for external research.
-- Screenshot path or browser observation.
-- Resource cleanup status when the packet opened anything.
-- Explicit statement that the packet is opinion-only.
+- file paths and line references
+- command and output summary
+- test failure or pass evidence
+- source URL for external research
+- screenshot path or browser observation
+- resource cleanup status
+- explicit statement that the result is opinion-only
 
 Do not accept:
 
-- "Looks good" with no evidence.
-- Claims about current facts without source checks.
-- Security conclusions without concrete reviewed surfaces.
-- Verification claims without command names or observed result.
-- Resource-heavy packet results without cleanup status.
+- "looks good" with no evidence
+- claims about current facts without source checks
+- security conclusions without concrete reviewed surfaces
+- verification claims without command names or observed result
+- resource-heavy results without cleanup status
 
 ## Stop Conditions
 
 Stop and ask the user when:
 
-- The task goal changes materially.
-- Workers uncover a higher-risk path than the original request implied.
-- Required credentials or production authority are missing.
-- Resource usage is stacking up, memory pressure appears, or the agent cannot identify what is still running.
-- The workflow exceeds the approved budget.
-- Results conflict and cannot be resolved from available evidence.
-- Verification is blocked by missing environment, failing unrelated tests, or external outage.
+- the task goal changes materially
+- the workflow exceeds the approved budget
+- workers uncover higher risk than the approval card covered
+- required credentials or production authority are missing
+- resource usage is stacking up and ownership is unclear
+- results conflict and cannot be resolved from available evidence
+- verification is blocked by missing environment, failing unrelated tests, or external outage
+- the workflow ledger and real workspace state disagree after resume

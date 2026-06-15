@@ -4,7 +4,7 @@ import os from 'node:os';
 import path from 'node:path';
 import process from 'node:process';
 
-const VALID_MODES = new Set(['workflow', 'delegated', 'runner']);
+const VALID_MODES = new Set(['durable', 'runner', 'workflow', 'delegated']);
 
 function usage() {
   return `Usage: new-ultracode-run.mjs [options] "short task title"
@@ -14,7 +14,7 @@ Create an Ultracode workflow run directory.
 Options:
   --root <path>          Project root where .workflow should be created (default: .)
   --slug <slug>          Optional slug override
-  --mode <mode>          workflow, delegated, or runner (default: delegated)
+  --mode <mode>          durable or runner (default: durable). workflow/delegated are accepted as durable aliases
   --no-git-exclude       Do not add .workflow/ to local Git exclude
   -h, --help             Show this help
 `;
@@ -24,7 +24,7 @@ function parseArgs(argv) {
   const args = {
     root: '.',
     slug: null,
-    mode: 'delegated',
+    mode: 'durable',
     noGitExclude: false,
     title: null,
   };
@@ -95,6 +95,10 @@ function parseArgs(argv) {
 
   if (!VALID_MODES.has(args.mode)) {
     throw new Error(`--mode must be one of: ${Array.from(VALID_MODES).join(', ')}`);
+  }
+
+  if (args.mode === 'workflow' || args.mode === 'delegated') {
+    args.mode = 'durable';
   }
 
   return args;
@@ -261,7 +265,6 @@ async function main() {
   }
 
   const now = new Date();
-  const nextCheckIn = new Date(now.getTime() + 10 * 60 * 1000);
   const runSlug = slugify(args.slug || args.title);
   const runId = `${formatRunTimestamp(now)}-${runSlug}`;
   const runDir = path.join(root, '.workflow', 'ultracode', runId);
@@ -277,107 +280,84 @@ async function main() {
     title: args.title,
     runId,
     createdAt: isoZ(now),
+    updatedAt: isoZ(now),
     status: 'planning',
     mode: args.mode,
     root,
-    checkInIntervalMinutes: 10,
-    lastCheckInAt: null,
-    nextCheckInDueAt: isoZ(nextCheckIn),
+    budget: {
+      maxConcurrentAgents: 4,
+      maxTotalAgents: 16,
+      timeLimitMinutes: 45,
+      network: false,
+      credentialedTools: false,
+    },
+    approval: {
+      status: 'pending',
+      approvedAt: null,
+      writes: [],
+      verification: [],
+    },
     progress: {
       percentComplete: 5,
       eta: 'unknown',
       etaConfidence: 'low',
-      done: [],
-      remaining: ['Write packets', 'Run workers', 'Verify'],
       status: 'green',
       statusReason: 'Workflow initialized',
+      done: [],
+      remaining: ['Approve phase graph', 'Run phases', 'Reduce results', 'Verify'],
     },
-    checkIns: [],
+    phases: [],
+    agents: [],
     resources: [],
-    nativeWorkflow: null,
-    packets: [],
-    approvals: [],
     verification: [],
+    nativeWorkflow: null,
   };
 
   await writeIfMissing(path.join(runDir, 'state.json'), `${JSON.stringify(state, null, 2)}\n`);
   await writeIfMissing(
-    path.join(runDir, 'plan.md'),
-    `# Plan
+    path.join(runDir, 'workflow.md'),
+    `# Workflow
 
 ## Goal
 
 ${args.title}
 
-## Success Criteria
+## Args
 
-- [ ]
+## Approval Envelope
 
-## Non-Goals
+- Mode: ${args.mode}
+- Max concurrent agents: 4
+- Max total agents: 16
+- Time limit: 45 minutes
+- Write scopes:
+- Network: false
+- Credentialed tools: false
+- Verification gates:
 
--
+## Phase Graph
 
-## Constraints
+| Phase | Depends On | Max Agents | Read Scope | Write Scope | Output |
+| --- | --- | ---: | --- | --- | --- |
 
--
+## Execution Rules
 
-## Risks
-
--
-
-## Verification Gates
-
-- [ ]
+- Parent critical path:
+- Worker packet rule:
+- Reducer rule:
+- Reviewer rule:
+- Stop conditions:
 `,
   );
   await writeIfMissing(
-    path.join(runDir, 'orchestration.md'),
-    `# Orchestration
+    path.join(runDir, 'journal.md'),
+    `# Journal
 
-## Mode
+## ${isoZ(now)}
 
-${args.mode}
+- Workflow initialized.
 
-## Host Capabilities
-
-- Native subagents:
-- Runner:
-- Network:
-- Write access:
-
-## Artifact Ownership
-
-- Bookkeeper:
-- Run directory: ${runDir}
-- Parent responsibilities: user interaction, approvals, budget/resource decisions, worker lifecycle, progress reports, final synthesis
-- Worker artifact rule: workers return results; they do not edit \`.workflow/\`.
-
-## Work Packets
-
-| Packet | Owner | Scope | Dependencies | Expected result |
-| --- | --- | --- | --- | --- |
-
-## Progress Cadence
-
-- Interval: 10 minutes
-- Last progress report:
-- Next progress report: ${isoZ(nextCheckIn)}
-- Phase-change updates:
-
-## Resource Plan
-
-| Resource | Owner | Purpose | Cleanup |
-| --- | --- | --- | --- |
-
-## Stop Conditions
-
--
-
-## Budget
-
-- Workers:
-- Time:
-- Token/cost limit:
+Run directory: ${runDir}
 `,
   );
   await writeIfMissing(
@@ -401,6 +381,10 @@ ${args.mode}
 -
 
 ## Integrated Changes
+
+-
+
+## Deferred
 
 -
 `,

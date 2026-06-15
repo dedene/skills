@@ -1,23 +1,31 @@
 #!/usr/bin/env node
+import { execFile } from 'node:child_process';
 import { readdir, readFile, stat } from 'node:fs/promises';
 import os from 'node:os';
 import path from 'node:path';
 import process from 'node:process';
+import { promisify } from 'node:util';
+
+const execFileAsync = promisify(execFile);
 
 const REQUIRED_FILES = [
-  'plan.md',
-  'orchestration.md',
+  'workflow.md',
   'state.json',
+  'journal.md',
   'integration.md',
   'final-report.md',
 ];
 
 const REQUIRED_DIRS = ['packets', 'results'];
-const ALLOWED_STATUSES = new Set(['planning', 'delegating', 'integrating', 'verifying', 'complete', 'blocked', 'cancelled']);
+const ALLOWED_STATUSES = new Set(['planning', 'approved', 'running', 'paused', 'integrating', 'verifying', 'complete', 'blocked', 'cancelled']);
 const TERMINAL_STATUSES = new Set(['complete', 'blocked', 'cancelled']);
 const CLOSED_RESOURCE_STATUSES = new Set(['closed', 'released', 'stopped', 'removed', 'cleaned', 'handed-off']);
 const ETA_CONFIDENCE_VALUES = new Set(['low', 'medium', 'high']);
 const PROGRESS_STATUSES = new Set(['green', 'yellow', 'red']);
+const RUN_MODES = new Set(['durable', 'runner']);
+const APPROVAL_STATUSES = new Set(['pending', 'approved', 'denied']);
+const PHASE_STATUSES = new Set(['pending', 'running', 'complete', 'blocked', 'failed', 'cancelled', 'closed']);
+const AGENT_STATUSES = PHASE_STATUSES;
 
 function usage() {
   return `Usage: verify-ultracode-run.mjs [options] <run-dir>
@@ -75,23 +83,30 @@ async function pathType(candidate) {
   return 'other';
 }
 
+function escapeRegExp(value) {
+  return value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+}
+
+function headingRegex(heading) {
+  return new RegExp(`^## ${escapeRegExp(heading)}\\s*$`, 'm');
+}
+
 function hasRequiredHeadings(text, headings) {
-  return headings.every((heading) => text.includes(`## ${heading}`));
+  return headings.every((heading) => headingRegex(heading).test(text));
 }
 
 function sectionBody(text, heading) {
-  const marker = `## ${heading}`;
-  const start = text.indexOf(marker);
-  if (start === -1) return '';
+  const match = headingRegex(heading).exec(text);
+  if (!match) return '';
 
-  const bodyStart = text.indexOf('\n', start);
-  if (bodyStart === -1) return '';
+  const bodyStart = match.index + match[0].length;
+  const rest = text.slice(bodyStart);
 
-  const nextHeading = text.indexOf('\n## ', bodyStart + 1);
+  const nextHeading = rest.search(/\n##\s+/);
   if (nextHeading === -1) {
-    return text.slice(bodyStart).trim();
+    return rest.trim();
   }
-  return text.slice(bodyStart, nextHeading).trim();
+  return rest.slice(0, nextHeading).trim();
 }
 
 function hasMeaningfulSectionBody(text, heading) {
@@ -218,6 +233,29 @@ async function workflowIsGitExcluded(root) {
   return Array.from(workflowPatterns).some((pattern) => patterns.has(pattern));
 }
 
+async function trackedWorkflowArtifacts(root) {
+  const context = await gitContext(root);
+  if (!context) return null;
+
+  const workflowDir = path.resolve(root, '.workflow');
+  const relative = path.relative(path.resolve(context.worktreeRoot), workflowDir);
+  if (!relative || relative.startsWith('..') || path.isAbsolute(relative)) {
+    return [];
+  }
+
+  const pathspec = relative.split(path.sep).join('/');
+  try {
+    const { stdout } = await execFileAsync('git', ['-C', context.worktreeRoot, 'ls-files', '--', pathspec]);
+    return stdout
+      .split(/\r?\n/)
+      .map((line) => line.trim())
+      .filter(Boolean);
+  } catch (error) {
+    error.message = `Unable to inspect tracked workflow artifacts: ${error.message}`;
+    throw error;
+  }
+}
+
 function inferredRootFromRunDir(runDir) {
   const parent = path.dirname(runDir);
   const grandparent = path.dirname(parent);
@@ -304,6 +342,99 @@ function validateProgress(state, strict, warnings, errors) {
   }
 }
 
+function validateBudget(state, strict, warnings, errors) {
+  const budget = state.budget;
+  if (!Object.prototype.hasOwnProperty.call(state, 'budget') || !isPlainObject(budget)) {
+    addProblem(strict, warnings, errors, 'state.json budget must be present as an object');
+    return;
+  }
+
+  const checks = [
+    [Number.isInteger(budget.maxConcurrentAgents) && budget.maxConcurrentAgents >= 0, 'state.json budget.maxConcurrentAgents must be a non-negative integer'],
+    [Number.isInteger(budget.maxTotalAgents) && budget.maxTotalAgents >= 0, 'state.json budget.maxTotalAgents must be a non-negative integer'],
+    [Number.isInteger(budget.timeLimitMinutes) && budget.timeLimitMinutes >= 0, 'state.json budget.timeLimitMinutes must be a non-negative integer'],
+    [typeof budget.network === 'boolean', 'state.json budget.network must be a boolean'],
+    [typeof budget.credentialedTools === 'boolean', 'state.json budget.credentialedTools must be a boolean'],
+  ];
+
+  for (const [valid, message] of checks) {
+    if (!valid) addProblem(strict, warnings, errors, message);
+  }
+}
+
+function validateApproval(state, strict, warnings, errors) {
+  const approval = state.approval;
+  if (!Object.prototype.hasOwnProperty.call(state, 'approval') || !isPlainObject(approval)) {
+    addProblem(strict, warnings, errors, 'state.json approval must be present as an object');
+    return;
+  }
+
+  if (!APPROVAL_STATUSES.has(approval.status)) {
+    addProblem(strict, warnings, errors, 'state.json approval.status must be pending, approved, or denied');
+  }
+  if (!Array.isArray(approval.writes)) {
+    addProblem(strict, warnings, errors, 'state.json approval.writes must be a list');
+  }
+  if (!Array.isArray(approval.verification)) {
+    addProblem(strict, warnings, errors, 'state.json approval.verification must be a list');
+  }
+}
+
+function validatePhases(state, strict, warnings, errors) {
+  if (!Array.isArray(state.phases)) {
+    addProblem(strict, warnings, errors, 'state.json phases must be a list');
+    return;
+  }
+
+  for (const [index, phase] of state.phases.entries()) {
+    if (!isPlainObject(phase)) {
+      addProblem(strict, warnings, errors, `state.json phases[${index}] must be an object`);
+      continue;
+    }
+    if (!phase.id || typeof phase.id !== 'string') {
+      addProblem(strict, warnings, errors, `state.json phases[${index}].id must be a string`);
+    }
+    if (!phase.name || typeof phase.name !== 'string') {
+      addProblem(strict, warnings, errors, `state.json phases[${index}].name must be a string`);
+    }
+    if (!PHASE_STATUSES.has(phase.status)) {
+      addProblem(strict, warnings, errors, `state.json phases[${index}].status is invalid`);
+    }
+    if (phase.agentCount !== undefined && (!Number.isInteger(phase.agentCount) || phase.agentCount < 0)) {
+      addProblem(strict, warnings, errors, `state.json phases[${index}].agentCount must be a non-negative integer when present`);
+    }
+    if (phase.completeAgents !== undefined && (!Number.isInteger(phase.completeAgents) || phase.completeAgents < 0)) {
+      addProblem(strict, warnings, errors, `state.json phases[${index}].completeAgents must be a non-negative integer when present`);
+    }
+  }
+}
+
+function validateAgents(state, strict, warnings, errors) {
+  if (!Array.isArray(state.agents)) {
+    addProblem(strict, warnings, errors, 'state.json agents must be a list');
+    return;
+  }
+
+  for (const [index, agent] of state.agents.entries()) {
+    if (!isPlainObject(agent)) {
+      addProblem(strict, warnings, errors, `state.json agents[${index}] must be an object`);
+      continue;
+    }
+    if (!agent.id || typeof agent.id !== 'string') {
+      addProblem(strict, warnings, errors, `state.json agents[${index}].id must be a string`);
+    }
+    if (!AGENT_STATUSES.has(agent.status)) {
+      addProblem(strict, warnings, errors, `state.json agents[${index}].status is invalid`);
+    }
+    if (agent.tools !== undefined && agent.tools !== null && (!Number.isInteger(agent.tools) || agent.tools < 0)) {
+      addProblem(strict, warnings, errors, `state.json agents[${index}].tools must be null or a non-negative integer`);
+    }
+    if (agent.tokens !== undefined && agent.tokens !== null && (!Number.isInteger(agent.tokens) || agent.tokens < 0)) {
+      addProblem(strict, warnings, errors, `state.json agents[${index}].tokens must be null or a non-negative integer`);
+    }
+  }
+}
+
 async function listMarkdownFiles(dirPath) {
   if ((await pathType(dirPath)) !== 'directory') return [];
   const entries = await readdir(dirPath, { withFileTypes: true });
@@ -384,14 +515,18 @@ async function main() {
     if (!state.title) {
       errors.push('state.json missing title');
     }
-    if (!Array.isArray(state.packets ?? [])) {
-      errors.push('state.json packets must be a list');
+    if (!RUN_MODES.has(state.mode)) {
+      errors.push('state.json mode must be durable or runner');
     }
-    if (state.checkInIntervalMinutes !== 10) {
-      addProblem(args.strict, warnings, errors, 'state.json checkInIntervalMinutes should be 10');
+    if (!state.updatedAt || typeof state.updatedAt !== 'string') {
+      addProblem(args.strict, warnings, errors, 'state.json missing updatedAt');
     }
-    if (!Array.isArray(state.checkIns)) {
-      addProblem(args.strict, warnings, errors, 'state.json checkIns must be a list');
+    validateBudget(state, args.strict, warnings, errors);
+    validateApproval(state, args.strict, warnings, errors);
+    validatePhases(state, args.strict, warnings, errors);
+    validateAgents(state, args.strict, warnings, errors);
+    if (state.status !== 'planning' && Array.isArray(state.phases) && state.phases.length === 0) {
+      addProblem(args.strict, warnings, errors, 'state.json has no phases after planning');
     }
     if (!Array.isArray(state.resources)) {
       addProblem(args.strict, warnings, errors, 'state.json resources must be a list');
@@ -399,10 +534,28 @@ async function main() {
     validateNativeWorkflow(state, errors);
     validateProgress(state, args.strict, warnings, errors);
 
-    const root = resolveStateRoot(runDir, state);
+    const inferredRoot = inferredRootFromRunDir(runDir);
+    const stateRoot = resolveStateRoot(runDir, state);
+    const standardRunDir = inferredRoot !== runDir;
+    const root = standardRunDir ? inferredRoot : stateRoot;
+    if (standardRunDir && path.resolve(stateRoot) !== path.resolve(inferredRoot)) {
+      addProblem(args.strict, warnings, errors, `state.json root does not match run directory root: ${stateRoot}`);
+    }
+
     const ignored = await workflowIsGitExcluded(root);
     if (ignored === false) {
       addProblem(args.strict, warnings, errors, '.workflow/ is not ignored by Git metadata');
+    }
+
+    try {
+      const trackedArtifacts = await trackedWorkflowArtifacts(root);
+      if (Array.isArray(trackedArtifacts) && trackedArtifacts.length > 0) {
+        const shown = trackedArtifacts.slice(0, 5).join(', ');
+        const suffix = trackedArtifacts.length > 5 ? `, and ${trackedArtifacts.length - 5} more` : '';
+        errors.push(`.workflow/ contains tracked or staged artifact(s): ${shown}${suffix}`);
+      }
+    } catch (error) {
+      warnings.push(error.message);
     }
 
     const resources = state.resources;
@@ -421,28 +574,51 @@ async function main() {
     }
   }
 
-  const planPath = path.join(runDir, 'plan.md');
-  if ((await pathType(planPath)) === 'file') {
-    const planText = await readFile(planPath, 'utf8');
-    if (!hasRequiredHeadings(planText, ['Goal', 'Success Criteria', 'Verification Gates'])) {
-      errors.push('plan.md missing required sections');
+  const workflowPath = path.join(runDir, 'workflow.md');
+  if ((await pathType(workflowPath)) === 'file') {
+    const workflowText = await readFile(workflowPath, 'utf8');
+    if (!hasRequiredHeadings(workflowText, ['Goal', 'Approval Envelope', 'Phase Graph', 'Execution Rules'])) {
+      errors.push('workflow.md missing required sections');
     }
-    if (/(^|\n)- \[ \][ \t]*(\n|$)/.test(planText)) {
-      addProblem(args.strict, warnings, errors, 'plan.md still contains empty checklist items');
+    if (!hasMeaningfulSectionBody(workflowText, 'Goal')) {
+      addProblem(args.strict, warnings, errors, 'workflow.md goal appears empty');
     }
   }
 
-  const orchestrationPath = path.join(runDir, 'orchestration.md');
-  if ((await pathType(orchestrationPath)) === 'file') {
-    const orchestrationText = await readFile(orchestrationPath, 'utf8');
-    if (!hasRequiredHeadings(orchestrationText, ['Mode', 'Host Capabilities', 'Work Packets'])) {
-      errors.push('orchestration.md missing required sections');
+  const journalPath = path.join(runDir, 'journal.md');
+  if ((await pathType(journalPath)) === 'file') {
+    const journalText = await readFile(journalPath, 'utf8');
+    if (!journalText.includes('# Journal')) {
+      errors.push('journal.md missing title');
     }
-    const hasProgressCadence = ['Progress Cadence', 'Check-In Cadence'].some((heading) => hasRequiredHeadings(orchestrationText, [heading]));
-    if (!hasProgressCadence || !hasRequiredHeadings(orchestrationText, ['Resource Plan'])) {
-      addProblem(args.strict, warnings, errors, 'orchestration.md missing progress cadence or resource sections');
+    const meaningfulJournalLines = journalText
+      .split(/\r?\n/)
+      .map((line) => line.trim())
+      .filter((line) => line && !line.startsWith('#') && line !== '-');
+    if (args.strict && meaningfulJournalLines.length === 0) {
+      warnings.push('journal.md may not contain meaningful entries');
     }
-    if (!hasRequiredHeadings(orchestrationText, ['Artifact Ownership'])) addProblem(args.strict, warnings, errors, 'orchestration.md missing Artifact Ownership section');
+  }
+
+  const integrationPath = path.join(runDir, 'integration.md');
+  if ((await pathType(integrationPath)) === 'file') {
+    const integrationText = await readFile(integrationPath, 'utf8');
+    const requiredIntegrationHeadings = [
+      'Results Reviewed',
+      'Accepted',
+      'Rejected',
+      'Conflicts Resolved',
+      'Integrated Changes',
+      'Deferred',
+    ];
+    if (!hasRequiredHeadings(integrationText, requiredIntegrationHeadings)) {
+      errors.push('integration.md missing required sections');
+    }
+    for (const heading of ['Results Reviewed', 'Accepted', 'Integrated Changes']) {
+      if (!hasMeaningfulSectionBody(integrationText, heading)) {
+        addProblem(args.strict, warnings, errors, `integration.md ${heading} appears empty`);
+      }
+    }
   }
 
   const packetFiles = await listMarkdownFiles(path.join(runDir, 'packets'));
