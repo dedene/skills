@@ -1,0 +1,4 @@
+interface:
+  display_name: "YouTube Channel Search"
+  short_description: "Research topics inside YouTube channels"
+  default_prompt: "Use $youtube-channel-search to find relevant videos in this YouTube channel for this topic:"

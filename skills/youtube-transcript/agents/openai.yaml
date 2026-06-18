@@ -1,0 +1,4 @@
+interface:
+  display_name: "YouTube Transcript"
+  short_description: "Fetch cached YouTube transcript files"
+  default_prompt: "Use $youtube-transcript to fetch this YouTube transcript into local cached files without loading the full transcript into context:"
