@@ -1,7 +1,7 @@
 {
   "name": "dedene-skills",
   "description": "Skills for designers, builders & engineers",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "author": {
     "name": "Peter Dedene",
     "url": "https://github.com/dedene"
@@ -9,5 +9,5 @@
   "homepage": "https://github.com/dedene/skills",
   "repository": "https://github.com/dedene/skills",
   "license": "MIT",
-  "keywords": ["design", "css", "shadows", "frontend", "agents", "workflows", "subagents", "planning", "interviews", "architect", "handoff", "youtube", "transcripts", "captions", "channel-search"]
+  "keywords": ["design", "css", "shadows", "frontend", "agents", "workflows", "subagents", "planning", "interviews", "architect", "handoff", "youtube", "transcripts", "captions", "channel-search", "go", "cli", "research", "social"]
 }
