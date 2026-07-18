@@ -1,0 +1,4 @@
+interface:
+  display_name: "TikTok Transcript"
+  short_description: "Fetch cached TikTok transcript files"
+  default_prompt: "Use $tiktok-transcript to fetch TikTok transcripts (single video or channel) into local cached files without loading the full transcript into context:"
