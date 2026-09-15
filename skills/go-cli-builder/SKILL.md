@@ -1,11 +1,17 @@
 ---
 name: go-cli-builder
-description: Use when building, scaffolding, or substantially expanding Go CLIs for APIs, SaaS products, SOAP/OpenAPI/Postman/HAR-backed integrations, Homebrew-distributed tools, or Kong-based command surfaces, following a phased research-to-ship quality loop.
+description: Build or extend a Go CLI with explicit command, auth, configuration, and output contracts.
 ---
 
 # Go CLI Builder
 
 Build production-grade Go CLIs in Peter's house style: useful vertical slices first, agent-friendly command contracts, strong auth/config/output boundaries, and shippable Homebrew distribution.
+
+## Choose the scope
+
+For an existing command extension or bug fix, inspect only the affected command, client, auth/output boundaries, docs, and tests. Record docs provenance for the changed operation and run relevant required gates. Do not restart ecosystem research, scaffolding, or distribution work unless the change affects them.
+
+For a new CLI or substantial new integration, use the full research and distribution path below. Distribution preparation does not authorize a release, push, or publication.
 
 ## Start Here
 
@@ -63,14 +69,16 @@ Build one excellent CLI; add catalog or marketplace machinery only if the user e
 
 ## Verification Bar
 
-Before handoff, run the repo gate: usually `make ci` or `make fmt-check lint test`. Also smoke:
+Before handoff, run the relevant required repo gate. For a new CLI or changes affecting startup/release wiring, also smoke the supported commands (inspect help; do not hide failures):
 
 ```bash
 make build
 ./bin/<binary> --help
-./bin/<binary> version 2>/dev/null || ./bin/<binary> --version
-./bin/<binary> auth doctor 2>/dev/null || true
+./bin/<binary> version
+./bin/<binary> auth doctor
 ```
+
+Use the actual version and doctor syntax exposed by the CLI; skip unsupported commands explicitly. Once relevant checks pass, repeat or broaden only after new changes, failures, or unresolved concerns.
 
 For bug fixes or durable behavior, add regression tests. For API integrations, prefer read-only live smoke when credentials are available; otherwise use fixture servers, golden SOAP/XML payloads, or recorded responses.
 

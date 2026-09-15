@@ -1,11 +1,11 @@
 ---
 name: tiktok-transcript
-description: Fetch TikTok transcripts/captions into cached local files, for a single video or all videos of a channel/user, falling back to local mlx-whisper transcription when a video has no native captions. Use when the user provides a TikTok URL, video ID, or @handle and asks to get, fetch, download, search, excerpt, summarize, or otherwise use TikTok transcripts/captions/subtitles.
+description: Fetch, search, or summarize captions for TikTok videos or a specified channel, with local transcription when captions are absent.
 ---
 
 # TikTok Transcript
 
-Fetch TikTok captions with `yt-dlp`, save durable transcript artifacts, and keep the full transcript out of context unless the user explicitly asks to inspect it. Videos without native captions are transcribed locally with `mlx-whisper` (Apple Silicon).
+Fetch TikTok captions with `yt-dlp` and save durable transcript artifacts. Read bounded excerpts for narrow questions or the full timestamp-free text for complete summaries. Videos without captions can be transcribed locally with `mlx-whisper` (Apple Silicon).
 
 This skill mirrors the workflow shape of the sibling `youtube-transcript` skill.
 
@@ -48,6 +48,7 @@ The `fetch` command prints a compact result with the video title, transcript sou
 - Requires Apple Silicon. The script uses an installed `mlx_whisper` binary or falls back to `uvx --from mlx-whisper mlx_whisper` (needs `uv`).
 - Default model is `mlx-community/whisper-large-v3-turbo` (good speed/quality; ~1.5 GB download on first use). Override with `--whisper-model`, e.g. `mlx-community/whisper-tiny` for quick tests. Use `--whisper-language nl` etc. when autodetection picks wrong.
 - For bulk channel runs, a cheap first pass is `channel @user --whisper never`, then rerun with `--whisper auto` to fill in only the caption-less videos (artifacts are cached; nothing is re-fetched).
+- Keep channel size and transcription work within the requested scope. Start caption-first for an unbounded channel request, report missing-caption coverage, and resolve material download or runtime costs before launching a large transcription batch. A single requested video does not need a separate routine fallback approval.
 - `transcript_source` in `metadata.compact.json` and the fetch output records whether the transcript came from `tiktok-captions` or `mlx-whisper:<model>`.
 
 ## Artifacts

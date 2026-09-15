@@ -1,6 +1,6 @@
 # CLI Quality Loop
 
-Phased loop for taking one CLI from research to shipped, with timeboxes and gates. Use the Fast Path for most builds; switch to the Managed Path when the work needs pause/resume or spans multiple sessions.
+Phased loop for taking one CLI from research to shipped, with timeboxes and gates. Use this full path for new CLIs or substantial new integrations. Existing command extensions inspect and verify only affected surfaces; timeboxes are planning estimates, not stop or approval gates. Use the Fast Path for new builds; switch to the Managed Path when the work needs pause/resume or spans multiple sessions.
 
 ## Fast Path
 

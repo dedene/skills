@@ -7,13 +7,13 @@ Skills for designers, builders & engineers. Install them into Claude Code as a p
 - **smooth-shadows** — generate layered, smooth `box-shadow` CSS (the shadows.brumm.af / Tobias Ahlin technique) for soft, realistic elevation. Outputs ready-to-paste CSS or Tailwind values.
 - **ultracode** — run complex work through a Codex-friendly dynamic-workflow pattern: phase graph, approval card, visible progress table, bounded subagents when available, durable run ledger, result reduction, and verification before handoff. Ships as a separate opt-in plugin (`extras/`) since Claude Code has native ultracode workflows; still installs everywhere via the skills CLI.
 - **autopilot-interview** — interview a plan on autopilot: auto-decide low-risk details, escalate only the high-stakes, hard-to-reverse choices to you, and keep a scratch decision log for long sessions.
-- **architect-loop** — act as the architect (and creative director for UI work) over any fast builder — GPT-5.5 Codex, Cursor Composer, Grok, or whatever comes next: read `docs/HANDOFF.md`, rule on the builder's disagreements, judge raw results against frozen gates, and write the next one-PR slice spec. The repo is the memory; the human owns the gate calls.
+- **architect-loop** — coordinate bounded builder slices, review evidence and objections, and carry existing permissions through implementation and handoff. Model selection follows the host configuration.
 - **youtube-transcript** — fetch YouTube captions with `yt-dlp`, save cached transcript artifacts, and inspect previews/search results/excerpts without loading full transcripts into agent context.
 - **youtube-channel-search** — research topics inside a known YouTube channel with `yt-dlp` catalogs, metadata ranking, transcript hydration, and local transcript ranking.
 - **tiktok-transcript** — fetch TikTok captions with `yt-dlp` for a single video or a whole channel, save cached transcript artifacts, and fall back to local `mlx-whisper` transcription (Apple Silicon) when a video has no native captions.
-- **go-cli-builder** — scaffold and iterate on small, well-tested local Go CLIs, with a quality loop that leans on GPT-5.5 (via Codex) for the mechanical build work.
+- **go-cli-builder** — scaffold or extend Go CLIs with explicit command, authentication, output, and verification contracts; scale research to the affected surface.
 - **last30days-local** — research what people said about a topic in the last 30 days across X, Reddit, Hacker News, YouTube, LinkedIn, Threads, TikTok, Instagram, Bluesky, GitHub, Pinterest, Polymarket, and the web — no API keys, using the local logged-in browser (Aside) plus `yt-dlp`, `gh`, and keyless HTTP. Inspired by [mvanhorn/last30days-skill](https://github.com/mvanhorn/last30days-skill).
-- **claude-codex** — Claude/Fable-only bridge for sending bounded implementation and review work to GPT-5.5 through the Codex CLI. Separate opt-in plugin (`claude-codex/`); not part of `dedene-skills`.
+- **claude-codex** — Claude/Fable bridge for bounded implementation and review through the Codex CLI, using the selected model and effort. Separate opt-in plugin (`claude-codex/`); not part of `dedene-skills`.
 
 ## Install
 
@@ -57,6 +57,27 @@ npx skills add dedene/skills --skill youtube-transcript
 npx skills add dedene/skills --skill youtube-channel-search
 npx skills add dedene/skills --skill tiktok-transcript
 ```
+
+## Maintaining Peter's installations
+
+`config/skill-sources.json` records the canonical source and existing installation targets for each owned skill across this repository and prompt-engineering-club. This repository owns smooth-shadows; its club copy is a sync target. Skills without targets remain uninstalled.
+
+This manifest and `config/AGENTS.md` are Peter's machine-specific configuration, not team installation defaults. Teammates should supply their own source/target manifest with `--manifest <file>`. Shared MCP skills accept `MCPORTER_BIN` as an executable path; configure any host-required credential wrapper there, otherwise they use the installed `mcporter` command.
+
+Run from this repository:
+
+```sh
+python3 scripts/sync-skills.py --check
+python3 scripts/sync-skills.py --plan /tmp/skill-sync-plan.json
+# Review the plan before applying it.
+python3 scripts/sync-skills.py --apply /tmp/skill-sync-plan.json
+```
+
+Apply verifies source and destination hashes before writing, backs up replaced files, and preserves destination-only files. Reconcile unexpected drift in the canonical source before creating a new plan.
+
+`config/AGENTS.md` is Peter's canonical personal instruction base; the Compound plugin appends its generated tool map when installed. `config/screenshots.md` holds the conditional screenshot recipe. The club maintains its separate team instruction base.
+
+`config/disabled-upstream-skills.json` records excluded duplicate Superpowers entries and broad bootstrap skills. Their matching `[[skills.config]]` entries in `~/.codex/config.toml` use `enabled = false`; upstream bodies remain untouched. Recheck versioned plugin paths after upgrades and restart Codex after configuration changes. Re-enable a disabled entry deliberately when needed. Owned architect-loop, autopilot-interview, and ultracode instead use `allow_implicit_invocation: false`, retaining explicit invocation.
 
 ## License
 

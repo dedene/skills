@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import os
 import subprocess
 from typing import Any, Protocol
 
@@ -68,8 +69,8 @@ def extract_payload(stdout: str) -> dict[str, Any]:
 
 
 class AsideBackend:
-    def __init__(self, aside_bin: str = "/Users/peter/.local/bin/aside", timeout: int = 90) -> None:
-        self.aside_bin = aside_bin
+    def __init__(self, aside_bin: str | None = None, timeout: int = 90) -> None:
+        self.aside_bin = aside_bin or os.environ.get("ASIDE_BIN") or "aside"
         self.timeout = timeout
 
     def run_js(self, js: str) -> dict[str, Any]:

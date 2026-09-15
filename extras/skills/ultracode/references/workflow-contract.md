@@ -347,3 +347,7 @@ When a host provides a real native workflow runner, keep the durable ledger and 
 ```
 
 Native artifacts are evidence, not the portable contract. Summarize accepted outputs into `results/`, `integration.md`, and `final-report.md`.
+
+## Authority interpretation
+
+The approval object records existing user/host authorization; it is not a mandatory new question. Record the instruction or decision granting actions in workflow.md or journal.md. Leave unresolved authority pending. Example budgets and scaffold defaults are planning values, not user-imposed limits. Every worker packet must state allowed actions, including whether commit, push, publication, messaging, destructive operations, or production changes are authorized; absent a grant, they are prohibited.

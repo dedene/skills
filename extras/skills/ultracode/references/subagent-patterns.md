@@ -11,7 +11,7 @@ Keep local:
 - user interaction, approvals, budget/resource decisions, and final synthesis
 - the immediate critical-path blocker
 - small glue edits where context switching would cost more than the edit
-- sensitive credentialed actions unless the user explicitly approves the exact tool use
+- sensitive actions whose authority or safe delegation cannot be established from existing instructions
 - final decision-making about accepted results and completion
 
 Delegate:
@@ -21,28 +21,16 @@ Delegate:
 - implementation slices with disjoint write scopes
 - focused review, security, accessibility, or performance checks
 - verification that can run while the parent does non-overlapping work
-- browser, Docker, dev-server, simulator, or long-running process work when approved
+- browser, Docker, dev-server, simulator, or long-running process work within the authorized task
 - durable artifact bookkeeping when a real worker can own it without slowing the run
 
 Do not delegate two workers to answer the same question from the same files unless the goal is adversarial cross-checking.
 
-## Codex Tool Mapping
+## Host capabilities
 
-When `multi_agent_v1` is available:
+Use only the actual host's available spawn, message/follow-up, wait, and lifecycle controls. Respect its delegation policy and capacity. Reuse workers for related follow-ups. Wait when results are needed and before final handoff; clean up task-owned resources through supported controls.
 
-- `spawn_agent`: start a bounded sidecar after the user has opted into workflow, subagent, delegation, or parallel agent work.
-- `wait_agent`: wait only when the next parent decision is blocked on that result. Prefer long waits over busy polling.
-- `send_input`: reuse an existing agent only when the follow-up depends on that agent's context.
-- `close_agent`: close completed or abandoned agents after reviewing their results.
-
-Do not set a model override unless the user asked or the packet has a clear model-specific reason.
-
-When `multi_agent_v1` is not available:
-
-- do not simulate workers with personas in the main thread
-- use Direct or Thin mode
-- use `multi_tool_use.parallel` for independent file reads and safe local commands
-- use background `exec_command` sessions only for approved long-running work
+Inherit configured model and effort unless the user or a documented host profile specifies otherwise. If no worker primitive exists, use Direct or Thin mode, batching independent reads through the host's supported parallel mechanism. Background execution is appropriate for authorized long tasks; remain responsive.
 
 ## Dynamic Phase Patterns
 
@@ -175,7 +163,8 @@ Run directory: <path>
 Packet file: <path>
 Phase: <phase id/name>
 
-Read the packet first. Stay inside its allowed scope. Do not revert unrelated changes.
+Read the packet first. Stay inside its allowed scope and actions. Do not revert unrelated changes.
+Do not commit, push, publish, message others, perform destructive operations, or change production unless the packet explicitly grants that action. Credentials and network access are not authorization.
 You are not alone in the codebase; other workers or the parent may be editing different scopes.
 If editing, touch only the allowed write paths and list every changed file.
 Track any browser, Docker container, dev server, background process, tmux pane, temp directory, simulator, or port you open.

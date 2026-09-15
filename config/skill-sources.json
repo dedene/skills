@@ -1,0 +1,243 @@
+[
+  {
+    "name": "codex-implementation",
+    "source": "/Users/peter/Development/Personal/skills/claude-codex/skills/codex-implementation",
+    "targets": [
+      "/Users/peter/.agents/skills/codex-implementation"
+    ]
+  },
+  {
+    "name": "codex-review",
+    "source": "/Users/peter/Development/Personal/skills/claude-codex/skills/codex-review",
+    "targets": [
+      "/Users/peter/.agents/skills/codex-review"
+    ]
+  },
+  {
+    "name": "ultracode",
+    "source": "/Users/peter/Development/Personal/skills/extras/skills/ultracode",
+    "targets": [
+      "/Users/peter/.agents/skills/ultracode"
+    ]
+  },
+  {
+    "name": "architect-loop",
+    "source": "/Users/peter/Development/Personal/skills/skills/architect-loop",
+    "targets": []
+  },
+  {
+    "name": "autopilot-interview",
+    "source": "/Users/peter/Development/Personal/skills/skills/autopilot-interview",
+    "targets": [
+      "/Users/peter/.agents/skills/autopilot-interview"
+    ]
+  },
+  {
+    "name": "go-cli-builder",
+    "source": "/Users/peter/Development/Personal/skills/skills/go-cli-builder",
+    "targets": [
+      "/Users/peter/.agents/skills/go-cli-builder"
+    ]
+  },
+  {
+    "name": "last30days-local",
+    "source": "/Users/peter/Development/Personal/skills/skills/last30days-local",
+    "targets": [
+      "/Users/peter/.agents/skills/last30days-local"
+    ]
+  },
+  {
+    "name": "smooth-shadows",
+    "source": "/Users/peter/Development/Personal/skills/skills/smooth-shadows",
+    "targets": [
+      "/Users/peter/.agents/skills/smooth-shadows",
+      "/Users/peter/Development/Zenjoy/Projects/prompt-engineering-club/skills/smooth-shadows"
+    ]
+  },
+  {
+    "name": "tiktok-transcript",
+    "source": "/Users/peter/Development/Personal/skills/skills/tiktok-transcript",
+    "targets": []
+  },
+  {
+    "name": "youtube-channel-search",
+    "source": "/Users/peter/Development/Personal/skills/skills/youtube-channel-search",
+    "targets": [
+      "/Users/peter/.agents/skills/youtube-channel-search"
+    ]
+  },
+  {
+    "name": "youtube-transcript",
+    "source": "/Users/peter/Development/Personal/skills/skills/youtube-transcript",
+    "targets": [
+      "/Users/peter/.agents/skills/youtube-transcript"
+    ]
+  },
+  {
+    "name": "nimbu-restore-documents-from-backup",
+    "source": "/Users/peter/Development/Zenjoy/Projects/prompt-engineering-club/plugins/devops/skills/nimbu-restore-documents-from-backup",
+    "targets": []
+  },
+  {
+    "name": "bugsnag",
+    "source": "/Users/peter/Development/Zenjoy/Projects/prompt-engineering-club/plugins/mcporter/skills/bugsnag",
+    "targets": [
+      "/Users/peter/.agents/skills/bugsnag"
+    ]
+  },
+  {
+    "name": "chrome-devtools",
+    "source": "/Users/peter/Development/Zenjoy/Projects/prompt-engineering-club/plugins/mcporter/skills/chrome-devtools",
+    "targets": []
+  },
+  {
+    "name": "context7",
+    "source": "/Users/peter/Development/Zenjoy/Projects/prompt-engineering-club/plugins/mcporter/skills/context7",
+    "targets": [
+      "/Users/peter/.agents/skills/context7"
+    ]
+  },
+  {
+    "name": "exa",
+    "source": "/Users/peter/Development/Zenjoy/Projects/prompt-engineering-club/plugins/mcporter/skills/exa",
+    "targets": [
+      "/Users/peter/.agents/skills/exa"
+    ]
+  },
+  {
+    "name": "excalidraw",
+    "source": "/Users/peter/Development/Zenjoy/Projects/prompt-engineering-club/plugins/mcporter/skills/excalidraw",
+    "targets": [
+      "/Users/peter/.agents/skills/excalidraw"
+    ]
+  },
+  {
+    "name": "figma",
+    "source": "/Users/peter/Development/Zenjoy/Projects/prompt-engineering-club/plugins/mcporter/skills/figma",
+    "targets": [
+      "/Users/peter/.agents/skills/figma"
+    ]
+  },
+  {
+    "name": "figma-code-connect",
+    "source": "/Users/peter/Development/Zenjoy/Projects/prompt-engineering-club/plugins/mcporter/skills/figma-code-connect",
+    "targets": [
+      "/Users/peter/.agents/skills/figma-code-connect"
+    ]
+  },
+  {
+    "name": "figma-use",
+    "source": "/Users/peter/Development/Zenjoy/Projects/prompt-engineering-club/plugins/mcporter/skills/figma-use",
+    "targets": [
+      "/Users/peter/.agents/skills/figma-use"
+    ]
+  },
+  {
+    "name": "firecrawl",
+    "source": "/Users/peter/Development/Zenjoy/Projects/prompt-engineering-club/plugins/mcporter/skills/firecrawl",
+    "targets": [
+      "/Users/peter/.agents/skills/firecrawl"
+    ]
+  },
+  {
+    "name": "notion",
+    "source": "/Users/peter/Development/Zenjoy/Projects/prompt-engineering-club/plugins/mcporter/skills/notion",
+    "targets": [
+      "/Users/peter/.agents/skills/notion"
+    ]
+  },
+  {
+    "name": "octocode",
+    "source": "/Users/peter/Development/Zenjoy/Projects/prompt-engineering-club/plugins/mcporter/skills/octocode",
+    "targets": [
+      "/Users/peter/.agents/skills/octocode"
+    ]
+  },
+  {
+    "name": "perplexity",
+    "source": "/Users/peter/Development/Zenjoy/Projects/prompt-engineering-club/plugins/mcporter/skills/perplexity",
+    "targets": [
+      "/Users/peter/.agents/skills/perplexity"
+    ]
+  },
+  {
+    "name": "sequential-thinking",
+    "source": "/Users/peter/Development/Zenjoy/Projects/prompt-engineering-club/plugins/mcporter/skills/sequential-thinking",
+    "targets": [
+      "/Users/peter/.agents/skills/sequential-thinking"
+    ]
+  },
+  {
+    "name": "attach-github-assets",
+    "source": "/Users/peter/Development/Zenjoy/Projects/prompt-engineering-club/plugins/zenjoy/skills/attach-github-assets",
+    "targets": [
+      "/Users/peter/.agents/skills/attach-github-assets"
+    ]
+  },
+  {
+    "name": "belgisch-nederlands-redacteur",
+    "source": "/Users/peter/Development/Zenjoy/Projects/prompt-engineering-club/plugins/zenjoy/skills/belgisch-nederlands-redacteur",
+    "targets": [
+      "/Users/peter/.agents/skills/belgisch-nederlands-redacteur"
+    ]
+  },
+  {
+    "name": "code-review",
+    "source": "/Users/peter/Development/Zenjoy/Projects/prompt-engineering-club/plugins/zenjoy/skills/code-review",
+    "targets": [
+      "/Users/peter/.agents/skills/code-review"
+    ]
+  },
+  {
+    "name": "codecov-coverage",
+    "source": "/Users/peter/Development/Zenjoy/Projects/prompt-engineering-club/plugins/zenjoy/skills/codecov-coverage",
+    "targets": [
+      "/Users/peter/.agents/skills/codecov-coverage"
+    ]
+  },
+  {
+    "name": "estimate-effort",
+    "source": "/Users/peter/Development/Zenjoy/Projects/prompt-engineering-club/plugins/zenjoy/skills/estimate-effort",
+    "targets": [
+      "/Users/peter/.agents/skills/estimate-effort"
+    ]
+  },
+  {
+    "name": "gh-actions-inspector",
+    "source": "/Users/peter/Development/Zenjoy/Projects/prompt-engineering-club/plugins/zenjoy/skills/gh-actions-inspector",
+    "targets": [
+      "/Users/peter/.agents/skills/gh-actions-inspector"
+    ]
+  },
+  {
+    "name": "markdown-converter",
+    "source": "/Users/peter/Development/Zenjoy/Projects/prompt-engineering-club/plugins/zenjoy/skills/markdown-converter",
+    "targets": [
+      "/Users/peter/.agents/skills/markdown-converter"
+    ]
+  },
+  {
+    "name": "pr-review-fetcher",
+    "source": "/Users/peter/Development/Zenjoy/Projects/prompt-engineering-club/plugins/zenjoy/skills/pr-review-fetcher",
+    "targets": [
+      "/Users/peter/.agents/skills/pr-review-fetcher"
+    ]
+  },
+  {
+    "name": "scanning-website-accessibility",
+    "source": "/Users/peter/Development/Zenjoy/Projects/prompt-engineering-club/plugins/zenjoy/skills/scanning-website-accessibility",
+    "targets": [
+      "/Users/peter/.agents/skills/scanning-website-accessibility"
+    ]
+  },
+  {
+    "name": "site-go-live-readiness",
+    "source": "/Users/peter/Development/Zenjoy/Projects/prompt-engineering-club/plugins/zenjoy/skills/site-go-live-readiness",
+    "targets": []
+  },
+  {
+    "name": "test-scenarios",
+    "source": "/Users/peter/Development/Zenjoy/Projects/prompt-engineering-club/plugins/zenjoy/skills/test-scenarios",
+    "targets": []
+  }
+]

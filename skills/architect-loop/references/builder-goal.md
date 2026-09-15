@@ -1,7 +1,9 @@
-# Builder /goal block — why each phase exists
+# Builder contract rationale
 
-The canonical Phase 0–2 block lives in SKILL.md (job 6, "Dispatch the builder") — that is the only copy to reproduce. This file explains the intent behind each phase, for when a builder pushes back on the rules or the architect needs to defend them.
+The worker contract in SKILL.md is the canonical dispatch policy.
 
-- **Phase 0 forces disagreement.** A builder that silently complies hides its judgment; the architect needs the builder's objections surfaced with reasons and real file citations before committing to a plan. Silent scope additions are how a one-PR slice becomes a three-day detour.
-- **Phase 1 freezes contracts first.** Lanes can only run in parallel safely if the shared schemas/interfaces are locked. Freeze them in `docs/`, then no lane can drift the contract under another.
-- **Phase 2 separates building from grading.** Lane agents build modules that don't import each other (or run sequentially on harnesses without parallel agents — the separation matters, not the concurrency); one reviewer pass that never writes feature code is the only thing that can say APPROVE. Raw results go to `docs/HANDOFF.md` as numbers and evidence paths (saved under `docs/evidence/` — git-excluded, like all loop files), never as narrative — because the verdict is the architect's and the human's to make, not the builder's.
+- Review before implementation surfaces actual objections; "no objections" is a valid outcome. Do not reward manufactured disagreement.
+- Stabilize shared interfaces only where concurrent work needs them. Record a superseding decision when evidence or the user changes the contract.
+- Independent review helps with high-risk changes. Inspect raw commands, code, and visual evidence; narrative alone is insufficient, but qualitative evidence is valid.
+- Explicit allowed actions keep delegation from expanding authority. A reviewer approval, commit capability, or working network never grants permission to publish.
+- The handoff supports recovery. If it is missing, reconcile the working tree and logs before redispatching work.

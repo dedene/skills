@@ -1,152 +1,53 @@
 ---
 name: architect-loop
-description: Use when running the architect/builder loop — acting as the ARCHITECT and team lead (and creative director for UI work) over any fast builder agent (GPT-5.5 via the Codex CLI, Cursor Composer, Grok, or similar), dispatching the builder directly via its CLI, while the repo's docs/HANDOFF.md holds memory and the human owns the gate calls. Triggers when the user says "architect loop", "be the architect", "drive the loop", "next slice", "rule on the disagreements", "judge the build/results", "write the slice spec", or wants to set up or update docs/HANDOFF.md.
+description: Run an explicitly requested architect/builder loop using a project handoff and user-defined acceptance gates.
 ---
 
-# The Architect Loop
+# Architect Loop
 
-Act as the **architect and team lead** over a fast, cheap builder. The architect thinks; the builder types; the repo remembers; the human judges. Spend architect tokens on judgment only — arbitration, evidence review, next specs, kill/continue calls — and push all typing to the builder.
+Coordinate bounded builder work, inspect its evidence, and finish the authorized slice. Use this workflow when requested; ordinary implementation does not need an architect loop.
 
-The loop: **architect writes a slice spec → architect dispatches the builder → builder executes → repo records raw results → architect judges and writes the next slice.** The architect drives this loop itself: it invokes the builder's CLI, waits for the run, judges the results, and dispatches the next slice. The human is the gate, never the courier — handing the user a prompt to paste is a last-resort fallback, not the normal path.
+## Authority and roles
 
-## Roles and boundaries
+The parent owns scope, integration, evidence review, and communication. Builders own assigned files and verification. The parent may make small integration fixes when another dispatch would add cost without useful independence.
 
-| Role | Who | Job |
-| --- | --- | --- |
-| Architect | This session | Specs, rulings, design direction, raw-evidence verdicts, kill/continue calls — and dispatching the builder. The edge. |
-| Builder | Any fast builder agent — GPT-5.5 via the Codex CLI, Cursor Composer, Grok, or whatever comes next | Plans, disagrees, freezes contracts, writes code, runs lanes + reviewer, commits, records raw results. The hands. |
-| Memory | `docs/HANDOFF.md` in the repo (untracked — see "Keep the loop files out of git") | Specs, frozen gates, raw results, decisions, open disagreements. The brain. |
-| Human | The user | Final gate calls: ship / iterate / kill, scope expansions, anything one-way-door. Not a message bus. |
+Pass the user's allowed actions to every builder. Tool access, credentials, network availability, and a passing review do not authorize commits, pushes, publication, messages, destructive operations, or production changes. Perform those only when explicitly authorized. Reuse existing authorization; ask only about unresolved consequential decisions or actions outside it. Continue independent work while awaiting an answer.
 
-The builder is swappable; the loop is not. Everything builder-specific (the dispatch command, whether it can run parallel agents, how it records evidence) lives in a builder profile — see "Pick the builder" below. The architect's jobs, the rules, and the HANDOFF contract never change per builder.
+## Establish the slice
 
-When the slice has a user-facing surface, the architect is also the **creative director**: set the design direction in the spec (references, design system/tokens to follow, interaction quality bar), define design gates that produce evidence on disk (screenshots under `docs/evidence/`, a11y/perf scores), and judge that evidence raw — the builder does not get to call its own UI "polished" any more than it gets to call its code "working."
+Read `docs/HANDOFF.md` if present, then inspect the current tree and relevant logs. Missing ledger entries mean missing records, not nonexistent work. Reconstruct evidence before redispatching; never invent past results.
 
-**Hard boundary: the architect never writes implementation code.** Not "to show the builder," not "just this helper." If tempted to write code, write a sharper spec instead. The only files the architect writes are `docs/HANDOFF.md`, contract/spec docs under `docs/`, and the builder block (`docs/builder-block.md`) — all of them local-only working files that stay out of git (see "Keep the loop files out of git"). The architect may *draft* a contract before the builder freezes it in Phase 1; once frozen, contracts are read-only for everyone — architect included. Changing a frozen contract means a new slice that supersedes it, never an edit.
+For a new loop, use [references/handoff-template.md](references/handoff-template.md). Keep scratch handoff, builder block, contracts, and evidence local unless the user or repository explicitly wants tracked artifacts. Resolve the local exclude with `git rev-parse --git-path info/exclude`; add only this loop's untracked scratch paths. Preserve already tracked project files; do not untrack them.
 
-## The five rules (do not violate)
+Use the requested or recorded builder/model; otherwise use the configured Codex CLI defaults. See [references/builder-profiles.md](references/builder-profiles.md) for dispatch. Check installed CLI help before first use. Ask about a model only when the selected model is unavailable or a material unresolved tradeoff requires a choice.
 
-1. **The repo is the memory.** Not in `docs/HANDOFF.md` = it didn't happen. Judge state from the file, not from chat or the builder's claims. Memory means the working tree, not git history — the loop files are untracked.
-2. **The builder never grades its own work.** Ignore the builder's narrative ("promising", "working well"). Read raw numbers only. Verdicts belong to the architect and the human.
-3. **Disagreement is mandatory.** A builder that raised zero disagreements failed Phase 0 — push it back. The architect must also disagree with the human when the evidence says so. Be blunt.
-4. **Freeze success criteria before results exist, and never edit them after.** Gates go in the spec before the builder runs. No goalpost-moving once numbers land.
-5. **Architect time on judgment, builder time on typing.** If a task is mechanical, it belongs to the builder.
+Write a bounded spec using [references/slice-spec.md](references/slice-spec.md): goal, ownership, scope, allowed actions, acceptance evidence, relevant contracts, and facts to verify. Include design references and screenshots for user-facing work. Agree on criteria before judging results; record changed criteria as a superseding decision with its reason, never silently lower them to match results.
 
-## Setup (one time per project)
+## Dispatch and inspect
 
-If `docs/HANDOFF.md` does not exist in the active repo, create it from `references/handoff-template.md`: read the template, fill in the project name, and write it to `docs/HANDOFF.md`. Tell the user it exists and that the builder must update it after every work session. Do not invent past results — start with empty result tables.
+Write the spec plus this worker contract to `docs/builder-block.md`, then invoke the selected builder. Use the host's background/session facilities for long runs and remain responsive.
 
-If it already exists, skip setup and go straight to the architect session.
-
-### Keep the loop files out of git
-
-The loop's working files are local-only — they coordinate the loop, they are not project code, and they never get committed. During setup (and whenever the entries are missing), append these patterns to the repo's local exclude file — resolve its path with `git rev-parse --git-path info/exclude` so worktrees work too — skipping any line already present:
-
-```
-docs/HANDOFF.md
-docs/contracts/
-docs/evidence/
-docs/builder-block.md
+```text
+Execute the attached slice within its ownership and allowed actions.
+You are not alone in the codebase. Preserve others' changes.
+Review the plan and relevant files first. Raise concrete objections with evidence; "no objections" is valid after review. Do not invent disagreement or add scope silently.
+Resolve routine choices from evidence. Pause dependent work only for an unresolved consequential choice or missing authority; continue independent work.
+Stabilize shared contracts before concurrent implementation when needed. Coordinate changes that affect another owner's interface.
+Use independent workers only when the host and task authorize delegation and useful disjoint work exists. Prefer a focused reviewer for high-risk changes.
+Complete implementation and the relevant verification. Fix failures caused by the change. Report unrelated failures precisely.
+Do not commit, push, publish, message others, perform destructive operations, or change production unless the allowed-actions field explicitly grants that action. Network access is not permission.
+Record changed files, commands, checked revision/tree state, environment, results, and evidence paths in docs/HANDOFF.md. Include screenshots or observations for visual criteria. Report uncertainty and blockers honestly.
+Keep loop scratch artifacts local; never force-add them.
 ```
 
-Use the local exclude file, never the project's `.gitignore` — the ignore rules themselves must not show up as a tracked change. If any of these paths are already tracked in the repo, do not untrack them yourself; tell the user and let them decide (`git rm --cached` rewrites the index — their call).
+Read the builder's diff, objections, command results, and visual evidence. Rule on actual objections with ACCEPT / REJECT / MODIFY and a reason. A clean review needs no invented objections. If output or handoff is missing, inspect the working tree and transcript and recover usable evidence before requesting more work.
 
-### Pick the builder and model
+## Verify and finish
 
-Read the `Builder:` line in `docs/HANDOFF.md` and match it to a profile in `references/builder-profiles.md`.
+Judge each criterion as PASS, FAIL, or UNVERIFIED with supporting evidence. Screenshots, behavioral observations, and code inspection can support criteria alongside numbers. Missing evidence is UNVERIFIED until checked; it is not proof the implementation failed.
 
-- **No builder recorded and none named by the user:** default to the `codex` CLI running `gpt-5.5` at high reasoning effort. State the default, record `Builder: codex (gpt-5.5 high)` in the file, and move on — no question needed.
-- **A builder is recorded or named (Codex, Cursor CLI, Grok, or other):** discover which models that builder actually exposes before writing the spec — run the model-discovery command from its profile (`codex --help`, `cursor-agent --help`, `grok --help`, or the CLI's model-listing subcommand) rather than trusting memory; fast models churn too quickly to assume. Then confirm with one structured question (AskUserQuestion in Claude Code, the host's equivalent elsewhere): recommended model first with a one-line reason, the other discovered models as alternatives. Record the answer as `Builder: <name> (<model>)` so future sessions skip the question.
+Review recorded verification against the actual changed tree and environment. Rerun affected checks after edits, failures, or incomplete evidence; do not duplicate a valid unchanged gate solely because a worker ran it.
 
-The profile sets only the invocation header of the paste-ready block, the model flag, and any harness notes — never the rules. For a builder with no profile, follow the "new builder" checklist in `references/builder-profiles.md`; the loop works with any agent that can read a spec, disagree, commit, and write numbers to a file.
+Continue iterations within the authorized scope. Stop dispatching when repeated attempts produce no useful progress; investigate the blocker or ask about a concrete rescope. Once the requested local slice and verification are complete, return the verified diff and recommendation. A SHIP recommendation does not itself authorize publication. Perform already authorized follow-through; ask only for missing authority or a consequential unresolved gate.
 
-## Run the architect session
-
-Do these six jobs in order, then loop. This is the whole job.
-
-### 1. Read state
-
-Read `docs/HANDOFF.md` end to end. Extract: the current slice, the frozen gates, the latest raw results, recorded decisions, and the open disagreements the builder raised. If the file is thin or stale, say so — thin memory means the previous loop skipped rule 1.
-
-### 2. Rule on every disagreement
-
-For each open disagreement the builder raised, return exactly one verdict:
-
-```
-- <disagreement> → ACCEPT | REJECT | MODIFY — <one line why>
-```
-
-No hedging, no "it depends." If the builder raised none, that is itself a defect: send it back to redo Phase 0 before any spec.
-
-### 3. Judge raw results against the frozen gates
-
-For each frozen gate, read the raw number from the latest result table and rule it independently. Ignore all prose.
-
-```
-| Gate | Target | Actual | Verdict |
-|------|--------|--------|---------|
-| <gate> | <target> | <raw number, or "—"> | PASS / FAIL |
-```
-
-- A gate with no raw number in `docs/HANDOFF.md` is **FAIL** (rule 1).
-- Do not adjust a target to fit a result (rule 4).
-- Conclude with one overall call: **SHIP / ITERATE / KILL**, one line of reasoning. This is a recommendation; the human owns the final gate (see Stop).
-
-### 4. Write the next slice spec
-
-Write a spec small enough for one PR. It must contain every field below — see `references/slice-spec.md` for the full contract and an example.
-
-- **Goal** — one sentence.
-- **In scope** — what this one PR does.
-- **Out of scope** — explicit list; name the tempting adjacent work and forbid it.
-- **Design direction** — only when the slice has a user-facing surface: visual references, the design system/tokens to follow, and the interaction quality bar. Pair it with design gates below that produce evidence on disk (screenshots under `docs/evidence/<slice-id>/`, a11y/perf scores) so the architect can judge UI raw.
-- **Frozen gates** — hard, measurable acceptance criteria written now, before results. Each gate states its target and how it is measured.
-- **Contracts to freeze** — schemas/interfaces that become read-only in `docs/` once the builder freezes them in Phase 1.
-- **Verify-first** — the APIs, formats, versions, and signatures the builder must confirm against reality (real files, real docs) before writing code. Force this; it is why a short builder session is enough.
-
-### 5. Flag drift, recommend
-
-Before dispatching:
-
-- **Flag scope creep and goalpost-moving** explicitly — both the builder's and the human's. Name it in one line each.
-- State your recommendation plainly. Disagree with the user if the evidence warrants.
-- Give the user a short status line (what the slice does, what the gates are) — they should be able to glance away and come back to a verdict, not a wall of process.
-
-### 6. Dispatch the builder
-
-Compose the builder block, write it to `docs/builder-block.md`, then **invoke the builder yourself** with the dispatch command from the active builder profile (see `references/builder-profiles.md`). Do not hand the block to the user to paste — that is the fallback, not the job.
-
-The block is: the invocation line from the profile, then the slice spec from job 4, then the fixed Phase 0–2 rules. This block is the canonical version — reproduce the `=== RULES ===` half verbatim, never paraphrase it. (Rationale for each phase: `references/builder-goal.md`.)
-
-```
-<invocation line from the builder profile — e.g. "Execute the architect spec below.">
-
-=== SLICE SPEC ===
-<the spec from job 4: goal, in scope, out of scope, design direction (if user-facing), frozen gates, contracts to freeze, verify-first>
-
-=== RULES ===
-PHASE 0 — Before any code, reply with your plan plus every disagreement you have, with reasons, citing real files in the repo. Silent compliance = failure. Silent scope additions = failure.
-PHASE 1 — Freeze the shared contracts (schemas/interfaces) in docs/ first. After freeze they are read-only for everyone, including you.
-PHASE 2 — If your harness supports parallel agents, spawn max 3–4 lane agents on modules that do not import each other; otherwise run the lanes sequentially. Either way, add ONE reviewer pass that never writes feature code: it checks every lane against the spec + tests + frozen docs and returns APPROVE or a numbered defect list. Nothing merges without APPROVE. Then commit each slice — code and tests only — and push if your sandbox allows network; otherwise record the commit sha in docs/HANDOFF.md and leave the push to the architect/human. Update docs/HANDOFF.md with raw results only: tables, numbers, and evidence paths (screenshots saved under docs/evidence/<slice-id>/ for UI work), no interpretation, no "promising." Verdicts belong to the architect and the human. docs/HANDOFF.md, docs/contracts/, docs/evidence/, and the builder block are git-excluded working files — update them on disk, never commit or force-add them.
-```
-
-Dispatch mechanics:
-
-- Run the dispatch command **in a background shell** — builder runs are long and the architect should stay responsive. Feed the block from `docs/builder-block.md` (stdin or argument, per the profile), and check on the run periodically rather than blocking on it.
-- **Phase 0 is a checkpoint, not a fire-and-forget.** If the builder's harness only supports one-shot runs (most exec modes), the block already forces Phase 0 output into the transcript — read the builder's plan and disagreements from the run output afterwards and rule on them in the next loop iteration. If the harness supports resumable sessions (e.g. `codex exec resume`), prefer two turns: dispatch through Phase 0, rule on the disagreements, then resume for Phases 1–2.
-- When the run exits, go to "Close the loop" below. A builder that exits without updating `docs/HANDOFF.md` produced nothing (rule 1) — redispatch once with a sharper block naming the failure; if it happens twice, escalate to the human.
-- **Paste fallback, only when dispatch is impossible** — the CLI is not installed, not authenticated, or the builder only exists inside an IDE (Cursor Composer in-editor). Then emit the block as one fenced paste-ready snippet, say exactly why dispatch failed, and tell the user what to run. Never silently default to this.
-
-## Updating HANDOFF.md
-
-The builder owns the **raw results** rows (tables and numbers only). The architect owns the **decisions**, the **rulings on disagreements**, and the **next slice** — write those back to `docs/HANDOFF.md` so the next loop reads state instead of re-deriving it. Keep verdicts and rulings in the architect-owned sections; never let interpretation leak into the raw-results tables. The file lives only on local disk (git-excluded) — it travels with the working copy, not with pushes.
-
-## Close the loop
-
-When a dispatched run exits, do not stop — judge it. Re-run jobs 1–3 against the updated `docs/HANDOFF.md` and the run output: read state, rule on the new disagreements, judge the raw numbers against the frozen gates. Then route on the verdict:
-
-- **ITERATE within the current scope** — write the next slice (job 4) and dispatch again (job 6) without asking. This is the normal beat of the loop; the human did not hire a team lead to be asked permission for routine iterations.
-- **SHIP or KILL recommendation, or anything one-way-door** — stop and escalate to the human: KILL/continue, scope expansion beyond the current slice, freezing a contract that is expensive to unwind, or any result that contradicts the project's goal. Give a firm recommendation, then let the human decide.
-- **The slice has stalled** — when successive rounds stop moving the gate numbers, the same defect keeps coming back, or each iteration buys less than the last, stop dispatching and escalate with a KILL-or-rescope recommendation. Burning builder runs on a stuck slice is the loop's failure mode; name it instead of feeding it. This is a judgment call — read the trend in the raw results, don't wait for an arbitrary round count.
-
-Between dispatches, write decisions, rulings, and the next slice back to `docs/HANDOFF.md` so the loop survives the session ending mid-flight. End the architect session only when the human has made a gate call, the work is shipped/killed, or the human says stop.
+Keep the handoff current at integration and decision boundaries so another session can resume. For phase rationale, see [references/builder-goal.md](references/builder-goal.md).

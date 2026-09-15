@@ -1,6 +1,6 @@
 ---
 name: youtube-channel-search
-description: Research topics inside a known YouTube channel without a YouTube Data API key. Use when the user provides a YouTube channel URL/handle and wants to find, rank, shortlist, or investigate videos relevant to a topic using channel metadata and optional transcript text.
+description: Find videos about a topic within a supplied YouTube channel using metadata and shortlisted transcripts.
 ---
 
 # YouTube Channel Search
@@ -76,5 +76,6 @@ channel-research/
 
 - `yt-dlp` is required.
 - Date filters use `YYYY-MM-DD` or `YYYYMMDD`. Records with no date are kept, not discarded, because flat catalogs usually omit upload dates.
+- Report the catalog limit, any incomplete fetches, and unknown dates. Do not describe an incomplete or date-unknown catalog as exhaustive coverage of the requested period.
 - The search ranking is lexical, not embedding-based. For broad conceptual research, fetch more transcripts and let the final agent reasoning judge the shortlist.
 - Keep large channel artifacts in `/tmp` unless the user asks to persist them in the repo.

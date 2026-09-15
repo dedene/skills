@@ -304,7 +304,7 @@ async function main() {
       status: 'green',
       statusReason: 'Workflow initialized',
       done: [],
-      remaining: ['Approve phase graph', 'Run phases', 'Reduce results', 'Verify'],
+      remaining: ['Confirm scope against existing authority', 'Run phases', 'Reduce results', 'Verify'],
     },
     phases: [],
     agents: [],

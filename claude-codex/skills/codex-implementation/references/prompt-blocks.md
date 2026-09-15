@@ -1,6 +1,6 @@
-# Prompt Blocks for GPT-5.5 / Codex
+# Prompt Blocks for Codex
 
-Adapted from openai/codex-plugin-cc (Apache-2.0), tuned for gpt-5.5.
+Adapted from openai/codex-plugin-cc (Apache-2.0).
 
 Prompt Codex like an operator, not a collaborator: state the task, the output
 contract, the follow-through default, and only the constraints that matter.
@@ -105,7 +105,7 @@ Prefer primary sources.
 <action_safety>
 Keep changes tightly scoped to the stated task.
 No unrelated refactors, renames, or cleanup unless required for correctness.
-Call out any risky or irreversible action before taking it.
+Do not commit, push, publish, message others, perform destructive operations, or change production unless the brief explicitly authorizes that action. Tool access is not authorization. Preserve others' edits.
 </action_safety>
 ```
 

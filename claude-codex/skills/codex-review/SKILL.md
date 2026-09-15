@@ -1,11 +1,11 @@
 ---
 name: codex-review
-description: Independent GPT-5.5 code review via the Codex CLI — codex review for uncommitted changes, a branch diff, or a commit; adversarial exec mode for challenging a design or premise. Use when the user asks for a codex or gpt review, a second opinion on a diff or plan, or when adding gpt-5.5 as an extra review perspective alongside Claude reviews. Verifies findings against the code before reporting; never auto-fixes.
+description: Obtain an independent Codex CLI review of a diff or design and verify its findings.
 ---
 
 # Codex Review
 
-Get GPT-5.5's independent read on a change, verify its findings yourself, then report. This skill never fixes code — fixing is a separate decision afterwards (often a codex-implementation dispatch).
+Get the configured Codex model's independent review and verify its findings. Keep the review subprocess read-only. When the user's broader request includes fixes, the parent completes confirmed fixes and verification without asking again.
 
 ## 1. Pick scope and mode
 
@@ -14,7 +14,7 @@ Get GPT-5.5's independent read on a change, verify its findings yourself, then r
 | Dirty working tree (default when dirty) | `codex review --uncommitted` |
 | Clean tree on a feature branch | `codex review --base <default-branch>` |
 | A single commit | `codex review --commit <sha>` |
-| Steered review | append instructions: `codex review --uncommitted "focus on the migration rollback path"` |
+| Steered review | Check installed help for compatible scope/prompt flags; if they cannot combine, use read-only `codex exec` with an explicit scope and focus |
 | Challenge a design or premise, not just the diff | adversarial mode — §3 |
 
 Check scope before declaring nothing to review: `git status --short` and `git diff --shortstat` — untracked files count as reviewable work.
@@ -25,14 +25,14 @@ Check scope before declaring nothing to review: `git status --short` and `git di
 
 ```bash
 RUN_DIR="$(mktemp -d "${TMPDIR:-/tmp}/codex-review.XXXXXX")"
-cd "$REPO_ROOT" && codex review --uncommitted \
+cd "$REPO_ROOT" && codex -s read-only review --uncommitted \
   > "$RUN_DIR/review.md" 2>"$RUN_DIR/review.err" </dev/null
 ```
 
 - **Keep `RUN_DIR` outside the repo** (mktemp as shown). Artifacts redirected into the working tree become untracked files that Codex then reviews — self-referential noise findings.
-- **Background by default** (`run_in_background: true`): multi-file reviews at xhigh take minutes. Foreground (with `timeout: 600000`) only for 1-2 file diffs.
+- **Execution:** use the host's background/session mechanism for long reviews and remain responsive. Check `codex --help` and `codex review --help` for the installed version before first use.
 - **Always `</dev/null`** — non-TTY stdin stalls the CLI otherwise.
-- Optional effort override: `-c model_reasoning_effort="high"`. Leave the model unset (config default gpt-5.5).
+- Inherit configured model and reasoning effort, including a GPT-6 Astra profile when configured. Override only for a requested model or documented host policy; no fixed generation or effort default belongs in this skill.
 - On completion, read `review.md`; if it's empty, read `review.err` and the exit code before concluding anything.
 
 ## 3. Adversarial mode
@@ -54,7 +54,7 @@ Codex findings are leads, not conclusions:
 - Plausible-unverified findings listed last, labeled.
 - Point at the raw output: `Raw Codex review: <RUN_DIR>/review.md`.
 - Nothing survives verification → say so plainly. Don't invent issues to seem useful.
-- Never fix anything from this skill, even trivial confirmed findings.
+- Keep the reviewer read-only. If fixes are already authorized, the parent implements confirmed findings and verifies affected behavior before handoff. Otherwise report the findings.
 
 ## Troubleshooting
 
@@ -62,5 +62,5 @@ Codex findings are leads, not conclusions:
 |---|---|
 | Trust/repo-check errors | a git repo is required, but untrusted dirs reviewed fine as of 0.142.5; if it ever blocks, fall back to `codex exec review` (check `codex exec review --help`) |
 | Stalls on `Reading additional input from stdin...` | you dropped `</dev/null` |
-| Killed around 2 minutes | use `run_in_background` |
+| Killed around 2 minutes | use the host's background/session mechanism |
 | Empty review output | check `review.err`; confirm there was something to review (`git status --short`) |

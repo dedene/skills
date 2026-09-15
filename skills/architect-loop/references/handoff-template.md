@@ -1,13 +1,14 @@
 # HANDOFF — <project>
 
-> The repo is the brain. If it isn't in this file, it didn't happen.
-> Builder writes **raw results only** — tables and numbers, no interpretation, no "promising."
+> Reconcile this record with the working tree and logs; missing entries mean missing records.
+> Builder records inspectable results: commands, observations, screenshots, and uncertainty.
 > Verdicts and rulings belong to the architect and the human.
-> Local-only: this file, `docs/contracts/`, `docs/evidence/`, and `docs/builder-block.md` are git-excluded — never commit them (see the skill's "Keep the loop files out of git").
+> Local-only: this file, `docs/contracts/`, `docs/evidence/`, and `docs/builder-block.md` are git-excluded — never commit them unless the user or repository explicitly requires tracked artifacts.
 
 <!-- All <angle-bracket> rows below are placeholders — replace or delete them on first real use; do not leave them behind. -->
 
-Builder: <name (model) — e.g. codex (gpt-5.5 high), cursor (composer), grok (…) — see the skill's builder-profiles reference>
+Builder: <name and requested/recorded model or configured default>
+Allowed actions: <explicit grants; default local edits and verification only, no commit, push, publication, messages, destructive operations, or production changes>
 
 ## Current slice
 
@@ -27,16 +28,17 @@ Schemas and interfaces frozen in Phase 1. Do not edit after the freeze date — 
 
 ## Raw results (latest first — builder fills, no interpretation)
 
-<!-- Numbers only. No pass/fail, no narrative — verdicts belong to the architect's rulings below. -->
+<!-- Record command, checked tree/revision, environment, result, and qualitative/visual evidence as relevant. -->
 
 ### `<slice-id>` — <YYYY-MM-DD>
 
 | Gate | Target | Actual |
 | --- | --- | --- |
-| <gate> | <target> | <raw number> |
+| <gate> | <target> | <observed result or evidence path> |
 
-- Commit / PR: <link or sha>
-- Reviewer agent: APPROVE / defect list ref
+- Checked tree/revision: <sha plus uncommitted diff or tree identity>
+- Commit / PR: <only if explicitly authorized and created; otherwise "not requested">
+- Review: <no objections / defect list with evidence / not needed for this risk>
 - Evidence: <paths under docs/evidence/<slice-id>/ — screenshots, logs, score reports — or "—">
 
 ## Decisions (what + why) — architect-owned

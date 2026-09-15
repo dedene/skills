@@ -1,6 +1,6 @@
 # Codex Prompt Recipes
 
-Adapted from openai/codex-plugin-cc (Apache-2.0), tuned for gpt-5.5.
+Adapted from openai/codex-plugin-cc (Apache-2.0).
 Copy the smallest recipe that fits, fill the angle-bracket slots, trim what
 you don't need. One task per run — unrelated asks get separate runs.
 Blocks are defined in [prompt-blocks.md](prompt-blocks.md).
@@ -20,12 +20,14 @@ Resolve the task fully before stopping. Do not stop at the first plausible versi
 </completeness_contract>
 
 <verification_loop>
-Run `<gate command>` and fix failures until it passes. Report the final output.
+Run `<gate command>` and fix failures caused by this change. Report unrelated failures separately. Record the checked tree/revision, environment, command, and result. Repeat only after relevant changes or incomplete evidence.
 </verification_loop>
 
 <action_safety>
 Keep changes tightly scoped to the stated task.
 No unrelated refactors, renames, or cleanup.
+Allowed actions: <explicit user-authorized actions; default local edits and verification only>.
+Do not commit, push, publish, message others, perform destructive operations, or change production without an explicit grant above. Preserve other workers' edits.
 </action_safety>
 
 <structured_output_contract>
@@ -84,7 +86,7 @@ Dispatch with `-s read-only`; after your review: `git apply <diff-file>`.
 ## Follow-up delta (same Codex session)
 
 ```bash
-codex exec resume --last "<delta instruction only>" </dev/null
+codex exec resume <session-id> "<delta instruction only>" </dev/null
 ```
 
 Send only what changed — "also handle the empty-list case in average() and add a test for it" — not a restatement of the whole brief. Restate the brief only when direction changed materially.
@@ -109,4 +111,4 @@ Back important claims with references to inspected sources. Prefer primary sourc
 </citation_rules>
 ```
 
-Dispatch with `-s read-only` (config allows network, so web research works).
+Dispatch with `-s read-only`; confirm available network/research capabilities from the active host instead of assuming sandbox names imply access.

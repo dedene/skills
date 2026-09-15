@@ -1,6 +1,6 @@
 ---
 name: autopilot-interview
-description: Use when stress-testing, speccing, or refining a plan; or when the user asks to be grilled or interviewed in detail about technical implementation, UI/UX, concerns, tradeoffs, scope, rollout, or risks.
+description: Interview or stress-test a plan when the user requests it. Resolve routine choices and surface consequential unresolved decisions.
 ---
 
 # Autopilot Interview
@@ -13,7 +13,7 @@ When the user asks to be interviewed or grilled in detail, use the same default 
 
 1. Find the plan in the conversation, repo, issue, PRD, or named file. If none is clear, ask what to interview.
 2. Capture the completion target if the user gave one: write a spec to a file, produce an implementation plan, proceed to implementation, or return a resolved plan in chat.
-3. When file writes are allowed, create a scratch decision log:
+3. When resumability or a substantial decision history warrants it and file writes are allowed, create a scratch decision log. Keep short interviews in conversation:
 
    ```bash
    node <this-skill-dir>/scripts/new-autopilot-interview-run.mjs "short plan title" --root .
@@ -24,7 +24,7 @@ When the user asks to be interviewed or grilled in detail, use the same default 
 
 ## Default Auto-Interview
 
-Use this for every interview, spec, plan refinement, or stress-test. For quick stress-tests, still build the map internally but ask only the highest-stakes questions. For explicit interview requests, run the map at full intensity.
+Use this for explicitly requested interviews or stress-tests. For quick stress-tests, still build the map internally but ask only the highest-stakes questions. For explicit interview requests, run the map at full intensity.
 
 Before asking questions, build a question map across all relevant domains:
 
@@ -53,29 +53,16 @@ Repeat until no meaningful open questions remain:
    - `human`: a one-way door: hard to reverse, expensive to unwind, preference-defining, or likely to shape product direction, architecture, cost, risk, or user promise.
    - `skip`: cosmetic, premature, or unlikely to change the plan.
 4. For `auto`, choose the recommendation yourself and record it.
-5. For `human`, ask exactly one question with 2-3 concrete options, put the recommended option first, and wait. Use the host's structured ask-user mechanism when available.
+5. For `human`, first check whether the brief or prior answers already settle it. If unresolved, ask one concrete question with the recommendation and tradeoffs. Use the host's structured question mechanism when supported for this question type. Pause only dependent work; continue independent work while waiting.
 6. Record the exact decision question, options, and answer before moving on.
 
 Do not stop just because the current plan has no obvious holes. Re-scan the auto-interview map for hidden forks, edge states, and downstream tradeoffs before ending.
 
 ## Escalation Rule
 
-Use one-way door vs. two-way door judgment.
+Resolve routine choices from evidence, conventions, and established preferences. A choice affecting architecture, UX, or cost does not automatically need a question. Disagreement between reasonable teams is not enough either.
 
-Auto-decide when all are true:
-
-- There is a valid smart answer.
-- The answer is easy to change later.
-- A wrong answer would not waste much implementation effort.
-- The choice does not lock product, architecture, data, security, cost, rollout, or user promise.
-
-Ask the user when any are true:
-
-- The decision is hard to reverse or expensive to unwind.
-- The choice would commit product or system direction in a way that is hard to reverse, such as a public API, migration, dependency, security posture, billing model, or rollout path.
-- Reasonable strong teams would choose differently and downstream work depends on the answer.
-
-When unsure, ask: "If this is wrong, can we change it cheaply after implementation starts?" If yes, auto. If no, ask.
+Ask when a decision remains unresolved and materially changes the requested outcome, crosses authority, or creates costly rework. Reuse decisions and authorization already supplied. Explain the relevant findings, recommendation, and downstream effect so the user can answer without reading tool output. Continue independent work while the answer is pending.
 
 ## Question Format
 

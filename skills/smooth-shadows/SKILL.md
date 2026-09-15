@@ -1,6 +1,6 @@
 ---
 name: smooth-shadows
-description: "Generate smooth, multi-layer box-shadow CSS that faithfully recreates the classic shadows.brumm.af / Tobias Ahlin layered technique. Use when you need soft, realistic elevation for cards, buttons, modals, overlays, or any UI element instead of a single harsh shadow. Supports the original controls: style (soft/sharp/linear), number of layers, vertical & horizontal distance, blur, base opacity, and shadow color. Produces ready-to-paste CSS or Tailwind arbitrary values."
+description: Generate layered box-shadow CSS or Tailwind values when the requested design needs smooth elevation.
 ---
 
 # Smooth Shadows
@@ -38,7 +38,7 @@ The skill will return the full `box-shadow` value (and usually a Tailwind versio
 ## Workflow
 
 1. **Understand the request**  
-   Extract (or ask for) the visual intent: how "lifted" does it feel? Soft & dreamy, crisp & defined, or even linear? Any dark mode context?
+   Infer elevation and softness from the request or existing design. Use the defaults below when direction is unspecified; ask only if the choice materially changes the intended design.
 
 2. **Choose good defaults or map the request**  
    - Soft card / modal lift → style=soft, 4–6 layers, vertical 24–40, low opacity (0.06–0.10)
@@ -48,16 +48,8 @@ The skill will return the full `box-shadow` value (and usually a Tailwind versio
 3. **Generate (preferred: use the deterministic script)**  
    Call the bundled script for pixel-perfect, repeatable output instead of the model inventing numbers.
 
-4. **Present & refine**  
-   Return:
-   - The raw `box-shadow` value
-   - A ready `<div style="box-shadow: ...">` or CSS rule snippet
-   - Tailwind arbitrary value version
-   - One-sentence note on why these numbers (e.g. "5 layers with geometric progression gives the classic soft falloff")
-
-5. **Offer variations**  
-   "Want a slightly more dramatic version? I can give you vertical 48 / 6 layers."  
-   "Dark surface? I can regenerate with --dark."
+4. **Present or integrate**
+   Return the requested format, defaulting to a CSS declaration, or apply it when implementation was requested. Include parameter rationale only when useful. Offer variations only when the user is comparing designs.
 
 ## Scripts
 

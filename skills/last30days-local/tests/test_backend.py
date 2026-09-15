@@ -1,13 +1,23 @@
 from __future__ import annotations
 
 import unittest
+from unittest.mock import patch
 from pathlib import Path
 
 import tests  # noqa: F401
-from engine.backend import BackendError, extract_payload
+from engine.backend import AsideBackend, BackendError, extract_payload
 
 
 FIXTURES = Path(__file__).resolve().parent / "fixtures"
+
+
+class ExecutableTests(unittest.TestCase):
+    def test_resolves_executable_without_a_personal_home_path(self) -> None:
+        with patch.dict("os.environ", {}, clear=True):
+            self.assertEqual(AsideBackend().aside_bin, "aside")
+        with patch.dict("os.environ", {"ASIDE_BIN": "/opt/team tools/aside"}):
+            self.assertEqual(AsideBackend().aside_bin, "/opt/team tools/aside")
+            self.assertEqual(AsideBackend("/custom/aside").aside_bin, "/custom/aside")
 
 
 class ExtractPayloadTests(unittest.TestCase):

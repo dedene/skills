@@ -1,11 +1,11 @@
 ---
 name: youtube-transcript
-description: Fetch YouTube transcripts/subtitles into cached local files, including timestamped and timestamp-free text artifacts, without loading the full transcript into the agent context by default. Use when the user provides a YouTube URL or video ID and asks to get, fetch, download, search, excerpt, summarize, or otherwise use a YouTube transcript/captions/subtitles file.
+description: Fetch, search, or summarize captions for a supplied YouTube video using cached transcript files.
 ---
 
 # YouTube Transcript
 
-Fetch YouTube captions with `yt-dlp`, save durable transcript artifacts, and keep the full transcript out of context unless the user explicitly asks to inspect it.
+Fetch YouTube captions with `yt-dlp` and save durable transcript artifacts. Use excerpts for narrow questions; read the full timestamp-free text when a complete summary or other whole-video task requires it, without asking for separate permission.
 
 This skill is based on the workflow shape of Jim Liu's `baoyu-youtube-transcript` skill, but uses a compact Python wrapper around `yt-dlp` as the primary fetcher.
 

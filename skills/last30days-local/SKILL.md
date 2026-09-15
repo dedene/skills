@@ -1,6 +1,6 @@
 ---
 name: last30days-local
-description: Research what people said about a topic in the last 30 days across X, Reddit, Hacker News, YouTube, LinkedIn, Threads, TikTok, Instagram, Bluesky, GitHub, Pinterest, Polymarket, and the web — no API keys, using the local logged-in browser (Aside) plus yt-dlp, gh, and keyless HTTP. Use when the user asks what's being said about a topic recently, wants a "last 30 days" research sweep, social sentiment, or recent community reaction to a product, tool, or event.
+description: Research recent community discussion across supported social sources when the user requests a recent-reaction or last-30-days sweep.
 ---
 
 # Last 30 Days (Local)
@@ -11,7 +11,7 @@ Multi-source recent-post research with zero API keys. Browser sources run throug
 
 ## Requirements
 
-- `aside` CLI at `~/.local/bin/aside` with the Aside browser running and logged in to the sources you need (x.com, linkedin.com, threads.com, tiktok.com, instagram.com, pinterest.com).
+- `aside` CLI on PATH (or set `ASIDE_BIN` to its executable path), with the Aside browser running and logged in to the sources you need (x.com, linkedin.com, threads.com, tiktok.com, instagram.com, pinterest.com).
 - `yt-dlp` on PATH for the youtube source (`brew install yt-dlp`).
 - `gh` authenticated for the github source (`brew install gh && gh auth login`).
 - reddit, hackernews, bluesky, web, and polymarket need nothing.
@@ -49,7 +49,7 @@ python3 $SKILL/scripts/last30days.py search linkedin "QUERY" --days 30 --limit 1
 # optional: threads, tiktok, instagram, pinterest the same way
 ```
 
-3. **Login walls halt, not fail.** Exit code 3 means that source needs a login. Tell the user which site to log into in the Aside browser, then rerun with `--wait-login` (retries every 20s, up to 10 min) or skip the source and say so in the report.
+3. **Keep working around unavailable sources.** Exit code 3 means that source needs a login. Continue other sources and disclose the gap. Ask for login only when that source is necessary to the requested result. Once the user completes login, rerun that source; use `--wait-login` only when waiting is useful and does not block independent work.
 
 4. **Enrich what matters.** For the 2–3 highest-engagement Reddit threads and HN stories, pull top comments:
    `python3 $SKILL/scripts/last30days.py comments reddit <subreddit> <t3_postid> --json`
@@ -60,7 +60,7 @@ python3 $SKILL/scripts/last30days.py search linkedin "QUERY" --days 30 --limit 1
 
 ## Report format
 
-Start with a badge line, then findings:
+Lead with evidence-backed findings, then source coverage. Adapt length to the question; the following is an optional detailed report shape:
 
 ```
 🌐 last30days · <topic> · <date range> · N sources
@@ -83,7 +83,7 @@ Cite with real URLs from the items. Note date confidence when it's weak (linkedi
 
 ## Backends & environment
 
-`--backend aside` is the default and only built-in backend today. The engine isolates all browser I/O behind `engine/backend.py` (`Backend` protocol, `BACKENDS` registry): a Codex-app Chrome-plugin backend or an agent-browser/browser-harness backend can be added there without touching adapters. From environments without Aside, port a backend first; don't shell out to other browser tools ad hoc.
+`--backend aside` is the only built-in browser backend. Use it only when available and permitted by the host's browser policy. Otherwise continue with supported non-browser sources and disclose coverage limits. A supported browser tool may supply supplemental observations, clearly labeled separately from this script's results. Do not turn a research request into backend development. Adding another backend under `engine/backend.py` is a separate maintenance task requiring adapter tests and a scoped live smoke check.
 
 ## Rules
 

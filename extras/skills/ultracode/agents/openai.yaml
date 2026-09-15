@@ -1,4 +1,6 @@
 interface:
   display_name: "Ultracode"
-  short_description: "Codex dynamic workflows with phase dashboards, bounded subagents, durable ledgers, and verification."
-  default_prompt: "Use ultracode for this complex task: first choose Direct, Thin, Durable, or Runner mode; if a dynamic run is warranted, present a phase plan and approval card, run bounded subagents where useful, show progress in the main thread, reduce and verify results, clean up resources, and write durable artifacts only when they preserve useful workflow state."
+  short_description: "Coordinate scoped workflows with resumable state"
+  default_prompt: "Use $ultracode to complete the requested work within my stated scope and authority."
+policy:
+  allow_implicit_invocation: false
