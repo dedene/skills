@@ -1,0 +1,4 @@
+interface:
+  display_name: "Idea to Visual"
+  short_description: "Brainstorm and generate simple explainer visuals"
+  default_prompt: "Use $idea-to-visual to turn this idea into a simple explanatory visual (brainstorm concepts, then write or run the image prompt):"
