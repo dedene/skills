@@ -1,0 +1,72 @@
+{
+  "skill_name": "lead-offer",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "I run a 4-person plumbing company in Columbus, Ohio. Our site gets traffic but most people never call. Right now we have a 'Join our newsletter' box in the footer. What should we give away instead, and what happens after they sign up?",
+      "expected_output": "Should check for .agents/business-context.md and, when it is missing, run a short mini-brief or ask only the missing essentials (ideal customer, primary CTA, proof, locale). Should keep calling or booking as the primary CTA and position the lead offer as a secondary path. Should explain that a newsletter signup is not a lead magnet. Should pick a problem-aware or decision-stage format that solves one slice of the problem (DIY quick-win checklist, seasonal checklist, or a simple price estimator) and write a result + constraint title with alternatives. Should deliver an opt-in page, a thank-you page that offers the call or booking as the next step, and a 3-5 email nurture ending in a direct invitation. Should use proof placeholders instead of invented testimonials or download counts and cite rule IDs.",
+      "assertions": [
+        "Checks for .agents/business-context.md before asking questions",
+        "Asks only for missing essentials or runs the 5-question mini-brief",
+        "Keeps the call or booking as the primary CTA and the lead offer as secondary (LEAD-01 or CTA-10)",
+        "States that a newsletter signup is not a lead magnet (LEAD-10)",
+        "Proposed offer solves one slice of the problem the plumber is hired for (LEAD-03)",
+        "Title follows result + constraint and at least two alternatives are given",
+        "Thank-you page offers booking or a call as the next step",
+        "Nurture sequence has 3-5 emails and ends with a direct invitation",
+        "Uses [PROOF NEEDED: ...] placeholders instead of invented testimonials or numbers",
+        "Cites rule IDs such as LEAD-04, THANKS-02 or FORM-01"
+      ],
+      "files": []
+    },
+    {
+      "id": 2,
+      "prompt": "We're a physiotherapy practice in Gent with three therapists. Our .agents/business-context.md is filled in. We'd like a free lead magnet for people with lower back pain who aren't ready to book yet, plus the opt-in page and follow-up emails. The site is Dutch.",
+      "expected_output": "Should read .agents/business-context.md first and not re-ask what it already answers. Should apply the BE/EU layer: write the opt-in, thank-you page and emails in Belgian Dutch with an appropriate formality, either describe the email series honestly as the deliverable or use a separate unticked marketing consent checkbox, add a privacy line near the form, and flag that physiotherapy is a regulated profession whose advertising rules must be checked before using testimonials or before/after claims. Should choose a format that fits the topic and the person (short video routine or timed challenge rather than a long PDF). Should not invent patient testimonials or results. Should suggest belgisch-nederlands-redacteur for a final polish if available.",
+      "assertions": [
+        "Reads .agents/business-context.md and does not re-ask covered fields",
+        "Opt-in, thank-you page and emails are written in Dutch (Belgian usage)",
+        "Applies the lead-magnet consent pattern from be-eu.md (BE-11 or BE-12)",
+        "Marketing consent checkbox, if used, is separate and unticked",
+        "Adds a privacy line or privacy-notice link near the form (BE-13)",
+        "Flags regulated-profession advertising rules for physiotherapists (BE-26)",
+        "Picks a format that fits a movement topic (video or challenge) with a reason (LEAD-08)",
+        "Does not invent patient testimonials, ratings or outcome numbers",
+        "Mentions belgisch-nederlands-redacteur as an optional polish step"
+      ],
+      "files": []
+    },
+    {
+      "id": 3,
+      "prompt": "We're a B2B consultancy that helps SMEs adopt AI safely. Everyone in our space offers a PDF whitepaper. I want an interactive quiz or small tool instead that captures leads and books discovery calls. Can you spec it and write the page and emails? Maybe we should make the quiz the main button in our hero?",
+      "expected_output": "Should push back on making the quiz the hero's primary CTA and keep the discovery call primary. Should spec a scored assessment or micro-app that passes the 'it takes X and gives me Y' test, with logic grounded in the consultancy's real method or pricing data and published on its own domain. If it is a quiz, the email is requested just before the result is revealed and the result is genuinely tailored. Should note that a custom GPT is a dated option. Should write the opt-in, a thank-you page that offers the discovery call, and nurture emails tailored by quiz result. Should list build notes and open gaps instead of inventing client results.",
+      "assertions": [
+        "Keeps the discovery call as the primary CTA and rejects the quiz as the hero's main button (LEAD-01 or CTA-10)",
+        "Applies the micro-app scope test 'takes X, gives Y' (LEAD-14)",
+        "Requires logic grounded in the business's real data rather than invented output",
+        "Places the email capture just before the quiz result (LEAD-12)",
+        "Personalized result is genuinely tailored to answers (LEAD-09)",
+        "Nurture emails vary by quiz result or segment",
+        "Thank-you page offers booking the discovery call",
+        "Output follows the contract: Summary, Offer spec, Opt-in page, Thank-you page, Nurture sequence, Honesty and compliance checks, Open gaps"
+      ],
+      "files": []
+    },
+    {
+      "id": 4,
+      "prompt": "Wij zijn een webbureau in Kortrijk. We willen een gratis website-scan aanbieden als lead magnet, met een afteltimer van 48 uur en 'nog maar 2 plaatsen deze maand' op de pagina om mensen te laten beslissen. Schrijf ook de opvolgmails.",
+      "expected_output": "Should answer and write the copy in Belgian Dutch. Should refuse fake urgency: no resetting countdown timer and no spot count unless it reflects real capacity, citing SCAR-01 and BE-22, and should ask what the agency's real monthly capacity or seasonal constraint is. Should offer honest alternatives (a true capacity line, a seasonal window, or no urgency at all). Should check that the free scan is actually free with no hidden follow-up cost (BE-21). Should still deliver the offer spec, opt-in page, thank-you page with the booking step, and 3-5 nurture emails, with the consent pattern for EU lead magnets.",
+      "assertions": [
+        "Responds and writes the copy in Belgian Dutch",
+        "Declines a fake or resetting countdown timer and invented spot counts (SCAR-01 or BE-22)",
+        "Asks for the agency's real capacity or constraint before using any scarcity line",
+        "Offers an honest alternative such as a real capacity line or seasonal window (SCAR-02 or SCAR-04)",
+        "Checks that the free scan carries no hidden cost (BE-21)",
+        "Applies separate marketing consent or an honestly described email series (BE-11 or BE-12)",
+        "Thank-you page offers a booking step using the primary CTA wording",
+        "Nurture sequence has 3-5 emails with rule-ID annotations"
+      ],
+      "files": []
+    }
+  ]
+}

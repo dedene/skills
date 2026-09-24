@@ -1,0 +1,4 @@
+interface:
+  display_name: "Site Brief"
+  short_description: "Draft a service business context file"
+  default_prompt: "Use $site-brief to build or refresh .agents/business-context.md for this website, drafting from what already exists and asking me only about the gaps."

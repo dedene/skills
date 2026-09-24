@@ -1,0 +1,92 @@
+{
+  "skill_name": "site-brief",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "I run a small plumbing company in Leeds, mostly emergency call-outs and boiler repairs. Our site is https://example-plumbing.co.uk. Can you set up the business context so we can fix the website after?",
+      "expected_output": "Should check whether .agents/business-context.md exists and, finding none, create it. Should auto-draft from the URL first (agent-browser if available, otherwise a plain fetch), logging the pages used, before asking the owner anything. Should tag every field as confirmed, inferred (with source) or missing. Should settle offer mix, traffic temperature and locale early, noting a UK locale so the be-eu layer stays off. Should then interview one question at a time, starting with the ideal customer and trigger event, then the site's one job and what happens after the click (for an emergency trade, likely a phone call). Should not invent reviews, ratings or testimonials; missing proof becomes [PROOF NEEDED: ...] placeholders. Should write v1 with a changelog line and reply with the confirmed / inferred / missing summary and a suggested next skill.",
+      "assertions": [
+        "Checks for .agents/business-context.md before asking questions",
+        "Drafts from the URL before interviewing",
+        "Lists the source URLs used",
+        "Tags each field as confirmed, inferred or missing",
+        "Asks one question at a time, starting with the ideal customer",
+        "Asks what happens after the primary CTA is clicked",
+        "Does not invent reviews, ratings or testimonials",
+        "Uses [PROOF NEEDED: ...] placeholders for missing proof",
+        "Does not apply the Belgium/EU layer to a UK business",
+        "Writes v1 with a changelog entry",
+        "Reply separates confirmed, inferred and missing fields and names a next skill"
+      ],
+      "files": []
+    },
+    {
+      "id": 2,
+      "prompt": "We added a sports-injury package to our physiotherapy clinic and changed our prices. Can you update our business context? It's already in .agents/business-context.md.",
+      "expected_output": "Should read the existing .agents/business-context.md first and report its version, recent changelog entries and fields still inferred or missing. Should refresh only the affected sections (offer mix, pricing stance, possibly the homepage-type decision and proof for the new package) instead of re-running the whole interview. Should re-check the homepage type rule based on revenue share. Should ask whether prices are shown to consumers incl. VAT if the clinic is in the EU and should flag professional-body advertising limits for a regulated health profession. Should bump the version, update the date and prepend a changelog line naming the sections touched and why, without rewriting older entries. Should not invent patient testimonials or outcome numbers for the new package.",
+      "assertions": [
+        "Reads the existing context file before asking anything",
+        "Reports the current version and recent changelog",
+        "Limits questions to the changed sections",
+        "Re-evaluates homepage type from the new offer mix",
+        "Flags regulated-profession limits on proof or advertising",
+        "Bumps the version and prepends a changelog entry",
+        "Keeps previous changelog entries unchanged",
+        "Does not invent testimonials or outcome numbers for the new package"
+      ],
+      "files": []
+    },
+    {
+      "id": 3,
+      "prompt": "Here's our repo for a B2B operations consultancy. Build the website brief. Honestly we help basically every kind of company, and what makes us different is quality, great service and fair prices. We'd rather not publish any prices.",
+      "expected_output": "Should auto-draft from repo files (README, PRODUCT.md, content or copy folders, meta descriptions) before interviewing. Should push back on 'every kind of company' by asking for one ideal customer with a trigger event, and capture an anti-persona. Should treat 'quality, service, fair prices' as table stakes and ask for a number, guarantee, process detail or named signature method, citing BRIEF-08 or BRIEF-07. Should push back once; if answers stay vague, record them verbatim, mark them weak and list follow-up questions. Should record the pricing stance, default to ranges plus cost factors and record the reason the owner resists (BRIEF-09). Should cite BRIEF rule IDs when explaining why a field matters.",
+      "assertions": [
+        "Drafts from repo files before interviewing",
+        "Pushes back on 'every kind of company' and asks for a trigger event",
+        "Captures an anti-persona",
+        "Challenges 'quality, service, fair prices' as table stakes",
+        "Asks for a named signature method or concrete process",
+        "Proposes ranges plus cost factors as the pricing default and records the owner's reason",
+        "Records vague answers as weak instead of polishing them",
+        "Cites BRIEF rule IDs"
+      ],
+      "files": []
+    },
+    {
+      "id": 4,
+      "prompt": "Maak de business context voor ons webbureau in Gent (zenjoy.be). We werken vooral in het Nederlands, soms Engels voor internationale klanten. Kort houden graag, ik heb maar 10 minuten.",
+      "expected_output": "Should detect the Belgian locale and read be-eu.md. Should run quick mode: auto-draft from the site, then ask only the five core fields (ideal customer, one job + primary CTA, offer/pricing stance, proof available, locale) and leave the rest tagged missing. Should record languages per BE-01 (NL primary, EN only if the team serves in it), formality je/u per language (BE-03), legal identification fields such as KBO number, VAT number and email (BE-08), and whether prices are shown excl. or incl. btw (BE-20). Should keep customer language verbatim in Dutch with sources and not translate phrases into English. Should interview in Dutch. Should not quote stats from the references as facts. Should suggest belgisch-nederlands-redacteur if available for NL phrasing.",
+      "assertions": [
+        "Reads be-eu.md for a Belgian business",
+        "Interviews in Dutch",
+        "Runs quick mode with only the five core questions",
+        "Leaves unasked fields tagged missing instead of guessing",
+        "Records languages and je/u formality per language",
+        "Records legal identification fields (KBO, VAT, email)",
+        "Records whether prices are shown incl. or excl. btw",
+        "Keeps customer language verbatim in Dutch with sources",
+        "Does not present illustrative stats as fact",
+        "Mentions belgisch-nederlands-redacteur if available"
+      ],
+      "files": []
+    },
+    {
+      "id": 5,
+      "prompt": "Draft the business context for our AI consultancy sub-brand from the repo and https://example-ai-studio.test. The owner is on holiday for two weeks, so don't wait for answers. The live site says we serve 'all organisations' with five equal services. docs/business-case-2026-06.md (dated June 2026, marked 'decided by owner') says we focus on care and social-profit organisations with a private-AI offer. docs/pitch-notes.md (undated) lists different prices from docs/pricing-draft-2026-08.md, which calls its prices 'recommendations'. We have no revenue per service yet.",
+      "expected_output": "Should run draft mode: no interview, write .agents/business-context.md with every field tagged and 'draft, not owner-reviewed' in the header. Should apply source precedence (owner in session > dated owner decisions in docs > live site > older or undated docs): tag the care/social-profit focus as decided with the doc and date, and log the live site's 'all organisations' under Conflicts & weak spots. Should tag the recommended prices as inferred (planned), not decided, and mark the price disagreement between the undated pitch notes and the dated draft appropriately. Should fill the B2B block (buyer vs user role, buying group, sales cycle, procurement or public tenders, DPA/security expectations) and skip life stage and self-image. Should decide the homepage type by the strategic priority offer, since there is no revenue split. Should end the file with Questions for the owner (max 8, priority order, conflicts first, each showing the inferred value). The status count should count field lines per tag. Should not invent proof, and the chat reply should only summarize.",
+      "assertions": [
+        "Runs draft mode without blocking on an interview",
+        "Header marks the file as a draft, not owner-reviewed",
+        "Tags the dated owner decision as decided: <doc, date>",
+        "Logs the live site vs business-case disagreement under Conflicts & weak spots",
+        "Tags recommended prices as inferred (planned), not decided or confirmed",
+        "Fills the B2B block and skips B2C-only fields such as life stage",
+        "Decides homepage type by strategic priority offer and records why",
+        "File ends with Questions for the owner, at most 8, conflicts first",
+        "Status count includes decided and conflict and counts field lines",
+        "Does not invent testimonials, client names or numbers"
+      ],
+      "files": []
+    }
+  ]
+}

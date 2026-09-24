@@ -1,0 +1,4 @@
+interface:
+  display_name: "Page Copy"
+  short_description: "Write service-business page copy"
+  default_prompt: "Use $page-copy to write or rewrite the copy for this page:"

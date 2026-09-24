@@ -1,0 +1,4 @@
+interface:
+  display_name: "Lead Offer"
+  short_description: "Design lead magnets, opt-ins and nurture emails"
+  default_prompt: "Use $lead-offer to design a transitional offer, opt-in page, thank-you page and nurture emails for this service business:"

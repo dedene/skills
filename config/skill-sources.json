@@ -239,5 +239,25 @@
     "name": "test-scenarios",
     "source": "/Users/peter/Development/Zenjoy/Projects/prompt-engineering-club/plugins/zenjoy/skills/test-scenarios",
     "targets": []
+  },
+  {
+    "name": "site-brief",
+    "source": "/Users/peter/Development/Personal/skills/skills/site-brief",
+    "targets": []
+  },
+  {
+    "name": "conversion-audit",
+    "source": "/Users/peter/Development/Personal/skills/skills/conversion-audit",
+    "targets": []
+  },
+  {
+    "name": "page-copy",
+    "source": "/Users/peter/Development/Personal/skills/skills/page-copy",
+    "targets": []
+  },
+  {
+    "name": "lead-offer",
+    "source": "/Users/peter/Development/Personal/skills/skills/lead-offer",
+    "targets": []
   }
 ]

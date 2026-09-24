@@ -1,0 +1,81 @@
+{
+  "skill_name": "page-copy",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Write the homepage copy for my plumbing business in Leeds. We do emergency call-outs 24/7 plus boiler installs and servicing. Most jobs are emergencies. We have 212 Google reviews at 4.8 stars.",
+      "expected_output": "Should check for .agents/business-context.md first and, since it is missing, ask only the mini-brief questions the prompt doesn't answer (e.g. what happens after the click, pricing stance, quotable clients). Should pin page type (homepage), traffic temperature and locale (UK English) at the top. Should treat emergency work as the dominant offer (STRUCT-01) and use the emergency-trade deviation: benefits and proof right after the hero (C17), click-to-call plus a short callback form (C11/C12). Should pick a problem-style headline by business type (HERO-02) and cite it. Should use the real 4.8 / 212 reviews as hero proof, but put placeholders like [PROOF NEEDED: …] for testimonials, response times or job counts it wasn't given. Should deliver the output contract: wireframe table, copy per section annotated with rule IDs, 2-3 headline and CTA alternatives, and an open-gaps list.",
+      "assertions": [
+        "Checks for .agents/business-context.md before asking questions",
+        "States page type, traffic temperature and language at the top",
+        "Chooses a headline formula by business type and cites HERO-02",
+        "Uses click-to-call or a short callback path for emergencies (cites C11, C12 or the cta-forms booking table)",
+        "Places benefits and proof early, citing the emergency deviation (C17)",
+        "Uses the provided 4.8 rating and 212 reviews without inventing other numbers",
+        "Uses [PROOF NEEDED: ...] placeholders for testimonials or stats not supplied",
+        "Output has a wireframe table",
+        "Each copy section is annotated with rule IDs",
+        "Provides 2-3 headline alternatives and 2-3 CTA alternatives",
+        "Ends with an Open gaps list",
+        "Does not produce HTML"
+      ],
+      "files": []
+    },
+    {
+      "id": 2,
+      "prompt": "We're a physiotherapy clinic. We're running Facebook ads for a free 20-minute back-pain assessment aimed at office workers aged 35-55. Write the landing page the ad sends people to. Our business context file is in .agents/business-context.md.",
+      "expected_output": "Should read .agents/business-context.md and ask only for what's missing (e.g. the ad's exact headline and visuals). Should classify this as a paid landing page with cold paid traffic and follow the paid LP order (STRUCT-03): eyebrow and headline echoing the ad, no navigation, one action only with no secondary CTA, 3-5 testimonials on the page itself. Should pick a transformation or problem headline (HERO-02) and show the after-state image brief (patient doing what they love, not the treatment room, HERO-12). Button text should be specific ('Book your free back assessment'), with a booster line (CTA-08) and a self-booking scheduler as the after-click path. Testimonials should match the 35-55 office-worker persona (PROOF-04). Should flag medical advertising limits as something to check and never invent recovery statistics.",
+      "assertions": [
+        "Reads .agents/business-context.md and does not re-ask what it contains",
+        "Identifies page type as paid landing page and traffic as cold/paid",
+        "Follows the paid landing page order and cites STRUCT-03",
+        "Removes navigation and has no secondary CTA (cites C2 or C1)",
+        "Eyebrow or headline echoes the ad's audience or promise",
+        "CTA wording is specific and includes a booster line (CTA-02, CTA-08)",
+        "Recommends a self-booking scheduler as the after-click path",
+        "Image brief shows the patient's after-state, not the clinic (HERO-12)",
+        "Asks for or placeholders testimonials that mirror the target persona (PROOF-04)",
+        "Does not invent recovery rates or other clinical statistics",
+        "Flags regulated-profession advertising rules to check"
+      ],
+      "files": [".agents/business-context.md"]
+    },
+    {
+      "id": 3,
+      "prompt": "Rewrite our About page. We're a two-person B2B operations consultancy helping manufacturing SMEs fix their planning. Current page is mostly our CVs and a list of values like 'integrity' and 'excellence'.",
+      "expected_output": "Should check for the business context file and run a short mini-brief for the gaps (founding story, a client result, proof). Should apply the About-page rules: why-headline instead of 'About us' (ABOUT-01), the seven story elements (ABOUT-02) and the C5 resolution (About may be about them, but 'how we help' paragraphs are client benefits, ABOUT-03). Should move credentials lower (ABOUT-06), replace generic values with specific ones, require real photos, no bio grid (ABOUT-05), and end with the same primary CTA. Should use placeholders for any client result or quote not supplied rather than inventing one.",
+      "assertions": [
+        "Checks for .agents/business-context.md",
+        "Replaces 'About us' with a why-headline (cites ABOUT-01)",
+        "Structures the story with the About elements (cites ABOUT-02)",
+        "Frames 'how we help' as client benefits and cites C5 or ABOUT-03",
+        "Moves CVs and credentials lower on the page (ABOUT-06)",
+        "Replaces generic values like 'integrity' with specific ones",
+        "Asks for real photos and avoids a team bio grid (ABOUT-05)",
+        "Ends with the primary CTA",
+        "Uses [PROOF NEEDED: ...] instead of inventing client results",
+        "Provides headline alternatives and an Open gaps list"
+      ],
+      "files": []
+    },
+    {
+      "id": 4,
+      "prompt": "Herschrijf de hero en de dienstenpagina 'Website op maat' voor ons webbureau in Gent. Klanten zijn Vlaamse kmo's. We tutoyeren niet, we spreken klanten aan met u.",
+      "expected_output": "Should detect the Belgian locale and write the copy in Belgian Dutch (not Netherlands Dutch) with the 'u' form held consistently (BE-02, BE-03), using the Dutch place name (Gent). Annotations and rationale should be in Dutch, the language of the request. Should read the context file or run the mini-brief. Should treat the services page as a homepage-grade page (PAGE-01) with the service wireframe, a result headline for this service (HERO-02), a Belgian booster line such as 'vrijblijvend' (BE-04), and a specific CTA like 'Plan uw gratis kennismakingsgesprek'. Should address price with ranges or cost factors (PRICE-03) and make the VAT status explicit (B2B, so 'excl. btw' clearly labelled is fine, BE-20). Should suggest a pass with belgisch-nederlands-redacteur if available, and never invent client logos or case results.",
+      "assertions": [
+        "Writes the copy in Belgian Dutch using the 'u' form consistently",
+        "Writes annotations in Dutch, matching the request language",
+        "Cites be-eu.md rules (BE-02, BE-03 or BE-04)",
+        "Uses a Belgian reassurance booster such as 'vrijblijvend'",
+        "Treats the services page with the service-page wireframe (cites PAGE-01)",
+        "Chooses the hero formula by business type (cites HERO-02)",
+        "Addresses pricing with ranges, 'vanaf' prices or cost factors (PRICE-03)",
+        "Makes the VAT status of any price explicit (BE-20)",
+        "Does not invent client logos, case results or review counts",
+        "Suggests belgisch-nederlands-redacteur for a final polish if available",
+        "Includes headline and CTA alternatives and an Open gaps list"
+      ],
+      "files": []
+    }
+  ]
+}

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Conversion Audit"
+  short_description: "Audit a service-business page for conversion"
+  default_prompt: "Use $conversion-audit to audit this page for conversion and tell me what to fix first:"
