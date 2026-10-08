@@ -23,6 +23,11 @@
       "name": "codex-bridge",
       "description": "Claude/Fable-only helpers for routing implementation and review work to GPT-5.5 through Codex.",
       "source": "./claude-codex"
+    },
+    {
+      "name": "followup",
+      "description": "Claude Code mod: queue follow-up prompts that run only once the agent has fully finished its turn.",
+      "source": "./mods/followup"
     }
   ]
 }

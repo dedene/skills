@@ -1,0 +1,20 @@
+{
+  "name": "followup",
+  "version": "0.1.0",
+  "description": "Queue follow-up prompts that run only after the agent fully finishes its turn",
+  "types": "./types/index.d.ts",
+  "author": {
+    "name": "Peter Dedene",
+    "url": "https://github.com/dedene"
+  },
+  "homepage": "https://github.com/dedene/skills",
+  "repository": "https://github.com/dedene/skills",
+  "license": "MIT",
+  "keywords": [
+    "mod",
+    "queue",
+    "follow-up",
+    "prompts",
+    "workflow"
+  ]
+}

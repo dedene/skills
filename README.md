@@ -20,6 +20,7 @@ Skills for designers, builders & engineers. Install them into Claude Code as a p
   - **page-copy** — write homepage, landing, services, about, or contact pages as wireframe plus copy per section, with headline/CTA alternatives and no invented proof.
   - **lead-offer** — design a transitional offer (lead magnet, quiz, micro-app), its opt-in and thank-you page, and a short nurture sequence.
 - **codex-bridge** — Claude/Fable bridge for bounded implementation and review through the Codex CLI, using the selected model and effort. Separate opt-in plugin (`claude-codex/`); not part of `dedene-skills`.
+- **followup** — a Claude Code mod that queues prompts for later. Press `ctrl+x enter` while the agent works, or type `/later <prompt>`, and the prompt waits until the turn has fully finished, background agents included. Plain Enter still steers the running turn. Separate plugin (`mods/followup/`).
 
 ## Install
 
@@ -43,6 +44,23 @@ The Codex delegation/review bridge is intentionally Claude/Fable-only for now:
 ```
 /plugin install codex-bridge@dedene
 ```
+
+### The followup mod
+
+```
+/plugin install followup@dedene
+```
+
+| Do | Effect |
+| --- | --- |
+| `ctrl+x enter` during a turn | Queues what you typed instead of sending it into the running turn |
+| `/later <prompt>` | Queues a prompt; sends it right away if the agent is idle |
+| `/later` | Lists the queue |
+| `/later run`, `pause`, `drop [n]`, `clear` | Resume, hold, remove one item (default the last), empty |
+
+Follow-ups go out one per finished turn, in order, as your own message. A band above the prompt shows what's waiting. If you interrupt a turn or it errors, the queue pauses until `/later run`. The queue holds text only (a prompt with a pasted image goes into the running turn as usual) and lasts for the session.
+
+Mods are an early-access Claude Code API; this one is built and tested on 2.1.294. Run its tests with `claude plugin test mods/followup`.
 
 ### With the skills CLI
 
