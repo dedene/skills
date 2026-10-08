@@ -20,7 +20,7 @@
       "source": "./extras"
     },
     {
-      "name": "claude-codex",
+      "name": "codex-bridge",
       "description": "Claude/Fable-only helpers for routing implementation and review work to GPT-5.5 through Codex.",
       "source": "./claude-codex"
     }

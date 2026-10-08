@@ -19,7 +19,7 @@ Skills for designers, builders & engineers. Install them into Claude Code as a p
   - **conversion-audit** — audit a homepage or landing page: 5-second test, then prioritized quick wins, high-impact changes, and test ideas, each citing a rule and evidence.
   - **page-copy** — write homepage, landing, services, about, or contact pages as wireframe plus copy per section, with headline/CTA alternatives and no invented proof.
   - **lead-offer** — design a transitional offer (lead magnet, quiz, micro-app), its opt-in and thank-you page, and a short nurture sequence.
-- **claude-codex** — Claude/Fable bridge for bounded implementation and review through the Codex CLI, using the selected model and effort. Separate opt-in plugin (`claude-codex/`); not part of `dedene-skills`.
+- **codex-bridge** — Claude/Fable bridge for bounded implementation and review through the Codex CLI, using the selected model and effort. Separate opt-in plugin (`claude-codex/`); not part of `dedene-skills`.
 
 ## Install
 
@@ -41,7 +41,7 @@ The ultracode skill is intentionally not part of `dedene-skills` — Claude Code
 The Codex delegation/review bridge is intentionally Claude/Fable-only for now:
 
 ```
-/plugin install claude-codex@dedene
+/plugin install codex-bridge@dedene
 ```
 
 ### With the skills CLI
