@@ -15,10 +15,10 @@ Skills for designers, builders & engineers. Install them into Claude Code as a p
 - **go-cli-builder** — scaffold or extend Go CLIs with explicit command, authentication, output, and verification contracts; scale research to the affected surface.
 - **last30days-local** — research what people said about a topic in the last 30 days across X, Reddit, Hacker News, YouTube, LinkedIn, Threads, TikTok, Instagram, Bluesky, GitHub, Pinterest, Polymarket, and the web — no API keys, using the local logged-in browser (Aside) plus `yt-dlp`, `gh`, and keyless HTTP. Inspired by [mvanhorn/last30days-skill](https://github.com/mvanhorn/last30days-skill).
 - **Conversion skills for service-business websites** — four skills that share one `.agents/business-context.md` file and a rule base distilled from 63 [Wes McDowell](https://www.youtube.com/@WesMcDowellInc) videos (2018–2026), with structure ideas adapted from [coreyhaines31/marketingskills](https://github.com/coreyhaines31/marketingskills) (MIT). Optional Belgium/EU layer for language, consent, reviews, and legal footer rules.
-  - **site-brief** — draft the business context (ideal customer, the site's one job, primary CTA, transitional offer, proof inventory, locale) from an existing site or repo, then interview only for gaps.
-  - **conversion-audit** — audit a homepage or landing page: 5-second test, then prioritized quick wins, high-impact changes, and test ideas, each citing a rule and evidence.
-  - **page-copy** — write homepage, landing, services, about, or contact pages as wireframe plus copy per section, with headline/CTA alternatives and no invented proof.
-  - **lead-offer** — design a transitional offer (lead magnet, quiz, micro-app), its opt-in and thank-you page, and a short nurture sequence.
+  - **website-brief** — draft the business context (ideal customer, the site's one job, primary CTA, transitional offer, proof inventory, locale) from an existing site or repo, then interview only for gaps.
+  - **website-conversion-audit** — audit a homepage or landing page: 5-second test, then prioritized quick wins, high-impact changes, and test ideas, each citing a rule and evidence.
+  - **website-copy** — write homepage, landing, services, about, or contact pages as wireframe plus copy per section, with headline/CTA alternatives and no invented proof.
+  - **website-lead-magnet** — design a transitional offer (lead magnet, quiz, micro-app), its opt-in and thank-you page, and a short nurture sequence.
 - **codex-bridge** — Claude/Fable bridge for bounded implementation and review through the Codex CLI, using the selected model and effort. Separate opt-in plugin (`claude-codex/`); not part of `dedene-skills`.
 - **followup** — a Claude Code mod that queues prompts for later. Press `ctrl+x enter` while the agent works, or type `/later <prompt>`, and the prompt waits until the turn has fully finished, background agents included. Plain Enter still steers the running turn. Separate plugin (`mods/followup/`).
 
@@ -31,7 +31,7 @@ Skills for designers, builders & engineers. Install them into Claude Code as a p
 /plugin install dedene-skills@dedene
 ```
 
-The skills are then available as `/dedene-skills:smooth-shadows`, `/dedene-skills:autopilot-interview`, `/dedene-skills:architect-loop`, `/dedene-skills:youtube-transcript`, `/dedene-skills:youtube-channel-search`, `/dedene-skills:tiktok-transcript`, `/dedene-skills:idea-to-visual`, `/dedene-skills:site-brief`, `/dedene-skills:conversion-audit`, `/dedene-skills:page-copy`, and `/dedene-skills:lead-offer`.
+The skills are then available as `/dedene-skills:smooth-shadows`, `/dedene-skills:autopilot-interview`, `/dedene-skills:architect-loop`, `/dedene-skills:youtube-transcript`, `/dedene-skills:youtube-channel-search`, `/dedene-skills:tiktok-transcript`, `/dedene-skills:idea-to-visual`, `/dedene-skills:website-brief`, `/dedene-skills:website-conversion-audit`, `/dedene-skills:website-copy`, and `/dedene-skills:website-lead-magnet`.
 
 The ultracode skill is intentionally not part of `dedene-skills` — Claude Code ships native ultracode workflows. For other hosts, it is available as a separate plugin:
 
@@ -81,10 +81,10 @@ npx skills add dedene/skills --skill youtube-transcript
 npx skills add dedene/skills --skill youtube-channel-search
 npx skills add dedene/skills --skill tiktok-transcript
 npx skills add dedene/skills --skill idea-to-visual
-npx skills add dedene/skills --skill site-brief
-npx skills add dedene/skills --skill conversion-audit
-npx skills add dedene/skills --skill page-copy
-npx skills add dedene/skills --skill lead-offer
+npx skills add dedene/skills --skill website-brief
+npx skills add dedene/skills --skill website-conversion-audit
+npx skills add dedene/skills --skill website-copy
+npx skills add dedene/skills --skill website-lead-magnet
 ```
 
 ## Maintaining Peter's installations
