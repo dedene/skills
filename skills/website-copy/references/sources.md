@@ -90,6 +90,38 @@ Borrowed: the shared context-file pattern, the audit output buckets (Quick wins 
 
 Note: StoryBrand is a trademark of StoryBrand/Donald Miller; the playbook references the customer-as-hero idea generically ("customer saga", Wes's term) and does not use the brand.
 
+## Flow sources `[R]`
+
+Cited in the `website-copy` skill's `flow.md` as `[R: author year]`. Procedures were rewritten for SMB service pages; no passages were copied.
+
+| Tag | Source | Used for |
+|---|---|---|
+| `Schwartz 1966` | Eugene M. Schwartz, *Breakthrough Advertising* (1966): ch. 2 on states of awareness; the "Gradualization" chapter on building a sequence of acceptances | FLOW-01, FLOW-02, FLOW-06 |
+| `Wiebe 2016` | Joanna Wiebe, "We used these 3 copywriting principles on a home page. And doubled ecommerce revenue." Copyhackers, June 2016, copyhackers.com/2016/06/copywriting-principles-sweatblock/ (messaging hierarchy; "A didn't lead to B, B didn't lead to C") | FLOW-02, FLOW-04 |
+| `Parker & Stone 2011` | Trey Parker and Matt Stone, NYU / mtvU "Stand In" guest class (2011): beats joined by "therefore" or "but", never "and then" | FLOW-05 |
+| `Olson 2015` | Randy Olson, *Houston, We Have a Narrative* (2015): the And-But-Therefore template | FLOW-05 |
+| `Dunford 2023` | April Dunford, *Sales Pitch* (2023): insight → alternatives and their limits → ideal-solution criteria → offer → value per criterion → proof → objections → ask | FLOW-06 |
+| `Raskin 2016` | Andy Raskin, "The Greatest Sales Deck I've Ever Seen" (Medium, 2016): name the change in the world before the product | FLOW-06 |
+| `Conversion Rate Experts, O/CO` | Conversion Rate Experts, the objection/counter-objection (O/CO) table, conversion-rate-experts.com/complex/; also Karl Blanks & Ben Jesson, *Making Websites Win* (2017) | FLOW-07 |
+
+Ideas adapted from open-source skills (MIT, rewritten, no text copied): the belief chain with leaks and ballast, and a cold-visitor panel, from Theycallmeholla/skills `conversion-audit`; requires/establishes bookkeeping per section from mattpocock/skills `writing-beats`; the hostile-reader validation loop from yashaiguy-dev/Sales-Page-Copywriting-Skill. Checked 2026-10-10.
+
+## Belgian market sources `[R]`
+
+Cited in `be-eu.md` as `[R: …]` (data and official guidance) or `[L: …]` (law). Checked 2026-10-10.
+
+| Tag | Source | Used for |
+|---|---|---|
+| `imec.digimeter 2026` | imec, "AI-gebruik maakt ongeziene sprong tot bij helft van de Vlamingen" (press release on Digimeter 2025, 10 March 2026; fieldwork Sept–Nov 2025), imec.be/nl/press/ai-gebruik-maakt-ongeziene-sprong-tot-bij-helft-van-de-vlamingen: 43% use generative AI at least monthly (28% a year earlier); 80% worry they can't tell human from AI content | BE-36, BE-37 |
+| `KPMG/University of Melbourne 2025` | *Trust, attitudes and use of AI: a global study 2025*, Belgium country report (fieldwork Nov 2024–Jan 2025), assets.kpmg.com/content/dam/kpmg/be/pdf/TA-Trust-attitudes-and-use-of-AI_Belgium-full-country-level-report-2025.pdf: 35% willing to trust AI | BE-36 |
+| `Statbel 2025` | Statbel, ICT and e-commerce in enterprises (2 December 2025), statbel.fgov.be/en/themes/enterprises/ict-and-e-commerce-enterprises: 34.5% of enterprises with 10+ employees used at least one AI technology in 2025 | BE-37 |
+| `Vlaamse overheid, "U of je?"` | Heerlijk Helder writing guide, vlaanderen.be/intern/werkplek/ondersteuning/heerlijk-helder/u-of-je | BE-03 |
+| `vlaanderen.be kmo-portefeuille` | vlaanderen.be/subsidie-voor-opleiding-en-advies-voor-kmos-en-zelfstandigen-kmo-portefeuille: rates, €7,500 cap, registered provider, 14 calendar days | BE-31 |
+| `VLAIO 2026` | VLAIO news: "Hervorming kmo-portefeuille: vanaf 1 februari 2026 enkel nog advies voor cybersecurity" (early 2026) and "Vlaamse Regering beslist om kmo-portefeuille stop te zetten" (September 2026; no support from 1 January 2027). vlaio.be blocks automated fetches; content confirmed via vlaanderen.be and search extracts | BE-31 |
+| AI Act / Omnibus | Reg. (EU) 2026/1744 (Digital Omnibus on AI, OJ 24 July 2026, in force 27 July 2026), eur-lex.europa.eu/eli/reg/2026/1744/oj/eng; Commission "AI literacy – questions & answers" (updated 27 July 2026), digital-strategy.ec.europa.eu/en/faqs/ai-literacy-questions-answers | BE-30, BE-37 |
+
+Practitioner input for BE-35 (modest claims) came from Belgian CRO and copy practitioners (AGConsult and Flemish copywriting agencies) and is consensus, not tested data. Not used because they couldn't be traced to a primary source: a "69% doubt online content" figure attributed to KPMG, and a specific list of Hollandisms.
+
 ## General knowledge `[G]`
 
 Everything tagged `[G]`, and all of `be-eu.md`, comes from general practitioner knowledge (web performance, accessibility, GDPR/ePrivacy, EU consumer law, Belgian practice) rather than from either source. Legal points are not legal advice; verify against current official sources before publishing.

@@ -15,7 +15,7 @@ Don't lump services a buyer wouldn't expect from one vendor into one headline ("
 
 ## STRUCT-02 — The homepage blueprint (canonical order)
 
-The 2025 ten-section blueprint `[W:Zxz-0r8G7KQ 2025]`, consistent with the 2023 "Customer Saga" (problem → solution → benefits → how it works → testimonials) `[W:2lYdI86YV30 2023]` and the 2024 IKEA formula `[W:jsOoglMSpdY 2024]`.
+The 2025 ten-section blueprint `[W:Zxz-0r8G7KQ 2025]`, consistent with the 2023 "Customer Saga" (problem → solution → benefits → how it works → testimonials) `[W:2lYdI86YV30 2023]` and the 2024 IKEA formula `[W:jsOoglMSpdY 2024]`. The blueprint is the default shape; the page's belief chain decides which sections it needs and checks that each one earns the next (`flow.md`, FLOW-01…08).
 
 | # | Section | Job | Content rules |
 |---|---|---|---|

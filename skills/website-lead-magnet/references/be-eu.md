@@ -1,16 +1,16 @@
 # 60 — Belgium / EU layer
 
-> **Practical guidance, not legal advice; check with counsel for regulated sectors.** Checked against primary sources on 2026-09-24.
+> **Practical guidance, not legal advice; check with counsel for regulated sectors.** Checked against primary sources on 2026-09-24; BE-03, BE-30, BE-31 and BE-35…37 updated 2026-10-10.
 
-> **Not from Wes.** `[L: source]` = legal claim checked against that source. `[G]` = practitioner or conversion advice. **verify** = not confirmed. Where a Wes rule conflicts with EU/BE law, the law wins.
+> **Not from Wes.** `[L: source]` = legal claim checked against that source. `[R: source]` = data or official guidance (list in `sources.md`, "Belgian market sources"). `[G]` = practitioner or conversion advice. **verify** = not confirmed. Where a Wes rule conflicts with EU/BE law, the law wins. No Belgian A/B tests on tone, pronouns, claims or urgency were found (2026-10); the tone rules are practitioner consensus, so treat them as strong defaults, not laws.
 
 ## Language (NL / FR / EN / DE)
 
 **BE-01 — Pick languages by service area, not by ambition.** `[G]` Flanders → NL. Wallonia → FR. Brussels → FR + NL, often EN. East Belgium → DE where relevant. Only publish a language you can also *serve* in (calls, quotes, invoices). No law dictates website or advertising language; language rules target staff documents and product labels/manuals `[L: adjunctvandegouverneur.be, taalverplichtingen bedrijven]`.
 
-**BE-02 — Transcreate; don't translate.** `[G]` Redo the voice-of-customer work per language (BRIEF-11/12). Write NL in **Belgian Dutch** (hand NL copy to the `belgisch-nederlands-redacteur` skill if available) and FR in Belgian usage. Wes's "customer language" rule applies per language.
+**BE-02 — Transcreate; don't translate.** `[G]` Redo the voice-of-customer work per language (BRIEF-11/12). Write NL in **Belgian Dutch** (hand NL copy to the `belgisch-nederlands-redacteur` skill if available) and FR in Belgian usage. Wes's "customer language" rule applies per language. AI drafts drift towards Netherlands Dutch (words, idiom, tone): every AI-drafted NL text gets a Belgian-Dutch pass before it ships, not only the final copy.
 
-**BE-03 — Formality per language and sector.** `[G]` NL: "u" for legal, medical, financial and older audiences; "je" common for trades, lifestyle, younger B2C. Hold one choice across site, email and forms. FR: "vous" by default. COPY-08 is about tone, not the pronoun.
+**BE-03 — Formality per language and sector.** `[G]` NL: "u" for legal, medical, financial and older audiences; "je" common for trades, lifestyle, younger B2C, and for SMB owners and entrepreneurs (the Flemish business organisations address them with "je"). The Flemish government's own guidance sets no fixed rule, advises "u" for negative or sensitive topics (taxes, fines, rules, obligations, illness) and asks each organisation to record one choice and stick to it `[R: Vlaamse overheid, "U of je?"]`. Hold one choice across site, email and forms; with "je", avoid stacking emphatic "jij/jouw", which reads as pushy. FR: "vous" by default. COPY-08 is about tone, not the pronoun.
 
 **BE-04 — Belgian reassurance words for the booster line (CTA-08).** `[G]` NL: *vrijblijvend*, *gratis*, *binnen 1 werkdag*, *geen verborgen kosten*. FR: *sans engagement*, *gratuit*, *réponse sous 24 h*. E.g. "Vraag je vrijblijvende offerte aan" / "Demandez votre devis gratuit". Same wording everywhere per language (CTA-04). "Gratis" must be true (BE-21); healthcare may not advertise free care (BE-26).
 
@@ -19,6 +19,19 @@
 **BE-06 — Local names per language.** `[G]` Gent/Gand, Antwerpen/Anvers, Brussel/Bruxelles, Leuven/Louvain, Mechelen/Malines, Kortrijk/Courtrai, Luik/Liège, Bergen/Mons, Namen/Namur. Service-area lists and HERO-06 follow suit.
 
 **BE-07 — Formats.** `[G]` `+32` in `tel:` links, local display (09 123 45 67, 0470 12 34 56). Numbers 1.250,50 (FR also 1 250,50; pick one). NL "€ 1.250", FR "1.250 €". Dates DD/MM/YYYY.
+
+## Tone and trust
+
+**BE-35 — Modest about yourself, direct about facts.** `[G]` Belgian, and especially Flemish, buyers distrust self-praise and pressure: superlatives ("de beste", "toonaangevend", "uniek"), imposed urgency and imperative hard sells ("Boek nu!") read as hype. Keep Wes's result headline and benefit-first order, drop the swagger:
+- Replace each superlative with a number, a named client result or a client quote (COPY-11, PROOF-03); no proof → cut it.
+- Keep the booster soft and concrete ("vrijblijvend", "20 minuten", "binnen 1 werkdag", BE-04); no countdowns or "X just booked" widgets (BE-22).
+- Get to the point: say early what you do, for whom, and what it costs or how pricing works (COPY-10, PRICE-03).
+- The skeptic in the hostile reader panel (FLOW-09, the `website-copy` skill's `flow.md`) reads a superlative as a red flag; count them in the sweep.
+
+**BE-36 — Show that real people stand behind the page.** `[R: imec.digimeter 2026; KPMG/University of Melbourne 2025]` In Flanders 43% use generative AI at least monthly, and 80% worry they can't tell human from AI-made content; in Belgium 35% are willing to trust AI. Generic, AI-sounding copy now costs trust. Counter it with things AI can't fake:
+- Named people with real photos (PROOF-14), a named author or signatory on long pages, named Belgian clients with permission (PROOF-12).
+- Local, dated specifics: places, sectors, recent examples ("in 2026 begeleidden we 14 teams in West-Vlaanderen" only if true).
+- A de-AI pass on every draft (`humanizer` / `stop-slop`) plus the Belgian-Dutch pass (BE-02).
 
 ## Legal information on the site
 
@@ -132,9 +145,13 @@
 
 ## B2B-only sites
 
-`[G]` Still apply: legal info (BE-08), privacy and cookies (BE-09, BE-14–17), forms and email (BE-10–13), comparisons (BE-23), AI Act where relevant (BE-30, BE-34). Consumer rules BE-18–25 are mostly n/a: report them as one line, "BE-18–25: n/a (B2B only)". B2B advertising must not mislead either (**verify** WER art. VI.105).
+`[G]` Still apply: legal info (BE-08), privacy and cookies (BE-09, BE-14–17), forms and email (BE-10–13), comparisons (BE-23), AI Act where relevant (BE-30, BE-34, BE-37); tone and trust (BE-35, BE-36). Consumer rules BE-18–25 are mostly n/a: report them as one line, "BE-18–25: n/a (B2B only)". B2B advertising must not mislead either (**verify** WER art. VI.105).
 
-**BE-31 — Subsidy claims.** `[G]` Claims like "eligible for the KMO-portefeuille" change often: check the official page first, date the claim, never promise approval. **verify** eligibility.
+**BE-31 — Subsidy claims.** `[G]` Claims like "eligible for the kmo-portefeuille" change often: check the official page first, date the claim, never promise approval. State as of 2026-10-10 `[R: vlaanderen.be kmo-portefeuille; VLAIO 2026]`:
+- **Ending:** the Flemish government decided to stop the kmo-portefeuille: no support from **1 January 2027**; 2026 applications only until the year's budget runs out. Drop the claim from evergreen copy; time-bound copy says "zolang het budget van 2026 strekt" and links the official page.
+- **Training:** 30% for small, 20% for medium enterprises, max €7,500 subsidy per company per year. The higher 45% / 35% applies only to the themes energy efficiency and cybersecurity; a general AI course gets 30% / 20%.
+- **Advice:** since 1 February 2026 only cybersecurity advice qualifies. AI strategy or AI advice is not eligible; don't relabel advice as training to fit.
+- **Conditions:** the provider must be registered, and the company applies within 14 calendar days after the service starts. Mention the subsidy only if the business is a registered provider for that service. VAT stays payable on the full price.
 
 **BE-32 — Back data-location claims.** `[G]` "Data blijft in België/EU" or "sovereign AI" needs substance: name the hosting location and provider, and any processing outside the EU (BE-09).
 
@@ -142,13 +159,19 @@
 
 ## AI features
 
-**BE-30 — Disclose AI assistants.** `[L: AI Act art. 50; digital-strategy.ec.europa.eu/en/faqs/transparency-obligations-under-article-50-ai-act]` Since **2 August 2026**, AI systems that talk directly with people must say so at the first interaction unless obvious. The duty sits with the *provider* (the vendor, or you if you build the bot and deploy it under your name); the Digital Omnibus did not delay it. `[G]` Disclose anyway ("Digitale assistent (AI)"). Constrain AI chat and estimators to published prices and conditions; hand binding matters (firm quotes, medical/legal advice) to a human (AI-07).
+**BE-30 — Disclose AI assistants.** `[L: AI Act art. 50; digital-strategy.ec.europa.eu/en/faqs/transparency-obligations-under-article-50-ai-act]` Since **2 August 2026**, AI systems that talk directly with people must say so at the first interaction unless obvious. The duty sits with the *provider* (the vendor, or you if you build the bot and deploy it under your name); the Digital Omnibus on AI (Reg. (EU) 2026/1744, in force 27 July 2026) did not delay it. Its only new grace period concerns marking of generated content (art. 50(2)) for generative systems already on the market before 2 August 2026: until 2 December 2026. `[G]` Disclose anyway ("Digitale assistent (AI)"). Constrain AI chat and estimators to published prices and conditions; hand binding matters (firm quotes, medical/legal advice) to a human (AI-07).
 
 **BE-34 — Selling AI systems? Your clients' AI Act duties are part of your pitch.** `[G]` Clients who deploy what you build take on duties (AI literacy, chatbot transparency, BE-30). Say in the offer and FAQ who handles what; don't claim "AI Act compliant" without saying for which system and role. **verify** obligations.
+
+**BE-37 — Selling AI training? Don't sell fear of Article 4.** `[L: AI Act art. 4 as amended by Reg. (EU) 2026/1744; Commission AI literacy Q&A, updated 27 July 2026]` Providers and deployers must still take measures to support AI literacy of their staff (since 2 February 2025). The Omnibus states that no specific level is required; the Commission confirms there is no certificate and no duty to measure staff knowledge.
+- Out: "verplicht volgens de AI Act", "AI Act-certificaat", "vermijd boetes", deadlines presented as new. That framing is outdated and borders on misleading (BE-22, VI.105 for B2B).
+- In: "helpt je aantonen dat je maatregelen nam". Concrete deliverables a team can show: attendance record, the working agreements or AI policy drafted together, the material used.
+- Better motivators are the reader's own situation `[R: imec.digimeter 2026; Statbel 2025]`: AI use is already widespread (43% of Flemings monthly; 34.5% of Belgian companies with 10+ staff used AI in 2025), so pitch "from scattered use to shared agreements", not "get started with AI".
 
 ## BE/EU audit add-on checklist
 
 - [ ] Languages match service area; Belgian Dutch; hreflang, text switcher, no IP redirect; hero fits longest language
+- [ ] Tone: one pronoun held; no unproven superlatives or pressure lines; named people, photos and local specifics visible (BE-03, BE-35, BE-36)
 - [ ] Legal info complete (BE-08); no ODR link
 - [ ] Privacy link at every form; separate unticked marketing consent
 - [ ] Cookies: "Reject all" on layer one, analytics blocked until consent, compact mobile banner, embeds after consent
@@ -158,3 +181,4 @@
 - [ ] Regulated-profession rules checked
 - [ ] Click-to-call; opening hours; AI chat disclosed
 - [ ] B2B: consumer items as one "n/a" line; subsidy and data-location claims backed; DPA and security documents offered (BE-31–34)
+- [ ] AI training offers: no Article 4 fear framing or certificate claims; kmo-portefeuille claim current and dated (BE-31, BE-37)

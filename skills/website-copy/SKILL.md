@@ -29,16 +29,18 @@ Write the words for one page at a time: pick the structure, then write copy sect
    | Page type | Homepage · service page · paid landing page · About · contact/booking · pricing · FAQ · testimonials | Structure: homepage type by offer mix (STRUCT-01) then the 10-section blueprint (STRUCT-02); service page wireframe (PAGE-01); paid LP order (STRUCT-03); About wireframe (ABOUT-01…07); other pages in `references/page-types.md` |
    | Traffic temperature | Cold organic · paid (ad click) · warm (referral, YouTube, AI assistant) | Cold: the full argument. Paid: dedicated page, eyebrow and headline echo the ad, no nav, 3–5 testimonials on the page (C2, STRUCT-03). Warm: shorter page, booking block high, full argument below (AI-04, C18) |
    | Sale type | Local/consumer · B2B complex sale | Consumer: reviews, faces and after-state images as proof; booking, quote or call CTA. B2B: proof = named case studies and client quotes (logos only with permission; PROOF-12); CTA = a discovery call that says who they'll talk to and for how long (CTA-02, BOOK-02); address both the champion and the decision maker (e.g. an FAQ or section for IT/DPO); price via ranges or a minimum project size (PRICE-03); hero image = the real product or deliverable in use (HERO-12) |
-   | Locale | Language + country + formality | Write the copy in the business's language (Dutch for Flanders, French for Wallonia). BE/EU: apply `references/be-eu.md` (BE-01…07: transcreate, formality, booster words, place names, formats) |
+   | Locale | Language + country + formality | Write the copy in the business's language (Dutch for Flanders, French for Wallonia). BE/EU: apply `references/be-eu.md` (BE-01…07: transcreate, formality, booster words, place names, formats; BE-35/36: modest claims, visible humans) |
 
    Allowed order deviations: emergency trades put benefits and proof straight after the hero; warm-traffic pages may merge problem and solution (C17).
 2. **Fix the actions.** One primary action per page (CTA-01). Write its button text once (action verb + what happens next, CTA-02, never a CTA-03 phrase), its booster line (CTA-08), and process Step 1 in the same words (CTA-09). Pick the after-click path by business model (booking vs quote form vs call, C12). Add a transitional offer only as a subordinate text link or its own lower section (CTA-10, C1). Paid LPs get no secondary action.
-3. **Write the hero.** Choose the headline formula by business type (HERO-02: transformation, problem, or plain what-you-do), anchored on the customer's desire, not your category (HERO-03). The subhead supplies the missing half: what/how, who, format, place (HERO-06). Add an eyebrow (HERO-08), three outcomes (HERO-09), one button + booster (HERO-10), real proof or a placeholder (HERO-11), and an image brief showing the customer's after-state (HERO-12). Check it against the seven failures (HERO-05) and the 5-second test (HERO-01).
-4. **Lay out the sections.** Order from the chosen structure; one job per section; every heading is a mini-headline, not a label (STRUCT-06). Map proof to claims before writing body copy (PROOF-08).
-5. **Write each section.** Customer words over industry words (COPY-01), "you" dominant except on About (COPY-02, C5), benefits first with the feature that enables them (COPY-04), specifics over clichés (COPY-11), grade 7–8 reading level (COPY-09; ≈ CEFR B1, "klare taal" in NL, "langage clair" in FR). Put each testimonial next to the claim it proves (PROOF-03, PROOF-07). Say something concrete about price (PRICE-01, PRICE-03). FAQ alternates real questions with objections and includes logistics answers (AI-01).
-6. **Cut and sweep.** Cut the draft roughly in half where people decide (C3, copy-length table in `references/copy.md`). Run the copy QA sweep in that file (clarity → customer language → so what → prove it → specificity → emotion → zero risk → consistency → locale). Scan the banned-phrase list.
-7. **Deliver** using the output contract below, then offer a de-AI pass (`humanizer` / `stop-slop`) and, for NL-BE copy, `belgisch-nederlands-redacteur` if available.
-8. **Implementation is a separate step.** Don't produce HTML unless asked. If the project has a codebase and the user asks to implement, get the copy approved first, then build it in the project's existing components, or hand off. Ask before editing a live site or CMS.
+3. **Map the argument.** Before the hero, write the reader's start state (awareness stage, FLOW-02), the end state that makes the CTA obvious, and the 4–7 beliefs in between in dependency order (FLOW-01). List the top objections and the section where each one arises (FLOW-07). The chain decides which sections exist; the structure from step 1 is the default shape (`references/flow.md`).
+4. **Write the hero.** Choose the headline formula by business type (HERO-02: transformation, problem, or plain what-you-do), anchored on the customer's desire, not your category (HERO-03). The subhead supplies the missing half: what/how, who, format, place (HERO-06). Add an eyebrow (HERO-08), three outcomes (HERO-09), one button + booster (HERO-10), real proof or a placeholder (HERO-11), and an image brief showing the customer's after-state (HERO-12). Check it against the seven failures (HERO-05) and the 5-second test (HERO-01).
+5. **Lay out the sections.** One belief per section: each wireframe row says what it requires, what it establishes and the question it leaves open (FLOW-03); the next section answers that question (FLOW-04). No claim above the beliefs it needs (FLOW-06). Every heading is a mini-headline, not a label (STRUCT-06). Map proof to claims and counters to objections before writing body copy (PROOF-08, FLOW-07).
+6. **Write each section.** Customer words over industry words (COPY-01), "you" dominant except on About (COPY-02, C5), benefits first with the feature that enables them (COPY-04), specifics over clichés (COPY-11), grade 7–8 reading level (COPY-09; ≈ CEFR B1, "klare taal" in NL, "langage clair" in FR). Put each testimonial next to the claim it proves (PROOF-03, PROOF-07). Say something concrete about price (PRICE-01, PRICE-03). FAQ alternates real questions with objections and includes logistics answers (AI-01).
+7. **Cut and sweep.** Cut the draft roughly in half where people decide (C3, copy-length table in `references/copy.md`). Run the copy QA sweep in that file (clarity → customer language → so what → prove it → specificity → emotion → zero risk → consistency → locale). Scan the banned-phrase list.
+8. **Test the flow.** Headings-only test and the seam test on every pair of neighbours: "therefore" or "but", never "and also" (FLOW-04, FLOW-05). Check the final CTA follows the last closed question (FLOW-08). Then run the hostile reader panel; fix any objection 3+ readers raise and run it once more (FLOW-09).
+9. **Deliver** using the output contract below, then offer a de-AI pass (`humanizer` / `stop-slop`) and, for NL-BE copy, `belgisch-nederlands-redacteur` if available.
+10. **Implementation is a separate step.** Don't produce HTML unless asked. If the project has a codebase and the user asks to implement, get the copy approved first, then build it in the project's existing components, or hand off. Ask before editing a live site or CMS.
 
 ## Output contract
 
@@ -50,11 +52,18 @@ Copy is in the page's language, at the COPY-09 reading level for that language; 
 **Page type:** … · **Traffic:** cold / paid / warm · **Sale type:** consumer / B2B · **Language:** … (formality) · **Primary CTA:** "…" · **Secondary:** "…" or none
 **Context used:** .agents/business-context.md (vN) / mini-brief / existing page at … · **Assumptions:** …
 
+## Argument
+**Start state:** … (awareness stage, FLOW-02) · **End state:** …
+**Beliefs:** B1 … → B2 … → … → B7 …
+**Objections:** "…" → counter at section n (FLOW-07) · …
+
 ## Wireframe
-| # | Section | Job on this page | Rules applied |
-|---|---|---|---|
-| 1 | Hero | What, why it matters, what next, why you | HERO-02 (formula 2), HERO-06, HERO-10, CTA-08 |
-| 2 | … | … | … |
+| # | Section | Requires | Establishes | Reader's question after | Rules applied |
+|---|---|---|---|---|---|
+| 1 | Hero | — | B1 | "…" | HERO-02 (formula 2), HERO-06, HERO-10, CTA-08 |
+| 2 | … | … | … | … | … |
+
+**Flow check:** headings-only test · seams (n→n+1: so / but) · panel: objections raised by 3+ readers and how they were fixed (FLOW-04, FLOW-05, FLOW-09)
 
 ## Copy
 
@@ -102,6 +111,7 @@ Copy is in the page's language, at the COPY-09 reading level for that language; 
 - **The hero carries the page.** Formula by business type (HERO-02); headline and subhead together answer what, for whom, why it matters (HERO-01, HERO-06). No "Welcome to", awards, clever puns or unexplained method names in the hero (HERO-05, BRIEF-07).
 - **Clear beats clever.** Plain, conversational, the customer's verbatim phrases (COPY-01, COPY-08). Clever lines survive only if the next line resolves them.
 - **Customer as hero, business as guide.** Lead with their problem and after-state; introduce yourself in the solution section with empathy plus authority (COPY-02, STRUCT-02 row 3). On a page, story means structure, not a "Meet Sally" tale (STORY-01, STORY-02).
+- **Every section earns the next.** One belief per section, in dependency order; each answers the question the last one raised; neighbours connect with "therefore" or "but" (FLOW-01, FLOW-04, FLOW-05). Objections get answered where they arise, not only in the FAQ (FLOW-07).
 - **Brag → benefit → proof.** Every claim answers "so what?" (COPY-03) and has proof within one scroll (PROOF-07). Unprovable superlatives get cut.
 - **Specific or cut.** Numbers, timeframes, process details; unrounded numbers only if real (COPY-11, COPY-12, PROOF-10).
 - **Talk about price.** Exact, from, ranges, factors or example jobs by pricing type (PRICE-03).
@@ -115,6 +125,7 @@ Copy is in the page's language, at the COPY-09 reading level for that language; 
 | `references/brief.md` | No context file exists, or you need the context template, voice-of-customer questions, or positioning rules |
 | `references/hero.md` | Writing any hero: formulas, failures, anatomy, layouts by business type, rewrite gallery, 5-second test |
 | `references/page-structure.md` | Choosing the homepage type and section order, paid/organic LP orders, story frameworks, nav, scannability |
+| `references/flow.md` | Always, before laying out sections: the argument map, question chain, seam test, objection placement, hostile reader panel |
 | `references/page-types.md` | Service, multi-service, About, testimonials, contact/booking, FAQ and pricing pages |
 | `references/copy.md` | Writing section copy: messaging rules, section headline formulas, storytelling, length table, banned phrases, QA sweep |
 | `references/proof-trust.md` | Selecting and placing proof, no-testimonial fallbacks, comparison tables, guarantees, pricing display |

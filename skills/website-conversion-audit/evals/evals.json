@@ -92,6 +92,21 @@
         "Does not invent proof or promise a conversion lift"
       ],
       "files": []
+    },
+    {
+      "id": 6,
+      "prompt": "Our AI workshops page has every section a landing page should have (hero, services, about, logos, problem, FAQ, contact) and passes a quick 5-second test, but feedback says a real reader loses the story halfway. Audit it for flow: https://example-agency.test/ai-workshops. Locale nl-BE, B2B.",
+      "expected_output": "Should still run the 5-second test blind, then rebuild the storyline: start state (FLOW-02), the beliefs the CTA depends on, and an argument map with Requires / Establishes / Reader's question after / Seam / Status per section (FLOW-01, FLOW-03). Should list leaks, ballast, broken seams, misplacements and questions open at the CTA, and report a hostile reader panel with objections raised by 3+ readers (FLOW-09). Findings should appear once in the buckets as A-S11 to A-S14 with severities from the checklist; a page that reads as a list of blocks is High (A-S12). Should not mark the page fine just because the blueprint sections are present (A-S2 passing is not enough). Should hand off to website-copy with the argument map. BE B2B: consumer items as one n/a line; any kmo-portefeuille or AI Act claim checked against be-eu.md.",
+      "assertions": [
+        "Includes a Storyline section with an argument map table",
+        "Marks beliefs covered, weak or missing",
+        "Reports leaks, ballast or broken seams explicitly",
+        "Raises at least one A-S11, A-S12, A-S13 or A-S14 finding with evidence",
+        "Runs the hostile reader panel and names objections raised by 3+ readers",
+        "Does not treat A-S2 (sections present) as proof that the flow works",
+        "Offers the website-copy handoff with the argument map"
+      ],
+      "files": []
     }
   ]
 }

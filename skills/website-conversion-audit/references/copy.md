@@ -65,7 +65,7 @@ Hero formulas: `hero.md` (HERO-02). Section and page headlines:
 
 ## Storytelling
 
-**STORY-01 — On the website, story = structure, not narrative.** Lead visitors through "I have this problem → this person can help me → I'm ready for the next step", named the "customer saga" `[W:bWVyN9VoBB4 2026, 2lYdI86YV30 2023]`. Frameworks per section: `STRUCT-04`.
+**STORY-01 — On the website, story = structure, not narrative.** Lead visitors through "I have this problem → this person can help me → I'm ready for the next step", named the "customer saga" `[W:bWVyN9VoBB4 2026, 2lYdI86YV30 2023]`. Frameworks per section: `STRUCT-04`. Whether each section earns the next (belief chain, question chain, seam test): `flow.md`.
 
 **STORY-02 — What storytelling is not:** third-person tales ("Meet Sally, who struggled with bookkeeping…"), your company origin story on sales pages, creative-writing fluff, autobiographies instead of customer focus `[W:OtChoVhEI8Y 2025]`. Origin stories go to About or nowhere `[W:7hhQf3T3k-Q 2019, 2lYdI86YV30 2023]`.
 

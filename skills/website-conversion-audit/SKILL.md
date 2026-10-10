@@ -56,12 +56,13 @@ Score the 5-second test **before** reading any business context, strategy docs o
    - **Warm** (referral, YouTube, AI assistant): a shorter page is fine; check that booking is one click from anywhere (AI-04, contradiction C18 in `references/principles.md`).
 6. **Set the locale.** BE or another EU country: add the BE/EU checklist from `references/be-eu.md` (legal info, consent, reviews, language versions; B2B-only sites: see its B2B section). Audit in the page's language and quote it verbatim; write findings in the user's language.
 7. **Walk the checklist in order:** message → structure → proof → CTA → friction → tech (`references/audit-checklist.md`, IDs A-M1 … A-T7). Check facts that differ between pages, footer and docs (A-P9). Then scan the conversion-killers list for things to remove.
-8. **Follow the primary CTA.** Click it and check the click delivers what the label promised (A-C8) and that the post-click path fits the business (A-F1: scheduler, short form, or click-to-call; a `mailto:`-only CTA fails). Never submit a form or book a slot on a live site without the owner's OK. If you can't test it, list A-T3 as *not verified*.
-9. **Check AI-search readiness** (`references/ai-search.md`): logistics answers such as price, process, and timeline (AI-01), niche signals (AI-02), consistent business facts and structured data (AI-03), a fast path for pre-sold visitors (AI-04), a human on the page (AI-05), and a "How did you find us?" field (AI-06).
-10. **Grade and bucket.** Give each finding a severity from the rubric (Critical / High / Medium / Low) and an effort (S/M/L). Then bucket it: *Quick wins* (≤ ~1 hour, low risk), *High-impact changes*, *Test ideas*. Order each bucket by severity, then by position on the page, hero first. A finding that overlaps the BE/EU or AI-search section is written once and cross-referenced.
-11. **Write the copy alternatives:** 2–3 options each for headline, subhead, and CTA (plus booster line or eyebrow when that's the fix), each with a one-line rationale citing a rule. Write them in the page's language (findings stay in the user's language). Use only facts from the page or the context file; mark an option that depends on an unconfirmed fact or positioning with † and add it to the owner questions.
-12. **Plan the measurement.** Most SMB sites lack the traffic for valid A/B tests (MEAS-01). Default to before/after over equal periods. Only list tests the traffic can support, written in the MEAS-03 hypothesis format; with too little volume, say so in one line.
-13. **Offer the handoff:** the full rewrite to `website-copy`, a missing transitional offer to `website-lead-magnet`.
+8. **Rebuild the storyline** (`references/flow.md`). From the live page, write the argument map: the reader's start state (FLOW-02), the beliefs the CTA depends on, and per section what it requires, establishes and leaves open (FLOW-01, FLOW-03). Mark each belief *covered*, *weak* or *missing*. Then run the headings-only and seam tests (FLOW-04, FLOW-05), check claims and objection counters sit where they're needed (FLOW-06, FLOW-07), and run the hostile reader panel (FLOW-09). Leaks, ballast, broken seams and misplacements become A-S11…A-S14 findings.
+9. **Follow the primary CTA.** Click it and check the click delivers what the label promised (A-C8) and that the post-click path fits the business (A-F1: scheduler, short form, or click-to-call; a `mailto:`-only CTA fails). Never submit a form or book a slot on a live site without the owner's OK. If you can't test it, list A-T3 as *not verified*.
+10. **Check AI-search readiness** (`references/ai-search.md`): logistics answers such as price, process, and timeline (AI-01), niche signals (AI-02), consistent business facts and structured data (AI-03), a fast path for pre-sold visitors (AI-04), a human on the page (AI-05), and a "How did you find us?" field (AI-06).
+11. **Grade and bucket.** Give each finding a severity from the rubric (Critical / High / Medium / Low) and an effort (S/M/L). Then bucket it: *Quick wins* (≤ ~1 hour, low risk), *High-impact changes*, *Test ideas*. Order each bucket by severity, then by position on the page, hero first. A finding that overlaps the BE/EU or AI-search section is written once and cross-referenced.
+12. **Write the copy alternatives:** 2–3 options each for headline, subhead, and CTA (plus booster line or eyebrow when that's the fix), each with a one-line rationale citing a rule. Write them in the page's language (findings stay in the user's language). Use only facts from the page or the context file; mark an option that depends on an unconfirmed fact or positioning with † and add it to the owner questions.
+13. **Plan the measurement.** Most SMB sites lack the traffic for valid A/B tests (MEAS-01). Default to before/after over equal periods. Only list tests the traffic can support, written in the MEAS-03 hypothesis format; with too little volume, say so in one line.
+14. **Offer the handoff:** the full rewrite to `website-copy` (pass along the argument map so the rewrite starts from it), a missing transitional offer to `website-lead-magnet`.
 
 ## Output contract
 
@@ -86,6 +87,18 @@ Use this structure. Omit a section only when it doesn't apply (BE/EU outside Eur
 | Image | 0–2 | 0–2 | … |
 
 **Verdict:** <one or two sentences: what a stranger thinks this business does, and what they'd click>
+
+## Storyline: <HOLDS | BREAKS at section n>
+**Start state:** <awareness stage, FLOW-02> · **End state:** <belief the CTA needs>
+
+| # | Section | Requires | Establishes | Reader's question after | Seam to next | Status |
+|---|---|---|---|---|---|---|
+| 1 | Hero | — | B1 | "…" | so / but / and also | covered / weak / missing |
+
+- Leaks: <beliefs with no section> · Ballast: <sections with no belief> · Broken seams: <n→n+1>
+- Misplaced: <claims before their prerequisites; counters far from their objections> · Open at CTA: <questions never answered>
+- Hostile reader panel: <objections raised by 3+ readers>
+(Findings from this section appear once, in the buckets below, as A-S11…A-S14.)
 
 ## Quick wins (this week)
 1. **<A-ID> · <Severity> · Effort S**: <what's wrong>
@@ -131,6 +144,7 @@ Use this structure. Omit a section only when it doesn't apply (BE/EU outside Eur
 - **Message before micro-tweaks** (principle 14, MEAS-05). A failing hero outranks every button-color or field-count note. When the message is broken, keep cosmetic findings short and push them down.
 - **The 5-second test is the top check** (HERO-01). Also check the headline formula fits the business type (HERO-02) and the subhead says what, how, and for whom (HERO-06).
 - **Customer as hero, in customer words** (COPY-01, COPY-02). Flag "Welcome to…", awards, and origin stories above the fold, plus jargon.
+- **A page with every section can still lose the reader.** Check that each section earns the next: one belief per section in dependency order, seams that read "therefore" or "but", objections answered where they arise (FLOW-01…07). A broken storyline is a High-impact finding, ranked right after a failing hero.
 - **Paid traffic needs its own page** that echoes the ad (STRUCT-03). Sending ads to the homepage, or to a generic page when a dedicated one exists (A-M11), is a High-impact finding.
 - **One specific CTA, identical everywhere, in a reserved color** (CTA-02, CTA-04, CTA-05). Quote the banned phrases you find (CTA-03).
 - **Proof near claims, a real human visible, price addressed** (PROOF-07, PROOF-14, PRICE-01).
@@ -147,6 +161,7 @@ Use this structure. Omit a section only when it doesn't apply (BE/EU outside Eur
 | `references/principles.md` | Always skim. The 15 ranked principles, defaults when context is missing, contradictions (C2 hybrid paid + organic, C18 warm traffic) |
 | `references/hero.md` | Always for the 5-second test (the only place its pass rule and severity are defined); judging the headline formula and hero layout, writing headline alternatives |
 | `references/page-structure.md` | Checking section order, nav, scannability, images, mobile, speed (STRUCT-01…13) |
+| `references/flow.md` | Always, for the Storyline section: argument map, question chain, seam test, objection placement, hostile reader panel (FLOW-01…09) |
 | `references/copy.md` | Judging messaging, jargon, specificity, copy length; scanning for banned phrases |
 | `references/proof-trust.md` | Testimonials, faces, numbers, guarantees, comparison tables, pricing transparency |
 | `references/cta-forms.md` | CTA wording and styling, booking vs form vs call (incl. mailto-only CTAs), form fields, thank-you page |

@@ -7,6 +7,7 @@ Knowledge base for four skills: `website-brief`, `website-conversion-audit`, `we
 - `[W:id year]`: Wes McDowell video (full list in `sources.md`). Year = year of the original clip. Two uploads (`1kgolxbvCd8`, `FBYCe0S-5KY`) are compilations; where the original clip is known, the original id is cited instead.
 - `[MS]`: idea adapted from coreyhaines31/marketingskills (MIT, Corey Haines), rewritten.
 - `[G]`: general practitioner knowledge, not from either source. Verify when stakes are high.
+- `[R: author year]`: an outside primary source (book, article, study) listed in `sources.md` under "Flow sources" or "Belgian market sources". Used in `be-eu.md` and the `website-copy` skill's `flow.md`.
 - **(illustrative)**: single-source or unverifiable stat (Wes, a guest, or a sponsor). Use it to explain direction. Never quote it to a client as fact.
 - Rule IDs (`HERO-04`, `CTA-02`…) are stable handles. Audit findings and copy annotations cite them.
 

@@ -42,6 +42,10 @@
 | A-S8 | Copy length: homepage not "a small book"; hero = headline + one sentence (`copy.md`, copy-length rules) | Medium |
 | A-S9 | Transitional offer exists and is secondary (LEAD-01) | Medium |
 | A-S10 | Every offer that is sold or advertised, including the entry offer, has its own page; an offer that exists only as a card or section is itself a finding (PAGE-04) | High if it is the primary or advertised offer; Medium otherwise |
+| A-S11 | Belief chain complete: every belief the CTA depends on has a section (no **leaks**), and every section installs one (no **ballast**) (FLOW-01, FLOW-03) | High for a missing B2–B6 belief; Medium for ballast |
+| A-S12 | Sections connect: the headings-only test tells the argument, each section answers the question the previous one raised, and every seam reads "therefore" or "but", not "and also" (FLOW-04, FLOW-05) | High when the page reads as a list of blocks; Medium for single seams |
+| A-S13 | Nothing arrives before its prerequisites: programme, features, "why us", price or a hard ask before the problem and guide land; each counter and its proof sit where the objection arises, not only in the FAQ (FLOW-06, FLOW-07) | High when the #1 objection is answered only in the FAQ or not at all; Medium otherwise |
+| A-S14 | The final CTA comes after the last open question, restates outcome + reason + small next step; mid-page CTAs follow sections that close a belief (FLOW-08) | Medium |
 
 ## Step 3 — Proof
 
@@ -120,14 +124,14 @@ Subtraction usually beats addition `[W:dUrlwvm-CqQ 2024, pRNny_t8TUE 2025]`:
 | Severity | Meaning | Examples |
 |---|---|---|
 | **Critical** | Blocks or breaks conversion, or creates legal/trust risk | No CTA; 5-second test ≤ 4/10; broken form or booking; mobile broken; fake proof; paid LP mismatched with the ad |
-| **High** | Materially lowers conversion for most visitors | 5-second test 5–6/10; vague CTA wording; business-centric hero; no proof above the fold; no price info; mystery contact form; no human visible; LCP > 4 s |
+| **High** | Materially lowers conversion for most visitors | 5-second test 5–6/10; vague CTA wording; business-centric hero; no proof above the fold; no price info; mystery contact form; no human visible; page reads as a list of blocks with no storyline (A-S12); LCP > 4 s |
 | **Medium** | Noticeable drag or missed opportunity | Missing process section; CTA not repeated; nav bloat; blob testimonials; inconsistent images |
 | **Low** | Polish | Booster line missing; comparison unbalanced; icon pack mismatch |
 
 Map findings to the output format (from `[MS]`):
 
 - **Quick wins (do this week):** ≤ ~1 hour each, low risk, high confidence. Typical: rewrite the CTA wording and make it identical; add the booster line; move the logo; add the nav CTA button; add the review count to the hero; cut the nav to 5; remove social icons; replace the hero photo; add one real team photo; fix contrast.
-- **High-impact changes (prioritize):** bigger work with high expected impact. Typical: rewrite the hero with the right formula; restructure to the blueprint; build service pages like homepages; add pricing ranges; switch to a scheduler; build the transitional offer; collect real testimonials with photos.
+- **High-impact changes (prioritize):** bigger work with high expected impact. Typical: rewrite the hero with the right formula; restructure to the blueprint; reorder sections along the belief chain and move objection counters to where doubts arise (A-S11…A-S13); build service pages like homepages; add pricing ranges; switch to a scheduler; build the transitional offer; collect real testimonials with photos.
 - **Test ideas:** plausible but uncertain, and only worth an A/B test with enough traffic (below). Otherwise ship and compare before/after.
 - **Copy alternatives:** for the headline, subhead and CTA (plus booster line or eyebrow when that's the fix), 2–3 options each with a one-line rationale citing the rule `[MS]`. Write them in the page's language; findings stay in the user's language.
 

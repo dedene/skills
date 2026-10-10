@@ -76,6 +76,22 @@
         "Includes headline and CTA alternatives and an Open gaps list"
       ],
       "files": []
+    },
+    {
+      "id": 5,
+      "prompt": "Rewrite our services page for AI workshops for Flemish SMB teams. Current order: hero 'AI-workshops op maat', our three workshop formats, about our team, client logos, then a section on the problem ('je team gebruikt AI al, maar zonder afspraken'), FAQ, contact. People say the page has no storyline. We address clients with 'je'.",
+      "expected_output": "Should map the argument before writing the hero: start state with an awareness stage, end state, 4-7 beliefs in dependency order, and an objection list with the section where each arises (FLOW-01, FLOW-02, FLOW-07). Should diagnose the current order: formats before the problem lands, team and logos too early with logos proving no claim, 'and also' seams, and price/time investment only in the FAQ (FLOW-05, FLOW-06). Should reorder so the problem precedes the guide and the formats, tie each format to a symptom from the problem section, place a case next to the format it proves, and put process, time and a from-price before the CTA. The wireframe shows Requires / Establishes / Reader's question after for each section. Should run the headings-only test, the seam test and the hostile reader panel and report the flow check. Copy in Belgian Dutch with 'je', no superlatives, no invented logos, cases or prices (placeholders instead).",
+      "assertions": [
+        "Writes an Argument block (start state, end state, beliefs, objections) before the wireframe",
+        "Wireframe rows include Requires, Establishes and the reader's question after",
+        "Moves the problem above the workshop formats (cites FLOW-06)",
+        "Flags or fixes 'and also' seams (cites FLOW-05)",
+        "Places objection counters in the section where they arise, not only in the FAQ (cites FLOW-07)",
+        "Reports a flow check: headings-only test, seams and hostile reader panel (FLOW-04, FLOW-05, FLOW-09)",
+        "Uses placeholders instead of inventing client logos, cases or prices",
+        "Writes the copy in Belgian Dutch with the 'je' form"
+      ],
+      "files": []
     }
   ]
 }
