@@ -55,6 +55,36 @@ test('ctrl+x enter mid-turn is held, then sent after the turn ends', async ($, o
   expect(submitted[0]?.origin).toEqual({ kind: 'plugin', name: 'followup', asUser: true })
 })
 
+// The prompt box beneath the plugin: holds the draft, records fills.
+const box = (on: On, draft: string) => {
+  const state = { text: draft }
+  on('prompt.read', () => ({ value: { text: state.text, cursor: state.text.length } }))
+  on('prompt.fill', ($, e) => {
+    state.text = e.mode === 'replace' ? e.text : state.text + e.text
+    return { isFilled: true, text: state.text, cursor: state.text.length }
+  })
+  return state
+}
+
+test('ctrl+x enter empties the prompt box once queued', async ($, on) => {
+  const { clock } = world(on)
+  const draft = box(on, 'run the tests ')
+  await $.turn.start({ text: 'work', turnId: 't1' })
+  await $.prompt.submit(typed('run the tests ', true, 't1'))
+  await clock.advance(100)
+  expect(draft.text).toBe('')
+})
+
+test('a draft typed after queueing is left alone', async ($, on) => {
+  const { clock } = world(on)
+  const draft = box(on, 'run the tests')
+  await $.turn.start({ text: 'work', turnId: 't1' })
+  await $.prompt.submit(typed('run the tests', true, 't1'))
+  draft.text = 'something new'
+  await clock.advance(100)
+  expect(draft.text).toBe('something new')
+})
+
 test('a plain Enter mid-turn still steers the running turn', async ($, on) => {
   const { submitted } = world(on)
   await $.turn.start({ text: 'work', turnId: 't1' })

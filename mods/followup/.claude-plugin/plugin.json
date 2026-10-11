@@ -1,6 +1,6 @@
 {
   "name": "followup",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Queue follow-up prompts that run only after the agent fully finishes its turn",
   "types": "./types/index.d.ts",
   "author": {

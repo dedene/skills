@@ -70,6 +70,19 @@ const dispatchSoon = ($: EngineInterface) => {
   $.clock.after(DISPATCH_DELAY_MS, () => void dispatchNext($).catch(() => undefined))
 }
 
+// A dropped prompt stays in the box as the draft. Once the drop has landed,
+// empty it, but only while it still holds what was queued.
+const clearQueuedDraft = ($: EngineInterface, text: string) => {
+  $.clock.after(DISPATCH_DELAY_MS, async () => {
+    try {
+      const box = await $.prompt.read()
+      if (box.text.trim() === text) await $.prompt.fill({ text: '', mode: 'replace' })
+    } catch {
+      // no box, or a dialog holds it; the draft simply stays
+    }
+  })
+}
+
 const enqueue = async ($: EngineInterface, text: string) => {
   const list = await update($, queue, l => [...l, text])
   return list.length
@@ -111,6 +124,7 @@ export const register: Register = on => {
 
     const n = await enqueue($, text)
     $.ui.toast(`Queued as follow-up #${n}`)
+    clearQueuedDraft($, text)
     return { drop: `Queued as follow-up #${n}; it runs when the agent is done.` }
   })
 
