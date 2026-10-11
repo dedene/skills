@@ -124,7 +124,7 @@ Subtraction usually beats addition `[W:dUrlwvm-CqQ 2024, pRNny_t8TUE 2025]`:
 | Severity | Meaning | Examples |
 |---|---|---|
 | **Critical** | Blocks or breaks conversion, or creates legal/trust risk | No CTA; 5-second test ≤ 4/10; broken form or booking; mobile broken; fake proof; paid LP mismatched with the ad |
-| **High** | Materially lowers conversion for most visitors | 5-second test 5–6/10; vague CTA wording; business-centric hero; no proof above the fold; no price info; mystery contact form; no human visible; page reads as a list of blocks with no storyline (A-S12); LCP > 4 s |
+| **High** | Materially lowers conversion for most visitors | 5-second test 5–6/10; vague CTA wording; business-centric hero; no proof above the fold; no price info; mystery contact form; no human visible; page reads as a list of blocks with no storyline (A-S12); an objection raised by 3+ hostile readers (FLOW-09); LCP > 4 s |
 | **Medium** | Noticeable drag or missed opportunity | Missing process section; CTA not repeated; nav bloat; blob testimonials; inconsistent images |
 | **Low** | Polish | Booster line missing; comparison unbalanced; icon pack mismatch |
 

@@ -45,6 +45,7 @@ Score the 5-second test **before** reading any business context, strategy docs o
 
    - **Next page:** clear cookies and storage again (or use a new session) so its fold also shows the banner.
    - **Blank below the hero** (scroll-reveal animations): don't report empty sections. Try `ab set media reduced-motion` and reload, or scroll in viewport steps (`ab scroll down 800`, short wait, screenshot) and keep the slices.
+   - **Lazy-loaded images** (`loading="lazy"`): full-page shots can show empty image boxes even with reduced motion. Scroll through the page in viewport steps first, then list what is still unloaded: `ab eval "[...document.images].filter(i => !i.complete || !i.naturalWidth).map(i => i.currentSrc || i.src)"`. Report a broken image (A-T3) only if it is still empty after that.
    - **Speed (A-T2):** use PageSpeed Insights / CrUX field data when available. `vitals` from a warm local session is no signal; report any lab number as *lab only*.
    - No `agent-browser`: work from supplied screenshots, HTML, or fetched text. Text-only input can't judge layout, imagery, contrast, or the fold. Say so and mark those checks *not verified* instead of guessing.
 3. **Run the 5-second test, blind** (HERO-01, A-M1). Read only what's visible above the fold, in visual order, on desktop and mobile, before the context step. Pass rule, rubric (including logo-only or abstract hero images) and severity live in one place: the 5-second test protocol in `references/hero.md`. Below the pass mark, the hero rewrite leads the High-impact list.
@@ -59,7 +60,7 @@ Score the 5-second test **before** reading any business context, strategy docs o
 8. **Rebuild the storyline** (`references/flow.md`). From the live page, write the argument map: the reader's start state (FLOW-02), the beliefs the CTA depends on, and per section what it requires, establishes and leaves open (FLOW-01, FLOW-03). Mark each belief *covered*, *weak* or *missing*. Then run the headings-only and seam tests (FLOW-04, FLOW-05), check claims and objection counters sit where they're needed (FLOW-06, FLOW-07), and run the hostile reader panel (FLOW-09). Leaks, ballast, broken seams and misplacements become A-S11…A-S14 findings.
 9. **Follow the primary CTA.** Click it and check the click delivers what the label promised (A-C8) and that the post-click path fits the business (A-F1: scheduler, short form, or click-to-call; a `mailto:`-only CTA fails). Never submit a form or book a slot on a live site without the owner's OK. If you can't test it, list A-T3 as *not verified*.
 10. **Check AI-search readiness** (`references/ai-search.md`): logistics answers such as price, process, and timeline (AI-01), niche signals (AI-02), consistent business facts and structured data (AI-03), a fast path for pre-sold visitors (AI-04), a human on the page (AI-05), and a "How did you find us?" field (AI-06).
-11. **Grade and bucket.** Give each finding a severity from the rubric (Critical / High / Medium / Low) and an effort (S/M/L). Then bucket it: *Quick wins* (≤ ~1 hour, low risk), *High-impact changes*, *Test ideas*. Order each bucket by severity, then by position on the page, hero first. A finding that overlaps the BE/EU or AI-search section is written once and cross-referenced.
+11. **Grade and bucket.** Give each finding a severity from the rubric (Critical / High / Medium / Low) and an effort (S/M/L). Then bucket it: *Quick wins* (≤ ~1 hour, low risk), *High-impact changes*, *Test ideas*. Order each bucket by severity, then by position on the page, hero first. A finding that overlaps the BE/EU or AI-search section is written once and cross-referenced. The same goes for storyline findings: a leak or misplacement that a more specific check already covers (no price → A-P5, no human → A-P4, CTA lands on the wrong page → A-C8) is written once under the specific ID with the flow ID beside it ("A-P5 / A-S13"); keep A-S11…A-S14 on their own for the order and seams themselves.
 12. **Write the copy alternatives:** 2–3 options each for headline, subhead, and CTA (plus booster line or eyebrow when that's the fix), each with a one-line rationale citing a rule. Write them in the page's language (findings stay in the user's language). Use only facts from the page or the context file; mark an option that depends on an unconfirmed fact or positioning with † and add it to the owner questions.
 13. **Plan the measurement.** Most SMB sites lack the traffic for valid A/B tests (MEAS-01). Default to before/after over equal periods. Only list tests the traffic can support, written in the MEAS-03 hypothesis format; with too little volume, say so in one line.
 14. **Offer the handoff:** the full rewrite to `website-copy` (pass along the argument map so the rewrite starts from it), a missing transitional offer to `website-lead-magnet`.
@@ -88,8 +89,9 @@ Use this structure. Omit a section only when it doesn't apply (BE/EU outside Eur
 
 **Verdict:** <one or two sentences: what a stranger thinks this business does, and what they'd click>
 
-## Storyline: <HOLDS | BREAKS at section n>
+## Storyline: <HOLDS | BREAKS at section n (the first break)>
 **Start state:** <awareness stage, FLOW-02> · **End state:** <belief the CTA needs>
+**Biggest breaks** (max 5, most damaging first): 1. <§n→m · what breaks · FLOW/A-S ID> 2. …
 
 | # | Section | Requires | Establishes | Reader's question after | Seam to next | Status |
 |---|---|---|---|---|---|---|

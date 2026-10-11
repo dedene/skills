@@ -124,7 +124,7 @@ After drafting, or as an audit step, read the page top to bottom as five cold re
 | **Wrong fit** | Hero, offer, FAQ | Can I tell quickly that this isn't for me? (that's a feature: it filters bad leads) |
 | **Not now** | Middle and end | Why act now; is there a smaller first step? (truthful only, SCAR-01) |
 
-An objection raised by **3 or more** readers is critical: fix it (usually with FLOW-06 or FLOW-07), then run the panel once more. Personas are a thinking tool, not evidence; don't present them to the owner as user research. Adapted from the hostile-validation phase in yashaiguy-dev `Sales-Page-Copywriting-Skill` and the cold-visitor panel in Theycallmeholla/skills `conversion-audit` (both MIT).
+An objection raised by **3 or more** readers must be fixed (usually with FLOW-06 or FLOW-07), then the panel runs once more. Severity in an audit: report it as **High** under the most specific check it touches (e.g. no price → A-P5, no human → A-P4); **Critical** only if it also meets the Critical rubric (fake proof, a broken path). Raised by 1–2 readers: Medium at most, or a note. In `website-copy` it blocks delivery until fixed or listed under Open gaps. Personas are a thinking tool, not evidence; don't present them to the owner as user research. Adapted from the hostile-validation phase in yashaiguy-dev `Sales-Page-Copywriting-Skill` and the cold-visitor panel in Theycallmeholla/skills `conversion-audit` (both MIT).
 
 ## Argument map format
 
@@ -136,14 +136,18 @@ Both `website-copy` (wireframe) and `website-conversion-audit` (Storyline sectio
 | 2 | Problem | B1 | B2 | "Who can fix this?" | but → | weak: symptoms in our words, not theirs |
 | 3 | … | | | | | |
 
-Below it: **Leaks** (beliefs with no section), **Ballast** (sections with no belief), **Broken seams** ("and also" pairs), **Misplaced** (FLOW-06/07 items), **Open at CTA** (questions never answered).
+**Numbering:** number every visible block in reading order, including thin bands and the final CTA panel; the footer doesn't count. A subsection (H3, tabs, accordion) belongs to its parent's row unless it installs its own belief; then it gets its own row (e.g. "8b Process"). Use the same numbers in the findings.
+
+Below it: **Leaks** (beliefs with no section), **Ballast** (sections with no belief), **Broken seams** ("and also" pairs), **Misplaced** (FLOW-06/07 items), **Open at CTA** (questions never answered). In an audit, also rank the **biggest breaks** (max 5, most damaging first); the verdict line names the first break.
 
 ## Worked example (fictional)
 
-A B2B page selling AI workshops to SMB teams, as drafted:
+The pattern, not a template: the reordering below follows this page's own chain. A different page needs its own map.
 
-1. Hero: "AI-workshops op maat" → 2. Our three workshop formats → 3. About our team → 4. Logos → 5. Problem: "Je team gebruikt AI al, maar zonder afspraken" → 6. FAQ → 7. CTA.
+An accountancy firm's page for small business owners ("Boekhouding voor kmo's"), as drafted:
 
-Diagnosis: the formats (2) arrive before the reader feels the problem (5): FLOW-06. "About our team" (3) and logos (4) install B3/B5 for nobody yet; they're early, and the logos prove no claim (FLOW-07). Seam 2→3 and 3→4 is "and also" (FLOW-05). B6 ("doable, affordable") is a leak: price and time investment appear only in the FAQ. The headings-only test reads as a brochure.
+1. Hero: "Uw boekhouder in Kortrijk" → 2. Our three packages → 3. "Al 25 jaar uw partner" (history, team photo) → 4. Client logos → 5. Problem: "Elk kwartaal dezelfde stress rond de btw-aangifte" → 6. FAQ → 7. CTA.
 
-Reordered: hero (outcome for the team, "je") → problem in the team's words (B2) → "Zo pakken we het aan" with one human face (B3) → the formats, each tied to a symptom from the problem section (B4) → a case from a similar company right after the format it proves (B5) → three steps, time per step, from-price (B6) → FAQ with the leftovers (IT, data, "geen voorkennis nodig") → CTA restating outcome + case + "vrijblijvend kennismakingsgesprek van 20 minuten" (B7).
+Diagnosis: the packages (2) arrive before the reader feels the problem (5): FLOW-06. The history (3) and logos (4) install B3/B5 for nobody yet; they're early, and the logos prove no claim (FLOW-07). Seams 2→3 and 3→4 are "and also" (FLOW-05). B6 ("doable, affordable") is a leak: monthly price and how much the owner still has to do appear only in the FAQ. The headings-only test reads as a brochure.
+
+Reordered: hero (outcome for the owner: "Geen kwartaalstress meer over btw en boekhouding") → the problem in owners' words (B2) → "Zo werken we" with the accountant's face and name (B3) → the packages, each tied to a symptom from the problem section (B4) → a quote from a similar business right after the package it proves (B5) → three steps to switch, time per step, from-price per month excl. btw (B6) → FAQ with the leftovers (switching mid-year, software, "wat moet ik zelf nog doen?") → CTA restating outcome + proof + "Plan een vrijblijvend gesprek van 20 minuten" (B7). The firm uses "u" here: older owners, financial topic (BE-03).
