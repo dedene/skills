@@ -1,0 +1,4 @@
+interface:
+  display_name: "Untangle Codebase"
+  short_description: "Refactor coupling while preserving behavior"
+  default_prompt: "Use $untangle-codebase to untangle this codebase, preserving its behavior and framework conventions while verifying each structural change."

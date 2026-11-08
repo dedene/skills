@@ -13,6 +13,7 @@ Skills for designers, builders & engineers. Install them into Claude Code as a p
 - **tiktok-transcript** — fetch TikTok captions with `yt-dlp` for a single video or a whole channel, save cached transcript artifacts, and fall back to local `mlx-whisper` transcription (Apple Silicon) when a video has no native captions.
 - **idea-to-visual** — turn an idea, quote, or chapter into a simple explanatory visual: brainstorm text and visual elements, draft 10 concepts across visual types, filter them for clarity, then write or run the image prompt (Higgsfield via mcporter, Gemini / Nano Banana, ChatGPT image, or paste-ready prompts). Also does style transfer of rough sketches, tracing-friendly metaphor objects, caption brainstorms, and a reusable house style.
 - **go-cli-builder** — scaffold or extend Go CLIs with explicit command, authentication, output, and verification contracts; scale research to the affected surface.
+- **untangle-codebase** — audit or refactor structural coupling with evidence, preserve behavior, and verify each change. Includes focused Rails, Go, Swift/macOS, JavaScript/TypeScript, Python, PHP, JVM/Spring, .NET, and Rust guidance. Inspired by the change-coupling approach in [caldoai/skills](https://github.com/caldoai/skills/blob/main/skills/untangle-codebase/SKILL.md) (MIT), extended with framework profiles, bounded scope, and incremental verification.
 - **last30days-local** — research what people said about a topic in the last 30 days across X, Reddit, Hacker News, YouTube, LinkedIn, Threads, TikTok, Instagram, Bluesky, GitHub, Pinterest, Polymarket, and the web — no API keys, using the local logged-in browser (Aside) plus `yt-dlp`, `gh`, and keyless HTTP. Inspired by [mvanhorn/last30days-skill](https://github.com/mvanhorn/last30days-skill).
 - **Conversion skills for service-business websites** — four skills that share one `.agents/business-context.md` file and a rule base distilled from 63 [Wes McDowell](https://www.youtube.com/@WesMcDowellInc) videos (2018–2026), with structure ideas adapted from [coreyhaines31/marketingskills](https://github.com/coreyhaines31/marketingskills) (MIT). Optional Belgium/EU layer for language, consent, reviews, and legal footer rules.
   - **website-brief** — draft the business context (ideal customer, the site's one job, primary CTA, transitional offer, proof inventory, locale) from an existing site or repo, then interview only for gaps.
@@ -31,7 +32,7 @@ Skills for designers, builders & engineers. Install them into Claude Code as a p
 /plugin install dedene-skills@dedene
 ```
 
-The skills are then available as `/dedene-skills:smooth-shadows`, `/dedene-skills:autopilot-interview`, `/dedene-skills:architect-loop`, `/dedene-skills:youtube-transcript`, `/dedene-skills:youtube-channel-search`, `/dedene-skills:tiktok-transcript`, `/dedene-skills:idea-to-visual`, `/dedene-skills:website-brief`, `/dedene-skills:website-conversion-audit`, `/dedene-skills:website-copy`, and `/dedene-skills:website-lead-magnet`.
+The skills are then available as `/dedene-skills:smooth-shadows`, `/dedene-skills:autopilot-interview`, `/dedene-skills:architect-loop`, `/dedene-skills:youtube-transcript`, `/dedene-skills:youtube-channel-search`, `/dedene-skills:tiktok-transcript`, `/dedene-skills:idea-to-visual`, `/dedene-skills:untangle-codebase`, `/dedene-skills:website-brief`, `/dedene-skills:website-conversion-audit`, `/dedene-skills:website-copy`, and `/dedene-skills:website-lead-magnet`.
 
 The ultracode skill is intentionally not part of `dedene-skills` — Claude Code ships native ultracode workflows. For other hosts, it is available as a separate plugin:
 
@@ -81,6 +82,7 @@ npx skills add dedene/skills --skill youtube-transcript
 npx skills add dedene/skills --skill youtube-channel-search
 npx skills add dedene/skills --skill tiktok-transcript
 npx skills add dedene/skills --skill idea-to-visual
+npx skills add dedene/skills --skill untangle-codebase
 npx skills add dedene/skills --skill website-brief
 npx skills add dedene/skills --skill website-conversion-audit
 npx skills add dedene/skills --skill website-copy
