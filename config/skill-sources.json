@@ -40,6 +40,11 @@
     ]
   },
   {
+    "name": "untangle-codebase",
+    "source": "/Users/peter/Development/Personal/skills/skills/untangle-codebase",
+    "targets": []
+  },
+  {
     "name": "last30days-local",
     "source": "/Users/peter/Development/Personal/skills/skills/last30days-local",
     "targets": [
